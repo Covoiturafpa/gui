@@ -1,5 +1,5 @@
 import {React, useState, useEffect} from 'react';
-import { Table } from 'rsuite';
+import { Table,  Pagination } from 'rsuite';
 import { FiEdit2 } from "react-icons/fi";
 import { FiEye } from "react-icons/fi";
 import { FiEyeOff } from "react-icons/fi";
@@ -13,14 +13,16 @@ const TableRides = (props) => {
     const [columnsVisible, setColumnsVisible] = useState(props.columnsVisible);
     const [titleTable, setTitleTable] = useState(props.title);
     const { Column, HeaderCell, Cell } = Table;
+    const [limit, setLimit] = useState(10);
+     const [page, setPage] = useState(1);
 
+     
     useEffect(() => {
         fetch("http://127.0.0.1:3001/covoiturafpa/rides")
         .then(res => res.json())
         .then(
             (result) => {
             setIsLoaded(true);
-            console.log(result);
             setData(result);
             },
             // Remarque : il faut gérer les erreurs ici plutôt que dans
@@ -32,6 +34,8 @@ const TableRides = (props) => {
             }
         )
     }, [])
+
+
   if (error) {
     return <div>Erreur : {error.message}</div>;
   } else if (!isLoaded) {
@@ -39,26 +43,27 @@ const TableRides = (props) => {
   } else {
     return (
         <div>
-            <h5>{titleTable}</h5>
+            <div>
+                <h5 className="text-center">{titleTable}</h5>
+            </div>
             <Table
-            height={400}
             data={data}
             onRowClick={rowData => {
                 console.log(rowData);
             }}>
-                <Column width={150} align="center" fixed>
+                <Column align="center" flexGrow={2}>
                     <HeaderCell>Destinations</HeaderCell>
                     <Cell>
                         {rowData => {
-                            if(rowData.ride.destination.is_from_afpa) {
-                                return(<p>AFPA <FiArrowRight/> { rowData.ride.destination.city.name}</p>)
-                            }else if(!rowData.ride.destination.is_from_afpa) {
-                                return(<p>{ rowData.ride.destination.city.name} <FiArrowRight/> AFPA</p>)
+                            if(rowData.destination.is_from_afpa) {
+                                return(<p className='flex justify-center align-center'>AFPA <FiArrowRight className='mx-2'/> { rowData.destination.city.name}</p>)
+                            }else if(!rowData.destination.is_from_afpa) {
+                                return(<p className='flex justify-center'>{ rowData.destination.city.name} <FiArrowRight className='mx-2'/> AFPA</p>)
                             }
                         }}
                     </Cell>
                 </Column>
-                <Column width={150}>
+                <Column flexGrow={2}>
                     <HeaderCell>Date</HeaderCell>
                     <Cell>
                     {rowData => {
@@ -72,23 +77,22 @@ const TableRides = (props) => {
                     </Cell>
                 </Column>
 
-                <Column width={150}>
+                <Column flexGrow={1}>
                     <HeaderCell>heure</HeaderCell>
-                    <Cell dataKey="ride.departure_time" />
+                    <Cell dataKey="departure_time" />
                 </Column>
 
-                <Column width={70}>
+                <Column flexGrow={0.5}>
                     <HeaderCell>Disponibilité</HeaderCell>
                     <Cell>
                         {rowData => {
-                            console.log(rowData.ride.is_active);
-                            if(rowData.ride.is_active === true) {
+                            if(rowData.is_active === true) {
                                 return (
                                     <span>
                                         <a> <FiEye/> </a>
                                     </span>
                                 )
-                            }else if(rowData.ride.is_active === false) {
+                            }else if(rowData.is_active === false) {
                                 return (
                                     <span>
                                         <a> <FiEyeOff/> </a>
@@ -99,7 +103,7 @@ const TableRides = (props) => {
 }
                     </Cell>
                 </Column>
-                <Column width={70} fixed="right">
+                <Column flexGrow={0.5} >
                     <HeaderCell>Modif.</HeaderCell>
                     <Cell>
                     {rowData => (
@@ -110,34 +114,10 @@ const TableRides = (props) => {
                     </Cell>
                 </Column>
             </Table>
+            
         </div>
         
     );
-  }
-
-    
+  } 
 }
 export { TableRides };
-/**
- * 
- * <Column width={130}>
-                <HeaderCell>Last Name</HeaderCell>
-                <Cell dataKey="lastName" />
-            </Column>
-            <Column width={100}>
-                <HeaderCell>Gender</HeaderCell>
-                <Cell dataKey="gender" />
-            </Column>
-            <Column width={100}>
-                <HeaderCell>Age</HeaderCell>
-                <Cell dataKey="age" />
-            </Column>
-            <Column width={200}>
-                <HeaderCell>City</HeaderCell>
-                <Cell dataKey="city" />
-            </Column>
-            <Column width={200}>
-                <HeaderCell>Email</HeaderCell>
-                <Cell dataKey="email" />
-            </Column>
- */

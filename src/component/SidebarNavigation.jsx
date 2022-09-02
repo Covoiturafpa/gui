@@ -1,4 +1,6 @@
-import React from 'react';
+import {React, useState, useEffect} from 'react';
+
+import { useNavigate, Link } from 'react-router-dom';
 import { Sidenav, Nav, Toggle } from 'rsuite';
 import AbTestIcon from '@rsuite/icons/AbTest';
 import PlusIcon from '@rsuite/icons/Plus';
@@ -10,31 +12,38 @@ import GearIcon from '@rsuite/icons/Gear';
 
 import { NavLink } from 'react-router-dom';
 const SidebarNavigation = () => {
-    const [expanded, setExpanded] = React.useState(true);
-    const [activeKey, setActiveKey] = React.useState('1');
+    const [expanded, setExpanded] = useState(true);
+    const [activeKey, setActiveKey] = useState('rechercher');
+    let navigate = useNavigate();
+
+    useEffect(() => {
+        navigate("/"+activeKey);
+    }, [activeKey]);
+
+
     return (
-        <div style={{ width: 240 }}>
-            <Sidenav expanded={expanded}>
+        <div>
+            <Sidenav className="h-screen" expanded={expanded}>
                 <Sidenav.Toggle expanded={expanded} onToggle={expanded => setExpanded(expanded)} />
-                <Sidenav.Body>
-                    <Nav activeKey={activeKey} onSelect={setActiveKey}>
-                        <Nav.Item eventKey="1" icon={<SearchIcon/>}>
-                            <NavLink to="/rechercher">Rechercher</NavLink>
+                <Sidenav.Body className="h-full">
+                    <Nav className="justify-between" activeKey={activeKey} onSelect={setActiveKey} >
+                        <Nav.Item  eventKey="rechercher"   icon={<SearchIcon/>}>
+                            <p>Rechercher</p>
                         </Nav.Item>
-                        <Nav.Item eventKey="2" icon={<AbTestIcon />}>
-                            <NavLink to="/mes_trajets">Mes trajets</NavLink>
+                        <Nav.Item eventKey="mes_trajets" icon={<AbTestIcon />}>
+                            <p>Mes trajets</p>
                         </Nav.Item>
-                        <Nav.Item eventKey="3" icon={<PlusIcon />}>
-                            <NavLink to="/proposer">Proposer un trajet</NavLink>
+                        <Nav.Item eventKey="proposer" icon={<PlusIcon />}>
+                            <p>Proposer un trajet</p>
                         </Nav.Item>
-                        <Nav.Item eventKey="4" icon={<PeoplesIcon />}>
-                            <NavLink to="/gestion_users">Gestion utilisateur</NavLink>
+                        <Nav.Item eventKey="gestion_users" icon={<PeoplesIcon />}>
+                            <p>Gestion utilisateur</p>
                         </Nav.Item>
-                        <Nav.Item eventKey="5" icon={<GearIcon />}>
-                            <NavLink to="/gestion_centre">Gestion du centre</NavLink>
+                        <Nav.Item eventKey="gestion_centre" icon={<GearIcon />}>
+                            <p>Gestion du centre</p>
                         </Nav.Item>
-                        <Nav.Item eventKey="6" icon={<ExitIcon />}>
-                            <NavLink to="/disconnect">Déconnexion</NavLink>
+                        <Nav.Item eventKey="disconnect" icon={<ExitIcon/>}>
+                            <p>Déconnexion</p>
                         </Nav.Item>
                     </Nav>
                     </Sidenav.Body>

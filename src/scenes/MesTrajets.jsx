@@ -5,7 +5,10 @@ import { TableRides } from '../component/TableRides';
 
 const MesTrajets = () => {
     return (
-        <TableRides title="Mes trajets proposés" columns={["Trajet","Date & Heure", "Disponibilité", "Modif."]}/>
+        <div>
+            <h1 className="text-center">Mes trajets</h1>
+            <TableRides title="Mes trajets proposés" columns={["Trajet","Date & Heure", "Disponibilité", "Modif."]}/>
+        </div>
     );
 };
 
