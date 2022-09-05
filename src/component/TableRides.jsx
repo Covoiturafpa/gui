@@ -14,36 +14,26 @@ const TableRides = (props) => {
     const [titleTable, setTitleTable] = useState(props.title);
     const { Column, HeaderCell, Cell } = Table;
     const [limit, setLimit] = useState(10);
-    const [page, setPage] = useState(1);
-    console.log("debut");
+     const [page, setPage] = useState(1);
 
+     
     useEffect(() => {
-        console.log("vers l'infini")
-        if (!isLoaded) {
-            fetch("http://127.0.0.1:3001/covoiturafpa/rides")
-            .then(res => {
-                console.log("et l'au dela");
-                return res.json();
-            })
-            
-                .then(
-                    (result) => {
-                        console.log("fin");
-                        setIsLoaded(true);
-                        setData(result);
-                    },
-                    // Remarque : il faut gérer les erreurs ici plutôt que dans
-                    // un bloc catch() afin que nous n’avalions pas les exceptions
-                    // dues à de véritables bugs dans les composants.
-                    (error) => {
-                        setIsLoaded(true);
-                        setError(error);
-                    }
-                )
-        }
+        fetch("http://127.0.0.1:3001/covoiturafpa/rides")
+        .then(res => res.json())
+        .then(
+            (result) => {
+            setIsLoaded(true);
+            setData(result);
+            },
+            // Remarque : il faut gérer les erreurs ici plutôt que dans
+            // un bloc catch() afin que nous n’avalions pas les exceptions
+            // dues à de véritables bugs dans les composants.
+            (error) => {
+            setIsLoaded(true);
+            setError(error);
+            }
+        )
     }, [])
-
-
     if (error) {
         return <div>Erreur : {error.message}</div>;
     } else if (!isLoaded) {
