@@ -4,6 +4,7 @@ import { FiEdit2 } from "react-icons/fi";
 import { FiEye } from "react-icons/fi";
 import { FiEyeOff } from "react-icons/fi";
 import { FiArrowRight } from "react-icons/fi";
+import { CheckBoxDays } from '../component/CheckBoxDays';
 
 
 const TableRides = (props) => {
@@ -70,7 +71,7 @@ const TableRides = (props) => {
                                     return (rowData.departure_day)
                                 }
                                 if (rowData.id_recurring) {
-                                    return (rowData.days)
+                                    return ( <CheckBoxDays {...rowData.days}/>)
                                 }
                             }}
                         </Cell>
