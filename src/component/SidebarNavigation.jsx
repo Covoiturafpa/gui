@@ -23,7 +23,7 @@ const SidebarNavigation = () => {
 
     return (
         <div>
-            <Sidenav className="h-screen" expanded={expanded}>
+            <Sidenav className="h-full" expanded={expanded}>
                 <Sidenav.Toggle expanded={expanded} onToggle={expanded => setExpanded(expanded)} />
                 <Sidenav.Body className="h-full">
                     <Nav className="justify-between" activeKey={activeKey} onSelect={setActiveKey} >
