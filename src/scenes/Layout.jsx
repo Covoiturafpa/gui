@@ -9,7 +9,9 @@ const Layout = () => {
     <Container className='h-screen'>
       <Header className='bg-red-200 h-12 md:h-18  lg:h-24'>Header</Header>
       <Container className='h-full'>
+        <Sidebar className='max-w-fit min-h-full'>
         <SidebarNavigation />
+        </Sidebar>
         <Content className='bg-orange-200'>
           <Routes>
             <Route path="rechercher" element={<h1 className="text-center">Rechercher</h1>} />
