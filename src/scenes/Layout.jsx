@@ -20,7 +20,7 @@ const Layout = () => {
             <Route path="gestion_users" element={<h1 className="text-center">Gestion utilisateur</h1>} />
             <Route path="gestion_centre" element={<h1 className="text-center">Gestion du centre</h1>} />
             <Route path="disconnect" element={<h1 className="text-center">Déconnexion</h1>} />
-            <Route path="*" element={<h2 className="text-center">Rechercher</h2>} />
+            <Route path="*" element={<h2 className="text-center">404</h2>} />
           </Routes>
         </Content>
       </Container>

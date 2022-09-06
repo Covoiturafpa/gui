@@ -6,14 +6,13 @@ import AbTestIcon from '@rsuite/icons/AbTest';
 import PlusIcon from '@rsuite/icons/Plus';
 import PeoplesIcon from '@rsuite/icons/Peoples';
 import SearchIcon from '@rsuite/icons/Search';
-import GroupIcon from '@rsuite/icons/legacy/Group';
 import ExitIcon from '@rsuite/icons/Exit';
 import GearIcon from '@rsuite/icons/Gear';
 
 import { NavLink } from 'react-router-dom';
 const SidebarNavigation = () => {
     const [expanded, setExpanded] = useState(true);
-    const [activeKey, setActiveKey] = useState('rechercher');
+    const [activeKey, setActiveKey] = useState('');
     let navigate = useNavigate();
 
     useEffect(() => {

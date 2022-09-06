@@ -4,10 +4,10 @@ import { FiEdit2 } from "react-icons/fi";
 import { FiEye } from "react-icons/fi";
 import { FiEyeOff } from "react-icons/fi";
 import { FiArrowRight } from "react-icons/fi";
-import { CheckBoxDays } from '../component/CheckBoxDays';
+import { CheckBoxDays } from './CheckBoxDays';
 
 
-const TableRides = (props) => {
+const TableProposedRides = (props) => {
     const [error, setError] = useState(null);
     const [isLoaded, setIsLoaded] = useState(false);
     const [data, setData] = useState([]);
@@ -120,4 +120,4 @@ const TableRides = (props) => {
         );
     }
 }
-export { TableRides };
+export { TableProposedRides };
