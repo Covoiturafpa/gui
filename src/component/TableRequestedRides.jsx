@@ -1,15 +1,19 @@
 import { React, useState, useEffect } from 'react';
 import { Table, Pagination } from 'rsuite';
-import { FiEdit2, FiEye, FiEyeOff, FiArrowRight   } from "react-icons/fi";
+import { FiAlertCircle, FiXCircle} from "react-icons/fi";
+import { AiOutlineCheckCircle } from "react-icons/ai";
+
+import { FiArrowRight } from "react-icons/fi";
 import { CheckBoxDays } from './CheckBoxDays';
 
 
-const TableProposedRides = () => {
+const TableRequestedRides = () => {
     const [error, setError] = useState(null);
     const [isLoaded, setIsLoaded] = useState(false);
     const [data, setData] = useState([]);
     const { Column, HeaderCell, Cell } = Table;
 
+     
     useEffect(() => {
         fetch("http://127.0.0.1:3001/covoiturafpa/rides")
         .then(res => res.json())
@@ -35,7 +39,7 @@ const TableProposedRides = () => {
         return (
             <div>
                 <div className="bg-white rounded-t-md py-1">
-                    <h5 className="text-center">Mes trajets proposés</h5>
+                    <h5 className="text-center">Mes trajets sollicités</h5>
                 </div>
                 <Table className='rounded-b-md'
                     autoHeight={true}
@@ -74,35 +78,37 @@ const TableProposedRides = () => {
                         <Cell dataKey="departure_time" />
                     </Column>
 
-                    <Column flexGrow={0.5}>
-                        <HeaderCell>Disponibilité</HeaderCell>
+                    <Column flexGrow={1}>
+                        <HeaderCell>Conducteur</HeaderCell>
+                        <Cell dataKey="destination.car.id_person" />
+                    </Column>
+                    <Column flexGrow={1}>
+                        <HeaderCell>prix</HeaderCell>
                         <Cell>
-                            {rowData => {
-                                if (rowData.is_active === true) {
-                                    return (
-                                        <span>
-                                            <a> <FiEye /> </a>
-                                        </span>
-                                    )
-                                } else if (rowData.is_active === false) {
-                                    return (
-                                        <span>
-                                            <a> <FiEyeOff /> </a>
-                                        </span>
-                                    )
-                                }
-                            }
-                            }
+                            {rowData => (
+                                <p>{rowData.price} €</p>
+                            )}
                         </Cell>
                     </Column>
                     <Column flexGrow={0.5} >
-                        <HeaderCell>Modif.</HeaderCell>
+                        <HeaderCell>État</HeaderCell>
                         <Cell>
-                            {rowData => (
-                                <span>
-                                    <a onClick={() => alert(`id:${rowData.id}`)}> <FiEdit2 /> </a>
-                                </span>
-                            )}
+                        {rowData => {
+                                if (rowData.destination.passenger.status_type === "pending") {
+                                    return (<div className="text-yellow-500 text-xl">
+                                                < FiAlertCircle/>
+                                            </div>)
+                                }else if (rowData.destination.passenger.status_type === "accepted") {
+                                    return (<div className="text-green-600 text-xl">
+                                                <AiOutlineCheckCircle/>
+                                            </div>)
+                                }else if (rowData.destination.passenger.status_type === "denied") {
+                                    return (<div className="text-red-600 text-xl">
+                                                <FiXCircle/>
+                                            </div>)
+                                }
+
+                            }}
                         </Cell>
                     </Column>
                 </Table>
@@ -112,4 +118,4 @@ const TableProposedRides = () => {
         );
     }
 }
-export { TableProposedRides };
+export { TableRequestedRides };

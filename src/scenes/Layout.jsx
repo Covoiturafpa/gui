@@ -12,7 +12,7 @@ const Layout = () => {
         <Sidebar className='h-full max-w-fit'>
         <SidebarNavigation />
         </Sidebar>
-        <Content className='bg-orange-200 h-100'>
+        <Content className='bg-orange-200 min-h-100 '>
           <Routes>
             <Route path="rechercher" element={<h1 className="text-center">Rechercher</h1>} />
             <Route path="mes_trajets" element={<MesTrajets className='h-100' />} />
