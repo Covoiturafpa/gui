@@ -6,10 +6,15 @@ import { TableRequestedRides } from '../component/TableRequestedRides';
 
 const MesTrajets = () => {
     return (
-        <div className='h-100'>
+
+        <div className='container mx-auto px-4'>
             <h1 className="text-center">Mes trajets</h1>
-            <TableProposedRides className='h-100'/>
-            <TableRequestedRides className='h-100'/>
+            <div className='my-3'>
+                <TableProposedRides />
+            </div>
+            <div className='my-3'>
+                <TableRequestedRides/>
+            </div>
         </div>
     );
 };

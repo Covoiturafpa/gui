@@ -1,10 +1,10 @@
 import { React, useState, useEffect } from 'react';
-import { Table, Pagination } from 'rsuite';
-import { FiAlertCircle, FiXCircle} from "react-icons/fi";
+import { Table } from 'rsuite';
+import { FiAlertCircle, FiXCircle, FiArrowRight} from "react-icons/fi";
 import { AiOutlineCheckCircle } from "react-icons/ai";
-
-import { FiArrowRight } from "react-icons/fi";
+import Moment from 'moment';
 import { CheckBoxDays } from './CheckBoxDays';
+import { BsCalendarCheck } from "react-icons/bs";
 
 
 const TableRequestedRides = () => {
@@ -64,7 +64,7 @@ const TableRequestedRides = () => {
                         <Cell>
                             {rowData => {
                                 if (rowData.id_one_time) {
-                                    return (rowData.departure_day)
+                                    return (Moment(rowData.departure_day).format("DD/MM/YYYY"))
                                 }
                                 if (rowData.id_recurring) {
                                     return ( <CheckBoxDays {...rowData.days}/>)
@@ -94,15 +94,19 @@ const TableRequestedRides = () => {
                         <HeaderCell>État</HeaderCell>
                         <Cell>
                         {rowData => {
-                                if (rowData.destination.passenger.status_type === "pending") {
+                                if (rowData.destination.passenger[0].status_type === "pending") {
                                     return (<div className="text-yellow-500 text-xl">
                                                 < FiAlertCircle/>
                                             </div>)
-                                }else if (rowData.destination.passenger.status_type === "accepted") {
+                                }else if (rowData.destination.passenger[0].status_type === "accepted") {
                                     return (<div className="text-green-600 text-xl">
                                                 <AiOutlineCheckCircle/>
                                             </div>)
-                                }else if (rowData.destination.passenger.status_type === "denied") {
+                                }else if (rowData.destination.passenger[0].status_type === "finished") {
+                                    return (<div className="text-blue-900 text-xl">
+                                                <BsCalendarCheck/>
+                                            </div>)
+                                }else if (!rowData.destination.passenger[0].status_type) {
                                     return (<div className="text-red-600 text-xl">
                                                 <FiXCircle/>
                                             </div>)

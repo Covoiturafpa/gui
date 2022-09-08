@@ -1,5 +1,4 @@
 import {React, useState} from 'react';
-import ReactDOM from 'react-dom/client';
 import styles from './css/checkboxdays.module.css';
 
 const CheckBoxDays = (props) => {
@@ -8,15 +7,15 @@ const CheckBoxDays = (props) => {
     let i = 0;
     return (<div className='flex'>
                 {allDays.map((day) => {
-                    if(days[i] == day) {
+                    if(days[i] === day) {
                         i++;
                         return(<div>
-                            <input type="checkbox" id={day} className={styles.checkbox} name={day} checked/>
+                            <input type="checkbox" id={day} key={day} className={styles.checkbox} name={day} checked/>
                             <label className={styles.labelcheckbox}>{day.charAt(0).toUpperCase()}</label>  
                         </div>);
                     }else {
                         return(<div>
-                            <input type="checkbox" id={day} className={styles.checkbox} name={day}/>
+                            <input type="checkbox" id={day} key={day} className={styles.checkbox} name={day}/>
                             <label className={styles.labelcheckbox}>{day.charAt(0).toUpperCase()}</label>  
                         </div>);
                     }
