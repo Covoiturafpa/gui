@@ -15,7 +15,7 @@ const TableRequestedRides = () => {
 
      
     useEffect(() => {
-        fetch("http://127.0.0.1:3001/covoiturafpa/rides")
+        fetch("http://127.0.0.1:8000/rides")
         .then(res => res.json())
         .then(
             (result) => {
@@ -51,9 +51,9 @@ const TableRequestedRides = () => {
                         <HeaderCell>Destinations</HeaderCell>
                         <Cell>
                             {rowData => {
-                                if (rowData.destination.is_from_afpa) {
+                                if (rowData.destination.fromAfpa) {
                                     return (<p className='flex justify-center align-center'>AFPA <FiArrowRight className='mx-2' /> {rowData.destination.city.name}</p>)
-                                } else if (!rowData.destination.is_from_afpa) {
+                                } else if (!rowData.destination.fromAfpa) {
                                     return (<p className='flex justify-center'>{rowData.destination.city.name} <FiArrowRight className='mx-2' /> AFPA</p>)
                                 }
                             }}
@@ -63,11 +63,13 @@ const TableRequestedRides = () => {
                         <HeaderCell>Date</HeaderCell>
                         <Cell>
                             {rowData => {
-                                if (rowData.id_one_time) {
-                                    return (Moment(rowData.departure_day).format("DD/MM/YYYY"))
+                                if (rowData.departureDay) {
+                                    return (Moment(rowData.departureDay).format("DD/MM/YYYY"))
                                 }
-                                if (rowData.id_recurring) {
-                                    return ( <CheckBoxDays {...rowData.days}/>)
+                                if (rowData.beginning) {
+                                    return ( <div>
+                                        <p>{Moment(rowData.beginning).format("DD/MM/YYYY")} au {Moment(rowData.ending).format("DD/MM/YYYY")}</p>
+                                    </div>)
                                 }
                             }}
                         </Cell>
@@ -75,7 +77,7 @@ const TableRequestedRides = () => {
 
                     <Column flexGrow={1}>
                         <HeaderCell>heure</HeaderCell>
-                        <Cell dataKey="departure_time" />
+                        <Cell dataKey="departureTime" />
                     </Column>
 
                     <Column flexGrow={1}>
@@ -94,19 +96,19 @@ const TableRequestedRides = () => {
                         <HeaderCell>État</HeaderCell>
                         <Cell>
                         {rowData => {
-                                if (rowData.destination.passenger[0].status_type === "pending") {
+                                if (rowData.destination.possiblePassengers.status_type === "pending") {
                                     return (<div className="text-yellow-500 text-xl">
                                                 < FiAlertCircle/>
                                             </div>)
-                                }else if (rowData.destination.passenger[0].status_type === "accepted") {
+                                }else if (rowData.destination.possiblePassengers.status_type === "accepted") {
                                     return (<div className="text-green-600 text-xl">
                                                 <AiOutlineCheckCircle/>
                                             </div>)
-                                }else if (rowData.destination.passenger[0].status_type === "finished") {
+                                }else if (rowData.destination.possiblePassengers.status_type === "finished") {
                                     return (<div className="text-blue-900 text-xl">
                                                 <BsCalendarCheck/>
                                             </div>)
-                                }else if (!rowData.destination.passenger[0].status_type) {
+                                }else if (!rowData.destination.possiblePassengers.status_type) {
                                     return (<div className="text-red-600 text-xl">
                                                 <FiXCircle/>
                                             </div>)
