@@ -11,14 +11,15 @@ import GearIcon from '@rsuite/icons/Gear';
 
 import { NavLink } from 'react-router-dom';
 const SidebarNavigation = () => {
-    const [expanded, setExpanded] = useState(true);
+    const [expanded, setExpanded] = useState(false);
     const [activeKey, setActiveKey] = useState('');
     let navigate = useNavigate();
 
     useEffect(() => {
-        navigate("/" + activeKey);
+        if (activeKey != "") {
+            navigate("/" + activeKey);
+        }
     }, [activeKey]);
-
 
     return (
         <div className='h-full'>

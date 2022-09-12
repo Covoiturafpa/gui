@@ -3,7 +3,6 @@ import { Form, ButtonToolbar, Button, Panel, Checkbox } from 'rsuite';
 
 const LoginForm = () => {
     return (
-        <Panel header={<h3>Login</h3>} bordered>
             <Form fluid>
                 <Form.Group>
                     <Form.ControlLabel>Email</Form.ControlLabel>
@@ -14,7 +13,7 @@ const LoginForm = () => {
                     <Form.Control name="password" type="password" autoComplete="off" />
                 </Form.Group>
                 <Form.Group>
-                    <Checkbox> Se souvenir de moi</Checkbox>
+                    <Checkbox>Se souvenir de moi</Checkbox>
                     <link></link>
                 </Form.Group>
                 <Form.Group>
@@ -24,7 +23,6 @@ const LoginForm = () => {
                     </ButtonToolbar>
                 </Form.Group>
             </Form>
-        </Panel>
     )
 }
 

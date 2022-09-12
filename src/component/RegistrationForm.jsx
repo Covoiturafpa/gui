@@ -1,44 +1,60 @@
 import React from 'react';
-import { Form, ButtonToolbar, Button, Panel, Grid, Row, Col, Checkbox, CheckboxGroup, Placeholder } from 'rsuite';
+import { Form, ButtonToolbar, Button, Grid, Col, Row, Checkbox, CheckboxGroup, Placeholder } from 'rsuite';
 import { AvatarUploader } from './AvatarUploader';
 
 const RegistrationForm = () => {
     return (
-        <Panel header={<h3>Inscription</h3>} bordered>
-            <Form fluid='true'>
-                <Grid>
+        <Form fluid className='w-full'>
+            <Grid fluid>
+                <Col xs={24} md={12}>
                     <Row>
-                        <Col xs={12} md={6}>
+                        <Col xs={24}>
                             <Form.Group controlId="surname">
                                 <Form.ControlLabel>Nom</Form.ControlLabel>
                                 <Form.Control name="surname" />
                             </Form.Group>
+                        </Col>
+                        <Col xs={24}>
                             <Form.Group controlId="firstname">
                                 <Form.ControlLabel>Prénom</Form.ControlLabel>
                                 <Form.Control name="firstname" />
                             </Form.Group>
+                        </Col>
+                        <Col xs={24}>
                             <Form.Group controlId="email">
                                 <Form.ControlLabel>Email</Form.ControlLabel>
                                 <Form.Control name="email" type="email" />
                             </Form.Group>
+                        </Col>
+                        <Col xs={24}>
                             <Form.Group controlId="phoneNumber">
                                 <Form.ControlLabel>Tel</Form.ControlLabel>
                                 <Form.Control name="phoneNumber" type="phone" />
                             </Form.Group>
+                        </Col>
+                        <Col xs={24}>
                             <Form.Group controlId="password">
                                 <Form.ControlLabel>Mot de passe</Form.ControlLabel>
                                 <Form.Control name="password" type="password" autoComplete="off" />
                             </Form.Group>
+                        </Col>
+                        <Col xs={24}>
                             <Form.Group controlId="passwordConfirm">
                                 <Form.ControlLabel>Confirmation mot de passe</Form.ControlLabel>
                                 <Form.Control name="passwordConfirm" type="password" autoComplete="off" />
                             </Form.Group>
                         </Col>
-                        <Col xs={12} md={6}>
+                    </Row>
+                </Col>
+                <Col xs={24} md={12}>
+                    <Row>
+                        <Col xs={24}>
                             <Form.Group controlId="avatar">
+                                <Form.ControlLabel>Image de profil</Form.ControlLabel>
                                 <AvatarUploader />
-                                
                             </Form.Group>
+                        </Col>
+                        <Col xs={24}>
                             <Form.Group>
                                 <CheckboxGroup name="checkboxList">
                                     <p>Préférences de contact</p>
@@ -46,26 +62,24 @@ const RegistrationForm = () => {
                                     <Checkbox value="contactByMail" defaultChecked>Autoriser l'envoi d'email</Checkbox>
                                 </CheckboxGroup>
                             </Form.Group>
-                            <Form.Group controlId="avatar">
-                                <Placeholder.Paragraph style={{ marginTop: 30 }} graph="circle" />
+                        </Col>
+                        <Col xs={24}>
+                            <Form.Group controlId="captcha">
+
+                                <Placeholder.Paragraph style={{ marginTop: 30 }} graph="circle" className='border-2 border-black-800' />
                             </Form.Group>
                         </Col>
                     </Row>
-                    <Row>
-                        <Col>
-                            <Form.Group>
-                                <ButtonToolbar>
-                                    <Button appearance="primary">Submit</Button>
-                                    <Button appearance="default">Cancel</Button>
-                                </ButtonToolbar>
-                            </Form.Group>
-                        </Col>
-                    </Row>
-                </Grid>
-
-
-            </Form>
-        </Panel>
+                </Col>
+                <Col xs={24}>
+                    <Form.Group>
+                        <ButtonToolbar>
+                            <Button appearance="primary">S'inscrire</Button>
+                        </ButtonToolbar>
+                    </Form.Group>
+                </Col>
+            </Grid>
+        </Form>
     );
 }
 

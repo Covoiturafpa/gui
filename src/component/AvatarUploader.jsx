@@ -3,6 +3,8 @@ import ReactDOM from 'react-dom';
 
 import { Uploader, Message, Loader, useToaster } from 'rsuite';
 import AvatarIcon from '@rsuite/icons/legacy/Avatar';
+import { FiCamera } from "react-icons/fi";
+
 
 function previewFile(file, callback) {
   const reader = new FileReader();
@@ -39,12 +41,12 @@ const AvatarUploader = () => {
                 toaster.push(<Message type="error">Upload failed</Message>);
             }}
         >
-            <button style={{ width: 150, height: 150 }}>
+            <button style={{ width: 150, height: 150 }} >
                 {uploading && <Loader backdrop center />}
                 {fileInfo ? (
                     <img src={fileInfo} width="100%" height="100%" />
                 ) : (
-                    <AvatarIcon style={{ fontSize: 80 }} />
+                    <FiCamera className='text-7xl mx-auto' />
                 )}
             </button>
         </Uploader>

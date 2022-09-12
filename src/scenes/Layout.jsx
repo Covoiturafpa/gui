@@ -6,7 +6,7 @@ import { LayoutFooter } from '../component/LayoutFooter';
 
 const Layout = (props) => {
   return (<>
-    <Container className='h-screen' content={props}>
+    <Container className='h-screen w-full' content={props}>
       <LayoutHeader />
         <Container className='h-full'>
           {props.content}
