@@ -8,15 +8,15 @@ const ListPassengers = (props) => {
     const [data, setData] = useState(props.passengers);
     console.log(data);
     function statusIcon(status) {
-        if (status == "pending") {
+        if (status == "PENDING") {
             return(<div className="text-yellow-500 text-xl">
                         < FiAlertCircle/>
                     </div>)
-        }else if (status == "accepted") {
+        }else if (status == "ACCEPTED") {
             return(<div className="text-green-600 text-xl">
                         <AiOutlineCheckCircle/>
                     </div>)
-        }else if (status == "finished") {
+        }else if (status == "FINISHED") {
             return(<div className="text-blue-900 text-xl">
                         <BsCalendarCheck/>
                     </div>)
@@ -29,15 +29,14 @@ const ListPassengers = (props) => {
     return(
         <List>
             {data.map((item) => {
-
                 return(
-                <List.Item key={item.id_person} >
+                <List.Item key={item.user.id} >
                     <FlexboxGrid>
                         <FlexboxGrid.Item colspan={2}>
-                            <Avatar size="xs" circle src={item.photo_path} alt={item.surname} />
+                            <Avatar size="xs" circle src={item.user.photo_path} alt={item.user.surname} />
                         </FlexboxGrid.Item>
                         <FlexboxGrid.Item colspan={18}>
-                            <label>{item.surname} {item.firstName}</label>
+                            <label>{item.user.surname} {item.user.firstName}</label>
                         </FlexboxGrid.Item>
                         <FlexboxGrid.Item colspan={1}>
                             <a className="text-xl">
@@ -46,7 +45,7 @@ const ListPassengers = (props) => {
                         </FlexboxGrid.Item>
                         <Divider vertical />
                         <FlexboxGrid.Item colspan={1}>
-                            {statusIcon(item.status_type)}
+                            {statusIcon(item.statusType)}
                         </FlexboxGrid.Item>
                     </FlexboxGrid>
                 </List.Item>);

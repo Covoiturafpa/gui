@@ -4,9 +4,11 @@
     height: 20px;
 }
 
+
 [type="checkbox"]:checked + label {
     background: black;
     color: white;
+    text-align: center;
 }
 .labelcheckbox {
     width: 20px;

@@ -1,14 +1,13 @@
 import React, { useState, useEffect } from 'react';
-import ReactDOM from 'react-dom/client';
 import { TableProposedRides } from '../component/TableProposedRides';
 import { TableRequestedRides } from '../component/TableRequestedRides';
 
 
 const MesTrajets = () => {
-    const [idUser, setIdUser] = useState(51);
+    const [idUser, setIdUser] = useState(43);
     const [isLoaded, setIsLoaded] = useState(false);
-    const [data, setData] = useState([]);
-    const [rideByUser, setRideByUser] = useState([]);
+    const [rideOwned, setRideOwned] = useState([]);
+    const [rideRequested, setRideRequested] = useState([]);
     const [error, setError] = useState(null);
 
     useEffect(() => {
@@ -16,16 +15,22 @@ const MesTrajets = () => {
         .then(res => res.json())
         .then(
             (result) => {
-                setRideByUser([]);
+                setRideOwned([]);
+                setRideRequested([]);
                 result.map(item => {
                     const passengers = item.possiblePassengers;
                     passengers.map(userToRide => {
                         if(userToRide.user.id === idUser) {
-                            setRideByUser(rideByUser => [ item,...rideByUser]);
-                            console.log(rideByUser.length);
-
+                            if(userToRide.isDriver) {
+                                setRideOwned(rideOwned => [ item,...rideOwned]);
+                            }else if(!userToRide.isDriver) {
+                                if(item.isActive) {
+                                    setRideRequested(rideRequested => [ item,...rideRequested]);
+                                }
+                            }
                         }
                         if(result[result.length - 1] === item) {
+
                             setIsLoaded(true);
                         }
                     });
@@ -38,31 +43,27 @@ const MesTrajets = () => {
         )
     }, []);
 
+
+
     if (error) {
         return <div>Erreur : {error.message}</div>;
     } else if (!isLoaded) {
         return <div>Chargement...</div>;
-    }else if(rideByUser.length === 0) {
-        return (
-            <div className='container mx-auto px-4'>
-                <h1 className="text-center">Mes trajets</h1>
-                <div className='my-3'>
-                    <TableProposedRides rides={0} />
-                </div>
-                <div className='my-3'>
-                    
-                </div>
-            </div>
-        );
     }else {
+        if(rideOwned.length === 0) {
+            setRideOwned(0);
+        }
+        if(rideRequested.length === 0) {
+            setRideRequested(0);
+        }
         return (
             <div className='container mx-auto px-4'>
                 <h1 className="text-center">Mes trajets</h1>
                 <div className='my-3'>
-                    <TableProposedRides rides={rideByUser} />
+                    <TableProposedRides id={idUser} rides={rideOwned} />
                 </div>
                 <div className='my-3'>
-                   
+                   <TableRequestedRides id={idUser} rides={rideRequested} />
                 </div>
             </div>
         );

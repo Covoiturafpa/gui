@@ -6,15 +6,9 @@ import { DetailOfRide } from './DetailOfRide';
 import Moment from 'moment';
 
 const TableProposedRides = (props) => {
-    const [data, setData] = useState(props);
     const [onEdit, setOnEdit] = useState(null);
     const { Column, HeaderCell, Cell } = Table;
-    console.log(props);
 
-
-    useEffect(() => {
-
-    },[onEdit]);
 
     function showDetail(ride){
         setOnEdit(ride);
@@ -22,7 +16,7 @@ const TableProposedRides = (props) => {
      
 
         if(onEdit) {
-            return(<DetailOfRide isOwner={true} {...onEdit}/>);
+            return(<DetailOfRide isOwner={true} idUser={props.id} {...onEdit}/>);
         }else if(props.rides == 0){
             return (
                 <div>

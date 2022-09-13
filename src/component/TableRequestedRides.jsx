@@ -7,34 +7,19 @@ import { CheckBoxDays } from './CheckBoxDays';
 import { BsCalendarCheck } from "react-icons/bs";
 
 
-const TableRequestedRides = () => {
-    const [error, setError] = useState(null);
-    const [isLoaded, setIsLoaded] = useState(false);
-    const [data, setData] = useState([]);
+const TableRequestedRides = (props) => {
+    const [idUser, setIdUser] = useState(props.id);
+    const [userDriver, setUserDriver] = useState();
+    const [statusType, setStatusType]= useState("");
     const { Column, HeaderCell, Cell } = Table;
 
-     
-    useEffect(() => {
-        fetch("http://127.0.0.1:8000/rides")
-        .then(res => res.json())
-        .then(
-            (result) => {
-            setIsLoaded(true);
-            setData(result);
-            },
-            // Remarque : il faut gérer les erreurs ici plutôt que dans
-            // un bloc catch() afin que nous n’avalions pas les exceptions
-            // dues à de véritables bugs dans les composants.
-            (error) => {
-            setIsLoaded(true);
-            setError(error);
-            }
-        )
-    }, [])
-    if (error) {
-        return <div>Erreur : {error.message}</div>;
-    } else if (!isLoaded) {
-        return <div>Chargement...</div>;
+    if (props.rides == 0) {
+        return (<div>
+                    <div className="bg-white rounded-t-md py-1">
+                        <h5 className="text-center">Mes trajets sollicités</h5>
+                        <p className='text-center'>Vous sollicitez aucun trajet</p>
+                    </div>
+                </div>);
     } else {
         return (
             <div>
@@ -43,7 +28,7 @@ const TableRequestedRides = () => {
                 </div>
                 <Table className='rounded-b-md'
                     autoHeight={true}
-                    data={data}
+                    data={props.rides}
                     onRowClick={rowData => {
                         console.log(rowData);
                     }}>
@@ -51,9 +36,9 @@ const TableRequestedRides = () => {
                         <HeaderCell>Destinations</HeaderCell>
                         <Cell>
                             {rowData => {
-                                if (rowData.destination.fromAfpa) {
+                                if (rowData.destination.isFromAfpa) {
                                     return (<p className='flex justify-center align-center'>AFPA <FiArrowRight className='mx-2' /> {rowData.destination.city.name}</p>)
-                                } else if (!rowData.destination.fromAfpa) {
+                                } else if (!rowData.destination.isFromAfpa) {
                                     return (<p className='flex justify-center'>{rowData.destination.city.name} <FiArrowRight className='mx-2' /> AFPA</p>)
                                 }
                             }}
@@ -82,39 +67,62 @@ const TableRequestedRides = () => {
 
                     <Column flexGrow={1}>
                         <HeaderCell>Conducteur</HeaderCell>
-                        <Cell dataKey="destination.car.id_person" />
+                        <Cell>
+                            {rowData => {
+                                    setUserDriver();
+                                rowData.possiblePassengers.map(passenger => {
+                                    if(passenger.isDriver) {
+                                        setUserDriver(passenger.user);
+                                    console.log(passenger.user);
+
+                                    }
+                                })
+                                if(userDriver) {
+                                    return(<div>
+                                        <p>{ userDriver.surname } {userDriver.firstName.charAt(0)}.</p>
+                                    </div>);
+                                } 
+
+                            }}
+                        </Cell>
                     </Column>
                     <Column flexGrow={1}>
                         <HeaderCell>prix</HeaderCell>
                         <Cell>
-                            {rowData => (
-                                <p>{rowData.price} €</p>
-                            )}
+                            {rowData => {
+                                return (<p>{rowData.price} €</p>);
+                            }}
                         </Cell>
                     </Column>
                     <Column flexGrow={0.5} >
                         <HeaderCell>État</HeaderCell>
                         <Cell>
                         {rowData => {
-                                if (rowData.destination.possiblePassengers.status_type === "pending") {
-                                    return (<div className="text-yellow-500 text-xl">
-                                                < FiAlertCircle/>
-                                            </div>)
-                                }else if (rowData.destination.possiblePassengers.status_type === "accepted") {
-                                    return (<div className="text-green-600 text-xl">
-                                                <AiOutlineCheckCircle/>
-                                            </div>)
-                                }else if (rowData.destination.possiblePassengers.status_type === "finished") {
-                                    return (<div className="text-blue-900 text-xl">
-                                                <BsCalendarCheck/>
-                                            </div>)
-                                }else if (!rowData.destination.possiblePassengers.status_type) {
-                                    return (<div className="text-red-600 text-xl">
-                                                <FiXCircle/>
-                                            </div>)
+                            console.log(rowData.possiblePassengers);
+                            rowData.possiblePassengers.map(passenger => {
+                                if(passenger.user.id === idUser) {
+                                    setStatusType(passenger.statusType)
                                 }
-
-                            }}
+                            });
+                            if (statusType === "PENDING") {
+                                return (<div className="text-yellow-500 text-xl">
+                                            < FiAlertCircle/>
+                                        </div>)
+                            }else if (statusType === "ACCEPTED") {
+                                return (<div className="text-green-600 text-xl">
+                                            <AiOutlineCheckCircle/>
+                                        </div>)
+                            }else if (statusType === "FINISHED") {
+                                return (<div className="text-blue-900 text-xl">
+                                            <BsCalendarCheck/>
+                                        </div>)
+                            }else if (!statusType) {
+                                return (<div className="text-red-600 text-xl">
+                                            <FiXCircle/>
+                                        </div>)
+                            }
+                            
+                        }}
                         </Cell>
                     </Column>
                 </Table>
