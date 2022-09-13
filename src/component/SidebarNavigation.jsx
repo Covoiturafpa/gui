@@ -2,12 +2,15 @@ import { React, useState, useEffect } from 'react';
 
 import { useNavigate } from 'react-router-dom';
 import { Sidenav, Nav } from 'rsuite';
+import {Icon} from '@rsuite/icons';
 import AbTestIcon from '@rsuite/icons/AbTest';
 import PlusIcon from '@rsuite/icons/Plus';
 import PeoplesIcon from '@rsuite/icons/Peoples';
 import SearchIcon from '@rsuite/icons/Search';
 import ExitIcon from '@rsuite/icons/Exit';
 import GearIcon from '@rsuite/icons/Gear';
+import { AvatarIcon } from './AvatarIcon';
+import { BellNotification } from './BellNotification';
 
 const SidebarNavigation = () => {
     const [expanded, setExpanded] = useState(false);
@@ -15,10 +18,10 @@ const SidebarNavigation = () => {
     let navigate = useNavigate();
 
     useEffect(() => {
-        if (activeKey != "") {
+        if (activeKey !== "") {
             navigate("/" + activeKey);
         }
-    }, [activeKey]);
+    }, [activeKey, navigate]);
 
     return (
         <div className='h-full'>
@@ -44,12 +47,18 @@ const SidebarNavigation = () => {
                             </Nav.Item>
                         </Nav>
                         <div>
-                        </div>
                         <Nav activeKey={activeKey} onSelect={setActiveKey}>
-                            <Nav.Item eventKey="disconnect" icon={<ExitIcon />} className=' border-purple-200'>
+                            <Nav.Item eventKey="profil" icon={<AvatarIcon />}>
+                                <p>Profil</p>
+                            </Nav.Item>
+                            <Nav.Item eventKey="notification" icon={<BellNotification />}>
+                                <p>Notification</p>
+                            </Nav.Item>
+                            <Nav.Item eventKey="deconnexion" icon={<ExitIcon />}>
                                 <p className=''>Déconnexion</p>
                             </Nav.Item>
                         </Nav>
+                        </div>
                     </Nav>
                 </Sidenav.Body>
             </Sidenav>
