@@ -32,6 +32,7 @@ const TableRequestedRides = (props) => {
                     onRowClick={rowData => {
                         console.log(rowData);
                     }}>
+                        
                     <Column align="center" flexGrow={2}>
                         <HeaderCell>Destinations</HeaderCell>
                         <Cell>

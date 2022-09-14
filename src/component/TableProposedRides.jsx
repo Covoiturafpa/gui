@@ -1,13 +1,85 @@
 import { React, useState, useEffect } from 'react';
-import { Table } from 'rsuite';
+import { Table, Tag, IconButton } from 'rsuite';
+import CollaspedOutlineIcon from '@rsuite/icons/CollaspedOutline';
+import ExpandOutlineIcon from '@rsuite/icons/ExpandOutline';
 import { FiEdit2, FiEye, FiEyeOff, FiArrowRight   } from "react-icons/fi";
 import { CheckBoxDays } from './CheckBoxDays';
 import { DetailOfRide } from './DetailOfRide';
 import Moment from 'moment';
 
+    const { Column, HeaderCell, Cell } = Table;
+    const rowKey = 'id';
+    const ExpandCell = ({ rowData, dataKey, expandedRowKeys, onChange, ...props }) => (
+        <Cell {...props} style={{ padding: 5 }}>
+          <IconButton
+            appearance="subtle"
+            onClick={() => {
+              onChange(rowData);
+            }}
+            icon={
+              expandedRowKeys.some(key => key === rowData[rowKey]) ? (
+                <CollaspedOutlineIcon />
+              ) : (
+                <ExpandOutlineIcon />
+              )
+            }
+          />
+        </Cell>
+    );
+    
+    function rowDate(data) {
+        if (data.departureDay) {
+            return (Moment(data.departureDay).format("DD/MM/YYYY"))
+        }
+        if (data.beginning) {
+            return ( <div className="flex">
+                    <p className="mr-2">Du {Moment(data.beginning).format("DD/MM/YYYY")} au {Moment(data.ending).format("DD/MM/YYYY")} les </p>
+                    <CheckBoxDays  days={data.daysWeek}/>
+                </div>)
+        }
+    }
+    function rowDestination(data) {
+        console.log(data);
+        if (data.destination.isFromAfpa) {
+            return (<p className='flex '>AFPA <FiArrowRight className='mx-2' /> {data.destination.city.name}</p>);
+        } else if (!data.destination.isFromAfpa) {
+            return (<p className='flex '>{data.destination.city.name} <FiArrowRight className='mx-2' /> AFPA</p>);
+        }
+    }
+
 const TableProposedRides = (props) => {
     const [onEdit, setOnEdit] = useState(null);
-    const { Column, HeaderCell, Cell } = Table;
+    const [expandedRowKeys, setExpandedRowKeys] = useState([]);
+
+    const renderRowExpanded = rowData => {
+        return (<div>
+            <p className='flex'>Destination : </p>
+            <p>{rowDestination(rowData)}</p>
+            <p className='flex'>Date : </p>
+            <p>{rowDate(rowData)}</p>
+            <p>Heure : {rowData.departureTime}</p>
+            <p>Nombre de place : {rowData.car.seats}</p>
+        </div>);
+      };
+
+    const handleExpanded = (rowData, dataKey) => {
+        let open = false;
+        const nextExpandedRowKeys = [];
+
+        expandedRowKeys.forEach(key => {
+        if (key === rowData[rowKey]) {
+            open = true;
+        } else {
+            nextExpandedRowKeys.push(key);
+        }
+        });
+        if (!open) {
+            nextExpandedRowKeys.push(rowData[rowKey]);
+          }
+      
+          setExpandedRowKeys(nextExpandedRowKeys);
+    }
+
 
 
     function showDetail(ride){
@@ -34,30 +106,28 @@ const TableProposedRides = (props) => {
                     </div>
                     <Table className='rounded-b-md'
                         autoHeight={true}
-                        data={props.rides}>
-                        <Column align="center" flexGrow={2}>
+                        data={props.rides}
+                        rowKey={rowKey}
+                        expandedRowKeys={expandedRowKeys}
+                        renderRowExpanded={renderRowExpanded}>
+                        <Column width={70} align="center">
+                            <HeaderCell>#</HeaderCell>
+                            <ExpandCell  dataKey="id" expandedRowKeys={expandedRowKeys} onChange={handleExpanded} />
+                        </Column>
+                        <Column  flexGrow={2}>
                             <HeaderCell>Destinations</HeaderCell>
                             <Cell>
-                                {rowData => {
-                                    if (rowData.destination.isFromAfpa) {
-                                        return (<p className='flex justify-center align-center'>AFPA <FiArrowRight className='mx-2' /> {rowData.destination.city.name}</p>)
-                                    } else if (!rowData.destination.isFromAfpa) {
-                                        return (<p className='flex justify-center'>{rowData.destination.city.name} <FiArrowRight className='mx-2' /> AFPA</p>)
-                                    }
-                                }}
+                                {rowData => (
+                                    rowDestination(rowData)
+                                )}
                             </Cell>
                         </Column>
                         <Column flexGrow={2}>
                             <HeaderCell>Date</HeaderCell>
                             <Cell>
-                                {rowData => {
-                                    if (rowData.departureDay) {
-                                        return (Moment(rowData.departureDay).format("DD/MM/YYYY"))
-                                    }
-                                    if (rowData.beginning) {
-                                        return ( <CheckBoxDays days={rowData.daysWeek}/>)
-                                    }
-                                }}
+                                {rowData => (
+                                    rowDate(rowData)
+                                )}
                             </Cell>
                         </Column>
 

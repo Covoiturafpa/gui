@@ -12,7 +12,12 @@ const CheckBoxDays = (props) => {
     const [days, setDays] = useState(props.days);
     return (<div className='flex'>
                 {allDays.map((day) => {
-                    if(days.some(item => item.name === day.name)) {
+                    if(days === 0) {
+                        return(<div>
+                            <input type="checkbox" key={day.name} className={styles.checkbox} name={day.translate} />
+                            <label className={styles.labelcheckbox}>{day.translate.charAt(0).toUpperCase()}</label>  
+                        </div>);
+                    }else if(days.some(item => item.name === day.name)){
                         return(<div>
                             <input type="checkbox" key={day.name} className={styles.checkbox} name={day.translate} checked/>
                             <label className={styles.labelcheckbox}>{day.translate.charAt(0).toUpperCase()}</label>  

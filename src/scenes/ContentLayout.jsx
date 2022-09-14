@@ -7,6 +7,7 @@ import { MesTrajets } from './MesTrajets';
 import { FormLayout } from './FormLayout';
 import { LoginForm } from '../component/LoginForm';
 import { RegistrationForm } from '../component/RegistrationForm';
+import { FormAndMap } from '../component/FormAndMap';
 
 const ContentLayout = () => {
     return (<>
@@ -15,7 +16,7 @@ const ContentLayout = () => {
         </Sidebar>
         <Content className='min-h-100'>
             <Routes>
-                <Route path="rechercher" element={<h1 className="text-center">Rechercher</h1>} />
+                <Route path="rechercher" element={<FormAndMap/>} />
                 <Route path="mes_trajets" element={<MesTrajets className='h-100' />} />
                 <Route path="proposer" element={<h1 className="text-center">Proposer un trajet</h1>} />
                 <Route path="gestion_users" element={<h1 className="text-center">Gestion utilisateur</h1>} />

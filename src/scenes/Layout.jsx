@@ -1,8 +1,8 @@
 import React from 'react';
 import ReactDOM from 'react-dom/client';
 import { Container } from 'rsuite';
-import { LayoutHeader } from '../component/LayoutHeader';
-import { LayoutFooter } from '../component/LayoutFooter';
+import { LayoutHeader } from '../scenes/LayoutHeader';
+import { LayoutFooter } from '../scenes/LayoutFooter';
 
 const Layout = (props) => {
   return (<>
