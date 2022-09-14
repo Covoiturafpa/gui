@@ -11,7 +11,7 @@ const MesTrajets = () => {
     const [error, setError] = useState(null);
 
     useEffect(() => {
-        fetch("http://127.0.0.1:8000/rides/")
+        fetch("http://127.0.0.1:8000/users/"+ idUser + "/rides")
         .then(res => res.json())
         .then(
             (result) => {

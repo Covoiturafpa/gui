@@ -32,7 +32,7 @@ import Moment from 'moment';
             return (Moment(data.departureDay).format("DD/MM/YYYY"))
         }
         if (data.beginning) {
-            return ( <div className="flex">
+            return ( <div className="flex flex-wrap">
                     <p className="mr-2">Du {Moment(data.beginning).format("DD/MM/YYYY")} au {Moment(data.ending).format("DD/MM/YYYY")} les </p>
                     <CheckBoxDays  days={data.daysWeek}/>
                 </div>)
@@ -58,7 +58,6 @@ const TableProposedRides = (props) => {
             <p className='flex'>Date : </p>
             <p>{rowDate(rowData)}</p>
             <p>Heure : {rowData.departureTime}</p>
-            <p>Nombre de place : {rowData.car.seats}</p>
         </div>);
       };
 
@@ -109,7 +108,8 @@ const TableProposedRides = (props) => {
                         data={props.rides}
                         rowKey={rowKey}
                         expandedRowKeys={expandedRowKeys}
-                        renderRowExpanded={renderRowExpanded}>
+                        renderRowExpanded={renderRowExpanded}
+                        rowExpandedHeight={200}>
                         <Column width={70} align="center">
                             <HeaderCell>#</HeaderCell>
                             <ExpandCell  dataKey="id" expandedRowKeys={expandedRowKeys} onChange={handleExpanded} />
