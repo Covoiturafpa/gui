@@ -1,15 +1,15 @@
 import { React} from 'react';
-import { List, FlexboxGrid } from 'rsuite';
+import { List, FlexboxGrid, Col } from 'rsuite';
 
 
 const ListRow = (props) => {
     return(
         <List.Item>
             <FlexboxGrid>
-                <FlexboxGrid.Item colspan={12}>
+                <FlexboxGrid.Item as={Col} colspan={24} md={12}>
                     <label>{props.label}</label>
                 </FlexboxGrid.Item>
-                <FlexboxGrid.Item colspan={12}>
+                <FlexboxGrid.Item as={Col} colspan={24} md={12}>
                     {props.children}
                 </FlexboxGrid.Item>
             </FlexboxGrid>

@@ -1,7 +1,13 @@
 import React from 'react';
+import { List } from 'rsuite';
+import { ListRow } from '../component/ListRow';
 
-const Profil = () => {
+const Profil = (props) => {
+
     return (<>
+        <List>
+            
+        </List>
     </>);
 }
 

@@ -1,6 +1,6 @@
 import { React, useState, useEffect } from 'react';
 import { FiArrowRight, FiPlusCircle   } from "react-icons/fi";
-import { List, FlexboxGrid, DatePicker, Button, ButtonToolbar, SelectPicker, Input, InputNumber, InputGroup, Whisper, Tooltip } from 'rsuite';
+import { List, DatePicker, Button, ButtonToolbar, SelectPicker, Input, InputNumber, InputGroup, Whisper, Tooltip } from 'rsuite';
 import InfoIcon from '@rsuite/icons/legacy/Info';
 import Moment from 'moment';
 import { CheckBoxDays } from './CheckBoxDays';
@@ -98,13 +98,13 @@ const DetailOfRide = (props) => {
                     </ListRow>
                 : "" }
                 <ListRow label="Nombre de place">
-                    { props.isOwner ? <div style={{ width: 160 }}>
+                    { props.isOwner ? <div style={{ width: 230 }}>
                                             <InputNumber defaultValue={props.car.seats}/>
                                         </div>
                                     : <label>{props.car.seats}</label> }
                 </ListRow>
                 <ListRow label="Prix">
-                { props.isOwner ? <InputGroup inside >
+                { props.isOwner ? <InputGroup inside style={{ width: 230 }}>
                                         <InputGroup.Addon>
                                             <Whisper placement="top"  speaker={<Tooltip>Le choix du prix est irrémédiable</Tooltip>}>
                                             <InfoIcon />
