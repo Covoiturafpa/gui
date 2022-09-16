@@ -7,6 +7,7 @@ import { CheckBoxDays } from './CheckBoxDays';
 import { ListRow } from './ListRow';
 import { FaEuroSign } from "react-icons/fa";
 import { ListPassengers } from './ListPassengers';
+import { api } from '../config/api';
 
 const DetailOfRide = (props) => {
     const [dataCar, setDataCar] = useState();
@@ -15,7 +16,7 @@ const DetailOfRide = (props) => {
     const [error, setError] = useState(null);
 
     useEffect(() => {
-        fetch("http://127.0.0.1:8000/users/"+ props.idUser)
+        fetch(api + "/users/" + props.idUser)
         .then(res => res.json())
         .then(
             (result) => {

@@ -1,6 +1,7 @@
 import React, { useState, useEffect } from 'react';
 import { TableProposedRides } from '../component/TableProposedRides';
 import { TableRequestedRides } from '../component/TableRequestedRides';
+import { api } from '../config/api';
 
 
 const MesTrajets = () => {
@@ -11,7 +12,7 @@ const MesTrajets = () => {
     const [error, setError] = useState(null);
 
     useEffect(() => {
-        fetch("http://127.0.0.1:8000/users/"+ idUser + "/rides")
+        fetch(api + "/users/"+ idUser + "/rides")
         .then(res => res.json())
         .then(
             (result) => {
