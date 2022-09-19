@@ -29,27 +29,37 @@ const Profil = (props) => {
         return () => console.log("demontage")
     }, []);
 
-    return (<>
+    return (
         <List>
             <FlexboxGrid>
                 <FlexboxGrid.Item as={Col} colspan={24} md={12} order={1} id="identity">
                     <h4 className='my-4'>Identité</h4>
-                    <ListRow label="Nom"> {user.surname} </ListRow>
-                    <ListRow label="Prénom"> {user.firstName} </ListRow>
-                    <ListRow label="Email"> <Input value={user.email} /> </ListRow>
-                    <ListRow label="Téléphone"> <Input value={user.phoneNumber} /> </ListRow>
+                    <ListRow label="Nom">
+                        {user.surname}
+                    </ListRow>
+                    <ListRow label="Prénom">
+                        {user.firstName}
+                    </ListRow>
+                    <ListRow label="Email">
+                        <Input value={user.email} />
+                    </ListRow>
+                    <ListRow label="Téléphone">
+                        <Input value={user.phoneNumber} />
+                    </ListRow>
                 </FlexboxGrid.Item>
                 <FlexboxGrid.Item as={Col} colspan={24} md={12} className='order-2' style={{ height: 282 }}>
                     <h4 className='my-4'>Photo de profil</h4>
-                    <AvatarProfil user={user} />
+                    <div style={{height:240}}>
+                        <AvatarProfil user={user} className='my-auto' />
+                    </div>
                 </FlexboxGrid.Item>
-                <FlexboxGrid.Item as={Col} colspan={24} className='order-3'>
+                <FlexboxGrid.Item as={Col} colspan={24} md={12} className='order-3'>
                     <h4 className='my-4'>Notifications</h4>
-                    <ListRow label="Email">  
-                        <Checkbox > </Checkbox> 
+                    <ListRow label="Email">
+                        <Checkbox />
                     </ListRow>
-                    <ListRow label="SMS">  
-                        <Checkbox></Checkbox> 
+                    <ListRow label="SMS">
+                        <Checkbox />
                     </ListRow>
                 </FlexboxGrid.Item>
                 <FlexboxGrid.Item as={Col} colspan={24} md={12} className='order-4'>
@@ -63,7 +73,7 @@ const Profil = (props) => {
                 </FlexboxGrid.Item>
             </FlexboxGrid>
         </List>
-    </>);
+    );
 }
 
 export { Profil };
