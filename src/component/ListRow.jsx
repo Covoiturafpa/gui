@@ -4,12 +4,12 @@ import { List, FlexboxGrid, Col } from 'rsuite';
 
 const ListRow = (props) => {
     return(
-        <List.Item>
-            <FlexboxGrid>
-                <FlexboxGrid.Item as={Col} colspan={24} md={12}>
+        <List.Item >
+            <FlexboxGrid className='mx-2' justify='space-between' align='middle'>
+                <FlexboxGrid.Item as={Col} colspan={24} md={6} className="my-auto h-5 md:h-6 lg:h-8">
                     <label>{props.label}</label>
                 </FlexboxGrid.Item>
-                <FlexboxGrid.Item as={Col} colspan={24} md={12}>
+                <FlexboxGrid.Item as={Col} colspan={24} md={16} className='text-left'>
                     {props.children}
                 </FlexboxGrid.Item>
             </FlexboxGrid>
