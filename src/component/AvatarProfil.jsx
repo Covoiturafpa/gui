@@ -4,7 +4,7 @@ import { AvatarUploader } from './AvatarUploader';
 
 const AvatarProfil = (props) => {
     return (
-        <div className='flex justify-center'>
+        <div className='flex justify-center items-center'>
             {/* <button className=' h-50 w-50 rounded-md overflow-hidden'>
                 <img src='https://avatars.githubusercontent.com/u/12592949'
                     alt={props.user.surname + " " + props.user.firstName}
