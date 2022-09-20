@@ -1,7 +1,9 @@
+
 [type="checkbox"]{
     opacity: 0.01;
     width: 20px;
     height: 20px;
+    z-index: 10000000;
 }
 
 
@@ -9,13 +11,18 @@
     background: black;
     color: white;
     text-align: center;
+    cursor: pointer;
+
 }
 .labelcheckbox {
+
+    user-select: none;
     width: 20px;
     height: 20px;
     position: absolute;
     margin-left: -20px;
     border: 1px solid black;
     border-radius: 100%;
+    cursor: pointer;
     text-align: center;
 }

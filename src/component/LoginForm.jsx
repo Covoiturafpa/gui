@@ -1,16 +1,40 @@
-import React from 'react';
-import { Form, ButtonToolbar, Button, Panel, Checkbox } from 'rsuite';
+import {React, useState} from 'react';
+import { Form, ButtonToolbar, Button, Checkbox } from 'rsuite';
+import AuthService from "../services/AuthService";
+import { useSetState, useTrackedState } from "../services/UserToken";
 
 const LoginForm = () => {
+    const setState = useSetState();
+    const state = useTrackedState();
+    const [username, setUsername] = useState();
+    const [password, setPassword] = useState();
+
+    function usernameChangeHundler(newUsername) {
+        setUsername(newUsername);
+        //setState((prev) => ({ ...prev, "username" : e }));
+    };
+
+    function passwordChangeHundler(newPassword) {
+        setPassword(newPassword);
+        //setState((prev) => ({ ...prev, "password" : e }));
+    };
+
+    const handleLogin = (e) => {
+
+        console.log("username : " + username + " Password: " + password)
+        console.log(AuthService.login(username, password));
+            //setState(AuthService.login(state.username, state.password));
+
+    }   
     return (
             <Form fluid>
                 <Form.Group>
                     <Form.ControlLabel>Email</Form.ControlLabel>
-                    <Form.Control name="email" />
+                    <Form.Control name="email" onChange={usernameChangeHundler} required/>
                 </Form.Group>
                 <Form.Group>
                     <Form.ControlLabel>Mot de passe</Form.ControlLabel>
-                    <Form.Control name="password" type="password" autoComplete="off" />
+                    <Form.Control name="password" onChange={passwordChangeHundler} type="password" autoComplete="off" required/>
                 </Form.Group>
                 <Form.Group>
                     <Checkbox>Se souvenir de moi</Checkbox>
@@ -18,7 +42,7 @@ const LoginForm = () => {
                 </Form.Group>
                 <Form.Group>
                     <ButtonToolbar>
-                        <Button appearance="primary">Connexion</Button>
+                        <Button onClick={handleLogin} appearance="primary">Connexion</Button>
                         <Button appearance="link">Mot de passe oublié?</Button>
                     </ButtonToolbar>
                 </Form.Group>

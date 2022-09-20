@@ -4,7 +4,7 @@ import { List, FlexboxGrid, Col } from 'rsuite';
 
 const ListRow = (props) => {
     return(
-        <List.Item >
+        <List.Item>
             <FlexboxGrid className='mx-2' justify='space-between' align='middle'>
                 <FlexboxGrid.Item as={Col} colspan={24} md={6} classPrefix="" 
                     className="flex items-center content-center justify-start h-5 md:h-6 lg:h-8">

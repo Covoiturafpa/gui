@@ -9,8 +9,8 @@ import "rsuite/dist/rsuite.min.css";
 const divRoot = document.querySelector('#root');
 
 const root = ReactDOM.createRoot(divRoot);
-root.render(<>
+root.render(
   <BrowserRouter>
     <App/>
   </BrowserRouter>
-</>);
+);
