@@ -2,7 +2,7 @@ import {React, useState} from 'react';
 import { Form, ButtonToolbar, Button, Checkbox } from 'rsuite';
 import AuthService from "../services/AuthService";
 import { useSetState, useTrackedState } from "../services/UserToken";
-import { loginFormSchema } from '../services/SchemaType';
+import { loginFormSchema, newEmailFormSchema } from '../services/SchemaType';
 
 const LoginForm = () => {
     const setState = useSetState();
@@ -29,7 +29,7 @@ const LoginForm = () => {
 
     }   
     return (
-            <Form fluid checkTrigger='change' model={loginFormSchema}>
+            <Form fluid checkTrigger='change' model={newEmailFormSchema}>
                 <Form.Group>
                     <Form.ControlLabel>Email</Form.ControlLabel>
                     <Form.Control name="email" onChange={usernameChangeHundler} required/>

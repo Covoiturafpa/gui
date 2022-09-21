@@ -1,8 +1,9 @@
-import React, { useState, useEffect } from 'react';
-import { List, Avatar, Input, Checkbox, Button, FlexboxGrid, Col, Form, Tag } from 'rsuite';
+import React, { useEffect, useState } from 'react';
+import { Button, Checkbox, Col, FlexboxGrid, Form, Input, List, Tag } from 'rsuite';
 import { AvatarProfil } from '../component/AvatarProfil';
 import { ListRow } from '../component/ListRow';
-import { connectedUser, userToken } from '../config/api';
+import { connectedUser } from '../config/api';
+import { profilFormSchema, newEmailFormSchema } from '../services/SchemaType';
 
 
 const Profil = (props) => {
@@ -10,6 +11,7 @@ const Profil = (props) => {
     const [user, setUser] = useState({});
     const [authorities, setAuthorities] = useState([]);
     const [isLoaded, setIsLoaded] = useState(false);
+    
 
     useEffect(() => {
         setUser(connectedUser);
@@ -36,7 +38,7 @@ const Profil = (props) => {
 
     return (
         <List>
-            <Form>
+            <Form checkTrigger='change' model={newEmailFormSchema}>
                 <FlexboxGrid>
                     <FlexboxGrid.Item as={Col} colspan={24} md={12} order={1} id="identity">
                         <div className='flex'>
@@ -49,11 +51,12 @@ const Profil = (props) => {
                         <ListRow label="Prénom">
                             {user.firstName}
                         </ListRow>
-                        <ListRow label="Email">
-                            <Input value={user.email} />
-                        </ListRow>
+                        <Form.Group >
+                            <Form.ControlLabel >Email</Form.ControlLabel>
+                            <Form.Control name="email" defaultValue={user.email} key={user.email} required/>
+                        </Form.Group>
                         <ListRow label="Téléphone">
-                            <Input value={user.phoneNumber} />
+                            <Input defaultValue={user.phoneNumber} name="phoneNumber" key={user.phoneNumber} />
                         </ListRow>
                         <ListRow label="Rôle">
                             {user.userType === "T" ? "Stagiaire" : user.isTeacher ? "Formateur" : "Employé"}
@@ -68,19 +71,19 @@ const Profil = (props) => {
                     <FlexboxGrid.Item as={Col} colspan={24} md={12} className='order-3'>
                         <h4 className='my-4'>Notifications</h4>
                         <ListRow label="Email">
-                            {user.contactByMail ? <Checkbox name='email' checked /> : <Checkbox name='email' /> }
+                            {user.contactByMail ? <Checkbox defaultChecked name='contactByMail' key="contactByMail" /> : <Checkbox name='contactByMail' key="contactbyMail" />}
                         </ListRow>
                         <ListRow label="SMS">
-                            {user.contactBySms ? <Checkbox name='sms' checked /> : <Checkbox name='sms' /> }
+                            {user.contactBySms ? <Checkbox defaultChecked name='contactBySms' key="contactBySms" /> : <Checkbox name='contactBySms' key="contactbySms" />}
                         </ListRow>
                     </FlexboxGrid.Item>
                     <FlexboxGrid.Item as={Col} colspan={24} md={12} className='order-4'>
                         <h4 className='my-4'>Mot de passe</h4>
-                        <ListRow label="Ancien">
-                            <Input type='password' name='old_password' />
-                        </ListRow>
                         <ListRow label="Nouveau">
-                            <Input type='password' name='new_password' />
+                            <Input type='password' name='password' />
+                        </ListRow>
+                        <ListRow label="Confirmation">
+                            <Input type='password' name='passwordConfirm' autoComplete='off' />
                         </ListRow>
                     </FlexboxGrid.Item>
                     <FlexboxGrid.Item as={Col} colspan={24} order={5} className='p-4 text-end'>
