@@ -22,8 +22,9 @@ const LoginForm = () => {
 
     const handleLogin = (e) => {
 
-        console.log("username : " + username + " Password: " + password)
-        console.log(AuthService.login(username, password));
+        console.log("--------------- username : " + username + " Password: " + password)
+        let stringResult = AuthService.login(username, password); 
+        console.log(stringResult);
             //setState(AuthService.login(state.username, state.password));
 
     }   
