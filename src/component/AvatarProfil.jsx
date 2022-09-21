@@ -15,7 +15,7 @@ const AvatarProfil = (props) => {
                     <AvatarUploader></AvatarUploader>
                 </div>
                 <div >
-                    <Checkbox>Effacer la photo</Checkbox>
+                    <Checkbox name='isAvatarDeleted'>Effacer la photo</Checkbox>
                 </div>
             </div>
         </div>
