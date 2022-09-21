@@ -68,19 +68,19 @@ const Profil = (props) => {
                     <FlexboxGrid.Item as={Col} colspan={24} md={12} className='order-3'>
                         <h4 className='my-4'>Notifications</h4>
                         <ListRow label="Email">
-                            <Checkbox />
+                            {user.contactByMail ? <Checkbox name='email' checked /> : <Checkbox name='email' /> }
                         </ListRow>
                         <ListRow label="SMS">
-                            <Checkbox />
+                            {user.contactBySms ? <Checkbox name='sms' checked /> : <Checkbox name='sms' /> }
                         </ListRow>
                     </FlexboxGrid.Item>
                     <FlexboxGrid.Item as={Col} colspan={24} md={12} className='order-4'>
                         <h4 className='my-4'>Mot de passe</h4>
                         <ListRow label="Ancien">
-                            <Input type='password' />
+                            <Input type='password' name='old_password' />
                         </ListRow>
                         <ListRow label="Nouveau">
-                            <Input type='password' />
+                            <Input type='password' name='new_password' />
                         </ListRow>
                     </FlexboxGrid.Item>
                     <FlexboxGrid.Item as={Col} colspan={24} order={5} className='p-4 text-end'>
