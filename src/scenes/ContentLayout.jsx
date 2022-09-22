@@ -1,16 +1,15 @@
 import React from 'react';
-import ReactDOM from 'react-dom/client';
-import { Content, Sidebar } from 'rsuite';
-import { Routes, Route } from 'react-router-dom';
-import { MesTrajets } from './MesTrajets';
-import { Profil } from './Profil';
-import { Accueil } from './Accueil';
-import { Notification } from './Notification';
-import { FormLayout } from './FormLayout';
+import { Route, Routes } from 'react-router-dom';
+import { Content } from 'rsuite';
+import { FormAndMap } from '../component/FormAndMap';
 import { LoginForm } from '../component/LoginForm';
 import { LogoutForm } from '../component/LogoutForm';
 import { RegistrationForm } from '../component/RegistrationForm';
-import { FormAndMap } from '../component/FormAndMap';
+import { Accueil } from './Accueil';
+import { FormLayout } from './FormLayout';
+import { MesTrajets } from './MesTrajets';
+import { Notification } from './Notification';
+import { Profil } from './Profil';
 
 const ContentLayout = () => {
     return (<>

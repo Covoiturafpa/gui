@@ -1,23 +1,15 @@
-import { React, useState, useEffect } from 'react';
+import { React, useEffect, useState } from 'react';
 
-import { useNavigate } from 'react-router-dom';
-import { Sidenav, Nav } from 'rsuite';
-import {Icon} from '@rsuite/icons';
-import AbTestIcon from '@rsuite/icons/AbTest';
-import PlusIcon from '@rsuite/icons/Plus';
-import PeoplesIcon from '@rsuite/icons/Peoples';
-import SearchIcon from '@rsuite/icons/Search';
-import ExitIcon from '@rsuite/icons/Exit';
-import GearIcon from '@rsuite/icons/Gear';
-import { AvatarIcon } from './AvatarIcon';
-import { BellNotification } from './BellNotification';
 import Car from '@rsuite/icons/legacy/Car';
-import ListUl from '@rsuite/icons/legacy/ListUl';
-import MapSigns from '@rsuite/icons/legacy/MapSigns';
-import UserCircleO from '@rsuite/icons/legacy/UserCircleO';
 import Exit from '@rsuite/icons/legacy/Exit';
 import GearCircle from '@rsuite/icons/legacy/GearCircle';
 import Group from '@rsuite/icons/legacy/Group';
+import ListUl from '@rsuite/icons/legacy/ListUl';
+import MapSigns from '@rsuite/icons/legacy/MapSigns';
+import UserCircleO from '@rsuite/icons/legacy/UserCircleO';
+import { useNavigate } from 'react-router-dom';
+import { Nav, Sidenav } from 'rsuite';
+import { BellNotification } from './BellNotification';
 
 
 const SidebarNavigation = () => {
