@@ -1,4 +1,3 @@
-import axios from "axios";
 import { api } from '../config/api';
 
 const headerssss = {
@@ -9,18 +8,26 @@ const headerssss = {
 }
 
 class AuthService {
+
+
+
   async login(username, password) {
+    let textResult;
+    try {
+      await fetch(api + "/login", {
+        method: "POST",
+        body: JSON.stringify({ "username": username, "password": password })
+      }).then((response) => {
+        return response.json();
+      }).then((text) => {
+        textResult = text;
+      });
+    } catch(error) {
+      console.error(error);
+      return {"errorMessage" : error.message };
+    }
 
-    await fetch(api + "/login", {
-      method: "POST",
-      body: JSON.stringify({ "username": username, "password": password })
-    }).then((response) => {
-      console.log("En-tête obtenue du serveur");
-      return response.text();
-    }).then((text) => {
-      console.log("Donnée obtenue du serveur : " + text);
-    });
-
+    return textResult
     /*
     responseTest.then((result) => {
       console.log("En-tête obtenue du serveur");

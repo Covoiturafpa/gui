@@ -2,6 +2,7 @@ import React, { useState, useEffect } from 'react';
 import { TableProposedRides } from '../component/TableProposedRides';
 import { TableRequestedRides } from '../component/TableRequestedRides';
 import { api } from '../config/api';
+import { useTrackedState } from '../services/UserToken';
 
 
 const MesTrajets = () => {
@@ -10,7 +11,8 @@ const MesTrajets = () => {
     const [rideOwned, setRideOwned] = useState([]);
     const [rideRequested, setRideRequested] = useState([]);
     const [error, setError] = useState(null);
-
+    const token = useTrackedState();
+    
     useEffect(() => {
         fetch(api + "/users/"+ idUser + "/rides")
         .then(res => res.json())
@@ -47,6 +49,7 @@ const MesTrajets = () => {
 
 
     if (error) {
+        console.log(token);
         return <div>Erreur : {error.message}</div>;
     } else if (!isLoaded) {
         return <div>Chargement...</div>;
