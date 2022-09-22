@@ -1,35 +1,42 @@
 import {React, useState} from 'react';
-import { Form, ButtonToolbar, Button, Checkbox } from 'rsuite';
+import { Form, ButtonToolbar, Button, Checkbox, InputGroup } from 'rsuite';
 import AuthService from "../services/AuthService";
-import { useSetState, useTrackedState } from "../services/UserToken";
-import { loginFormSchema, newEmailFormSchema } from '../services/SchemaType';
+import { loginFormSchema} from '../services/SchemaType';
+import { useNavigate } from 'react-router-dom';
+import { useSetState, useTrackedState } from '../services/UserToken';
 
 const LoginForm = () => {
-    const setState = useSetState();
-    const state = useTrackedState();
     const [username, setUsername] = useState();
     const [password, setPassword] = useState();
-
+    const [errorMessage, setErrorMessage] = useState("");
+    const setToken = useSetState();
+    const tokenState = useTrackedState();
+    let navigate = useNavigate();
+    
     function usernameChangeHundler(newUsername) {
         setUsername(newUsername);
-        //setState((prev) => ({ ...prev, "username" : e }));
     };
 
     function passwordChangeHundler(newPassword) {
         setPassword(newPassword);
-        //setState((prev) => ({ ...prev, "password" : e }));
     };
 
     const handleLogin = (e) => {
+        const stringResult = AuthService.login(username, password);
+        stringResult.then((res) => {
+                if(res.hasOwnProperty("errorMessage")) {
+                setErrorMessage("Une erreur est survenue");
+            }else if(res.hasOwnProperty("accessToken")) {
+                const newToken = res.accessToken;
+                setToken(newToken);
+                navigate("/rechercher");
+            }
 
-        console.log("--------------- username : " + username + " Password: " + password)
-        let stringResult = AuthService.login(username, password); 
-        console.log(stringResult);
-            //setState(AuthService.login(state.username, state.password));
-
+        });
+        
     }   
     return (
-            <Form fluid checkTrigger='change' model={newEmailFormSchema}>
+            <Form fluid checkTrigger='change' model={loginFormSchema}>
                 <Form.Group>
                     <Form.ControlLabel>Email</Form.ControlLabel>
                     <Form.Control name="email" onChange={usernameChangeHundler} required/>
@@ -42,6 +49,7 @@ const LoginForm = () => {
                     <Checkbox>Se souvenir de moi</Checkbox>
                     <link></link>
                 </Form.Group>
+                <div className='text-red-500 my-5'>{errorMessage}</div>
                 <Form.Group>
                     <ButtonToolbar>
                         <Button onClick={handleLogin} appearance="primary">Connexion</Button>
