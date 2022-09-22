@@ -2,7 +2,8 @@ import React, { useState, useEffect } from 'react';
 import { TableProposedRides } from '../component/TableProposedRides';
 import { TableRequestedRides } from '../component/TableRequestedRides';
 import { api } from '../config/api';
-import { useTrackedState } from '../services/UserToken';
+import { useSetToken, useTrackedToken } from '../services/UserToken';
+
 
 
 const MesTrajets = () => {
@@ -11,7 +12,7 @@ const MesTrajets = () => {
     const [rideOwned, setRideOwned] = useState([]);
     const [rideRequested, setRideRequested] = useState([]);
     const [error, setError] = useState(null);
-    const token = useTrackedState();
+    const token = useTrackedToken();
     
     useEffect(() => {
         fetch(api + "/users/"+ idUser + "/rides")

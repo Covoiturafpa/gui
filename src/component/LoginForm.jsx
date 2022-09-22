@@ -1,18 +1,21 @@
-import {React, useState} from 'react';
-import { Form, ButtonToolbar, Button, Checkbox, InputGroup } from 'rsuite';
+import {React, useState, useEffect} from 'react';
+import { Form, ButtonToolbar, Button, Checkbox } from 'rsuite';
 import AuthService from "../services/AuthService";
 import { loginFormSchema} from '../services/SchemaType';
 import { useNavigate } from 'react-router-dom';
-import { useSetState, useTrackedState } from '../services/UserToken';
+import { api } from '../config/api';
+import { useSetToken, useTrackedToken } from '../services/UserToken';
+import { useSetUser } from '../services/UserIdConnected';
 
 const LoginForm = () => {
     const [username, setUsername] = useState();
     const [password, setPassword] = useState();
     const [errorMessage, setErrorMessage] = useState("");
-    const setToken = useSetState();
-    const tokenState = useTrackedState();
+    const setToken = useSetToken();
+    const stateToken = useTrackedToken();
+    const setUser = useSetUser();
     let navigate = useNavigate();
-    
+
     function usernameChangeHundler(newUsername) {
         setUsername(newUsername);
     };
@@ -24,14 +27,14 @@ const LoginForm = () => {
     const handleLogin = (e) => {
         const stringResult = AuthService.login(username, password);
         stringResult.then((res) => {
-                if(res.hasOwnProperty("errorMessage")) {
+            if(res.hasOwnProperty("errorMessage")) {
                 setErrorMessage("Une erreur est survenue");
             }else if(res.hasOwnProperty("accessToken")) {
                 const newToken = res.accessToken;
                 setToken(newToken);
+                setUser(res.id);
                 navigate("/rechercher");
             }
-
         });
         
     }   

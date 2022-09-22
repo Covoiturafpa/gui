@@ -5,6 +5,6 @@ const useValue = () => useState({});
 
 export const {
   Provider,
-  useTrackedState: useTrackedToken,
-  useUpdate: useSetToken
+  useTrackedState : useTrackedUser,
+  useUpdate: useSetUser,
 } = createContainer(useValue);

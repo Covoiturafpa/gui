@@ -1,11 +1,5 @@
 import { api } from '../config/api';
 
-const headerssss = {
-  "Access-Control-Allow-Origin": "*",
-  "Access-Control-Allow-Methods": "POST, GET, PUT, PATCH, HEAD, OPTIONS",
-  "Access-Control-Allow-Headers": "Origin, Accept, X-Requested-With, Content-Type, Access-Control-Request-Method, Access-Control-Request-Headers",
-  "Content-Type": "text/plain"
-}
 
 class AuthService {
 
