@@ -1,9 +1,12 @@
 import React, { useEffect, useState } from 'react';
 import { Button, Checkbox, Col, FlexboxGrid, Form, Input, List, Tag } from 'rsuite';
+import FormControl from 'rsuite/esm/FormControl';
+import FormGroup from 'rsuite/esm/FormGroup';
 import { AvatarProfil } from '../component/AvatarProfil';
+import { DeleteAccountModal } from '../component/DeleteAccountModal';
 import { ListRow } from '../component/ListRow';
 import { connectedUser } from '../config/api';
-import { profilFormSchema, newEmailFormSchema } from '../services/SchemaType';
+import { profilFormSchema } from '../services/SchemaType';
 
 
 const Profil = (props) => {
@@ -11,7 +14,6 @@ const Profil = (props) => {
     const [user, setUser] = useState({});
     const [authorities, setAuthorities] = useState([]);
     const [isLoaded, setIsLoaded] = useState(false);
-    
 
     useEffect(() => {
         setUser(connectedUser);
@@ -38,7 +40,7 @@ const Profil = (props) => {
 
     return (
         <List>
-            <Form checkTrigger='change' model={newEmailFormSchema}>
+            <Form checkTrigger='change' model={profilFormSchema} fluid>
                 <FlexboxGrid>
                     <FlexboxGrid.Item as={Col} colspan={24} md={12} order={1} id="identity">
                         <div className='flex'>
@@ -51,12 +53,11 @@ const Profil = (props) => {
                         <ListRow label="Prénom">
                             {user.firstName}
                         </ListRow>
-                        <Form.Group >
-                            <Form.ControlLabel >Email</Form.ControlLabel>
-                            <Form.Control name="email" defaultValue={user.email} key={user.email} required/>
-                        </Form.Group>
-                        <ListRow label="Téléphone">
-                            <Input defaultValue={user.phoneNumber} name="phoneNumber" key={user.phoneNumber} />
+                        <ListRow as={FormGroup} label="Email">
+                            <Input as={FormControl} defaultValue={user.email} name="email" key={user.email} />
+                        </ListRow>
+                        <ListRow as={FormGroup} label="Téléphone">
+                            <Input as={FormControl} defaultValue={user.phoneNumber} name="phoneNumber" key={user.phoneNumber} />
                         </ListRow>
                         <ListRow label="Rôle">
                             {user.userType === "T" ? "Stagiaire" : user.isTeacher ? "Formateur" : "Employé"}
@@ -78,16 +79,16 @@ const Profil = (props) => {
                         </ListRow>
                     </FlexboxGrid.Item>
                     <FlexboxGrid.Item as={Col} colspan={24} md={12} className='order-4'>
-                        <h4 className='my-4'>Mot de passe</h4>
-                        <ListRow label="Nouveau">
-                            <Input type='password' name='password' />
+                        <h4 className='my-4'>Nouveau mot de passe</h4>
+                        <ListRow as={FormGroup} label="Mot de passe">
+                            <Input as={FormControl} type='password' name='password' />
                         </ListRow>
-                        <ListRow label="Confirmation">
-                            <Input type='password' name='passwordConfirm' autoComplete='off' />
+                        <ListRow as={FormGroup} label="Confirmation">
+                            <Input as={FormControl} type='password' name='passwordConfirm' autoComplete='off' />
                         </ListRow>
                     </FlexboxGrid.Item>
                     <FlexboxGrid.Item as={Col} colspan={24} order={5} className='p-4 text-end'>
-                        <Button appearance="subtle" size='xs' >Supprimer son compte</Button>
+                        <DeleteAccountModal />
                         <Button appearance="primary" className='mx-0 md:mx-6'>Modifier</Button>
                     </FlexboxGrid.Item>
                 </FlexboxGrid>

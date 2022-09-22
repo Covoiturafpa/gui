@@ -1,16 +1,16 @@
-import { React, useState, useEffect } from 'react';
+import { React, useEffect, useState } from 'react';
 
+import Car from '@rsuite/icons/legacy/Car';
+import Exit from '@rsuite/icons/legacy/Exit';
+import GearCircle from '@rsuite/icons/legacy/GearCircle';
+import Group from '@rsuite/icons/legacy/Group';
+import ListUl from '@rsuite/icons/legacy/ListUl';
+import MapSigns from '@rsuite/icons/legacy/MapSigns';
+import UserCircleO from '@rsuite/icons/legacy/UserCircleO';
 import { useNavigate } from 'react-router-dom';
-import { Sidenav, Nav } from 'rsuite';
-import {Icon} from '@rsuite/icons';
-import AbTestIcon from '@rsuite/icons/AbTest';
-import PlusIcon from '@rsuite/icons/Plus';
-import PeoplesIcon from '@rsuite/icons/Peoples';
-import SearchIcon from '@rsuite/icons/Search';
-import ExitIcon from '@rsuite/icons/Exit';
-import GearIcon from '@rsuite/icons/Gear';
-import { AvatarIcon } from './AvatarIcon';
+import { Nav, Sidenav } from 'rsuite';
 import { BellNotification } from './BellNotification';
+
 
 const SidebarNavigation = () => {
     const [expanded, setExpanded] = useState(false);
@@ -30,31 +30,31 @@ const SidebarNavigation = () => {
                 <Sidenav.Body className="h-full">
                     <Nav className="h-full flex flex-col justify-between" activeKey={activeKey} onSelect={setActiveKey} >
                         <Nav activeKey={activeKey} onSelect={setActiveKey}>
-                            <Nav.Item eventKey="rechercher" icon={<SearchIcon />}>
+                            <Nav.Item eventKey="rechercher" icon={<MapSigns />}>
                                 <p>Rechercher</p>
                             </Nav.Item>
-                            <Nav.Item eventKey="mes_trajets" icon={<AbTestIcon />}>
+                            <Nav.Item eventKey="mes_trajets" icon={<ListUl />}>
                                 <p>Mes trajets</p>
                             </Nav.Item>
-                            <Nav.Item eventKey="proposer" icon={<PlusIcon />}>
+                            <Nav.Item eventKey="proposer" icon={<Car />}>
                                 <p>Proposer un trajet</p>
                             </Nav.Item>
-                            <Nav.Item eventKey="gestion_users" icon={<PeoplesIcon />}>
+                            <Nav.Item eventKey="gestion_users" icon={<Group />}>
                                 <p>Gestion utilisateur</p>
                             </Nav.Item>
-                            <Nav.Item eventKey="gestion_centre" icon={<GearIcon />}>
+                            <Nav.Item eventKey="gestion_centre" icon={<GearCircle />}>
                                 <p>Gestion du centre</p>
                             </Nav.Item>
                         </Nav>
                         <div>
                         <Nav activeKey={activeKey} onSelect={setActiveKey}>
-                            <Nav.Item eventKey="profil" icon={<AvatarIcon />}>
+                            <Nav.Item eventKey="profil" icon={<UserCircleO />}>
                                 <p>Profil</p>
                             </Nav.Item>
                             <Nav.Item eventKey="notification" icon={<BellNotification />}>
                                 <p>Notification</p>
                             </Nav.Item>
-                            <Nav.Item eventKey="deconnexion" icon={<ExitIcon />}>
+                            <Nav.Item eventKey="deconnexion" icon={<Exit />}>
                                 <p className=''>Déconnexion</p>
                             </Nav.Item>
                         </Nav>
