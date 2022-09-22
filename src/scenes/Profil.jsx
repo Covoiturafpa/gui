@@ -40,7 +40,7 @@ const Profil = (props) => {
 
     return (
         <List>
-            <Form checkTrigger='change' model={profilFormSchema}>
+            <Form checkTrigger='change' model={profilFormSchema} fluid>
                 <FlexboxGrid>
                     <FlexboxGrid.Item as={Col} colspan={24} md={12} order={1} id="identity">
                         <div className='flex'>
