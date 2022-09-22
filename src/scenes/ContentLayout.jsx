@@ -4,6 +4,7 @@ import { Content, Sidebar } from 'rsuite';
 import { Routes, Route } from 'react-router-dom';
 import { MesTrajets } from './MesTrajets';
 import { Profil } from './Profil';
+import { Accueil } from './Accueil';
 import { Notification } from './Notification';
 import { FormLayout } from './FormLayout';
 import { LoginForm } from '../component/LoginForm';
@@ -25,7 +26,7 @@ const ContentLayout = () => {
                 <Route path="profil" element={<FormLayout title={"Profil"} form={<Profil/>} />} />
                 <Route path="deconnexion" element={<FormLayout title={"Déconnexion"} form={<LogoutForm/>} />} />
                 <Route path="notification" element={<Notification />} />
-                <Route path="*" element={<h2 className="text-center">404</h2>} />
+                <Route path="*" element={<Accueil />} />
             </Routes>
         </Content>
     </>);

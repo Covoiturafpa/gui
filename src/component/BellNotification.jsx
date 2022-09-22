@@ -1,8 +1,8 @@
 import React from 'react';
-import NoticeIcon from '@rsuite/icons/Notice';
+import Bell from '@rsuite/icons/legacy/Bell';
 
 const BellNotification = () => {
-    return <NoticeIcon onClick={ () => { /* ouverture panel notif */ } } />;
+    return <Bell onClick={ () => { /* ouverture panel notif */ } } />;
 }
 
 export { BellNotification };
