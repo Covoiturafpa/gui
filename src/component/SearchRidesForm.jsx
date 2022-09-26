@@ -4,7 +4,7 @@ import { BsArrowDownUp } from "react-icons/bs";
 import { CheckBoxDays } from './CheckBoxDays';
 
 
-const FormSearchRides = (props) => {
+const SearchRidesForm = (props) => {
     const [valueNbRideSearch, setValueNbRideSearch] = useState("return");
     const [valueRideType, setValueRideType] = useState("recurring");
 
@@ -40,4 +40,4 @@ const FormSearchRides = (props) => {
             </Form>);
 }
 
-export { FormSearchRides };
+export { SearchRidesForm };

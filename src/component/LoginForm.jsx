@@ -33,10 +33,9 @@ const LoginForm = () => {
                 const newToken = res.accessToken;
                 setToken(newToken);
                 setUser(res.id);
-                navigate("/rechercher");
+                navigate("/accueil");
             }
         });
-        
     }   
     return (
             <Form fluid checkTrigger='change' model={loginFormSchema}>

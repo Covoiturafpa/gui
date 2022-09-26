@@ -1,0 +1,60 @@
+import React, { useState, useEffect } from 'react';
+import { Content, FlexboxGrid, Col, Button } from 'rsuite';
+import { SearchRidesForm } from '../component/SearchRidesForm';
+import { MapLeaflet } from '../component/MapLeaflet';
+
+const BookingForm = () => {
+
+    const [dimensions, setDimensions] = useState({
+        height: window.innerHeight,
+        width: window.innerWidth
+    })
+
+    function debounce(fn, ms) {
+        let timer
+        return () => {
+            clearTimeout(timer)
+            timer = setTimeout(() => {
+                timer = null
+                fn.apply(this, arguments)
+            }, ms)
+        };
+    }
+
+    const debouncedHandleResize = debounce(
+        function handleResize() {
+            setDimensions({
+                height: window.innerHeight,
+                width: window.innerWidth
+            })
+        }, 1000
+    );
+
+    useEffect(() => {
+        window.addEventListener('resize', debouncedHandleResize);
+    }, []);
+
+
+    return (
+        <Content className='h-full w-full flex justify-center align-middle'>
+            <FlexboxGrid align='middle' justify='space-around' className='h-full w-full'>
+                <FlexboxGrid.Item as={Col} colspan={22} md={11} className='flex justify-end'>
+                    {<SearchRidesForm />}
+                </FlexboxGrid.Item>
+                {window.innerWidth >= 768 &&
+                    <FlexboxGrid.Item as={Col} colspan={22} md={11} className='h-96 w-full'>
+                        <MapLeaflet />
+                    </FlexboxGrid.Item>
+                }
+                <FlexboxGrid.Item colspan={24} md={22} className='bg-green-100 h-full w-full'>
+                    {<></>}
+                </FlexboxGrid.Item>
+            </FlexboxGrid>
+            <FlexboxGrid>
+
+            </FlexboxGrid>
+        </Content>
+    );
+}
+
+export { BookingForm };
