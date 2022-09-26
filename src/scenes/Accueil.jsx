@@ -16,37 +16,37 @@ const Accueil = () => {
             <Grid fluid className='max-h-full'>
                 <Row>
                     <Col xs={24} sm={12} md={12} lg={8} className='flex justify-center mt-4'>
-                        <Panel shaded bordered bodyFill className='inline-block w-40 md:w-60 text-center' onClick={() => navigate("/rechercher")}>
+                        <Panel shaded bordered bodyFill className='inline-block w-40 md:w-60 text-center cursor-pointer' onClick={() => navigate("/rechercher")}>
                             <MapSigns className='w-16 h-20 md:w-36 md:h-40' />
                             <h3 className='m-2 text-sm md:text-base lg:text-lg'>Recherche de trajet</h3>
                         </Panel>
                     </Col>
                     <Col xs={24} sm={12} md={12} lg={8} className='flex justify-center mt-6 md:mt-4'>
-                        <Panel shaded bordered bodyFill className='inline-block w-40 md:w-60 text-center' onClick={() => navigate("/mes_trajets")}>
+                        <Panel shaded bordered bodyFill className='inline-block w-40 md:w-60 text-center cursor-pointer' onClick={() => navigate("/mes_trajets")}>
                             <ListUl className='w-16 h-20 md:w-36 md:h-40' />
                             <h3 className='m-2 text-sm md:text-base lg:text-lg'>Liste de mes trajets</h3>
                         </Panel>
                     </Col>
                     <Col xs={24} sm={12} md={12} lg={8} className='flex justify-center mt-6 lg:mt-4'>
-                        <Panel shaded bordered bodyFill className='inline-block w-40 md:w-60 text-center' onClick={() => navigate("/proposer")}>
+                        <Panel shaded bordered bodyFill className='inline-block w-40 md:w-60 text-center cursor-pointer' onClick={() => navigate("/proposer")}>
                             <Car className='w-16 h-20 md:w-36 md:h-40' />
                             <h3 className='m-2 text-sm md:text-base lg:text-lg'>Proposer un trajet</h3>
                         </Panel>
                     </Col>
                     <Col xs={24} sm={12} md={12} lg={8} className='flex justify-center mt-6 lg:mt-8'>
-                        <Panel shaded bordered bodyFill className='inline-block w-40 md:w-60 text-center' onClick={() => navigate("/notification")}>
+                        <Panel shaded bordered bodyFill className='inline-block w-40 md:w-60 text-center cursor-pointer' onClick={() => navigate("/notification")}>
                             <Bell className='w-16 h-20 md:w-36 md:h-40' />
                             <h3 className='m-2 text-sm md:text-base lg:text-lg'>Notifications</h3>
                         </Panel>
                     </Col>
                     <Col xs={24} sm={12} md={12} lg={8} className='flex justify-center mt-6 lg:mt-8'>
-                        <Panel shaded bordered bodyFill className='inline-block w-40 md:w-60 text-center' onClick={() => navigate("/profil")}>
+                        <Panel shaded bordered bodyFill className='inline-block w-40 md:w-60 text-center cursor-pointer' onClick={() => navigate("/profil")}>
                             <UserCircleO className='w-16 h-20 md:w-36 md:h-40' />
                             <h3 className='m-2 text-sm md:text-base lg:text-lg'>Profil</h3>
                         </Panel>
                     </Col>
                     <Col xs={24} sm={12} md={12} lg={8} className='flex justify-center mb-4 mt-6 md:mb-0 lg:mt-8'>
-                        <Panel shaded bordered bodyFill className='inline-block w-40 md:w-60 text-center' onClick={() => navigate("/deconnexion")}>
+                        <Panel shaded bordered bodyFill className='inline-block w-40 md:w-60 text-center cursor-pointer' onClick={() => navigate("/deconnexion")}>
                             <Exit className='w-16 h-20 md:w-36 md:h-40' />
                             <h3 className='m-2 text-sm md:text-base lg:text-lg'>Me déconnecter</h3>
                         </Panel>
