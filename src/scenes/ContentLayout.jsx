@@ -1,11 +1,12 @@
 import React from 'react';
 import { Route, Routes } from 'react-router-dom';
 import { Content } from 'rsuite';
-import { FormAndMap } from '../component/FormAndMap';
+import { Leaflet } from '../component/MapLeaflet';
 import { LoginForm } from '../component/LoginForm';
 import { LogoutForm } from '../component/LogoutForm';
 import { RegistrationForm } from '../component/RegistrationForm';
 import { Accueil } from './Accueil';
+import { BookingForm } from './BookingForm';
 import { FormLayout } from './FormLayout';
 import { MesTrajets } from './MesTrajets';
 import { Notification } from './Notification';
@@ -15,7 +16,7 @@ const ContentLayout = () => {
     return (<>
         <Content className='min-h-100 overflow-auto'>
             <Routes>
-                <Route path="rechercher" element={<FormAndMap/>} />
+                <Route path="rechercher" element={<BookingForm />} />
                 <Route path="mes_trajets" element={<MesTrajets className='h-100' />} />
                 <Route path="proposer" element={<h1 className="text-center">Proposer un trajet</h1>} />
                 <Route path="gestion_users" element={<h1 className="text-center">Gestion utilisateur</h1>} />
