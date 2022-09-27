@@ -1,7 +1,6 @@
 import React from 'react';
 import { Route, Routes } from 'react-router-dom';
 import { Content } from 'rsuite';
-import { Leaflet } from '../component/MapLeaflet';
 import { LoginForm } from '../component/LoginForm';
 import { LogoutForm } from '../component/LogoutForm';
 import { RegistrationForm } from '../component/RegistrationForm';
@@ -13,6 +12,7 @@ import { Notification } from './Notification';
 import { Profil } from './Profil';
 
 const ContentLayout = () => {
+
     return (<>
         <Content className='min-h-100 overflow-auto'>
             <Routes>
