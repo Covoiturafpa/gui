@@ -1,5 +1,6 @@
 import { React, useEffect, useState } from 'react';
 
+import AuthService from "../services/AuthService";
 import Car from '@rsuite/icons/legacy/Car';
 import Exit from '@rsuite/icons/legacy/Exit';
 import GearCircle from '@rsuite/icons/legacy/GearCircle';
@@ -10,18 +11,37 @@ import UserCircleO from '@rsuite/icons/legacy/UserCircleO';
 import { useNavigate } from 'react-router-dom';
 import { Nav, Sidenav } from 'rsuite';
 import { BellNotification } from './BellNotification';
+import { useSetLogin, useTrackedLogin } from '../services/UserLogin';
 
 
 const SidebarNavigation = () => {
     const [expanded, setExpanded] = useState(false);
     const [activeKey, setActiveKey] = useState('');
+    const stateLogin = useTrackedLogin();
+    const setLogin = useSetLogin();
+    const [rolesUser, setRolesUser] = useState(" ");
     let navigate = useNavigate();
 
+
     useEffect(() => {
-        if (activeKey !== "") {
+        if(stateLogin.roles) {
+            setRolesUser(stateLogin.roles);    
+
+        }
+    }, [stateLogin])
+
+    useEffect(() => {
+        debugger;
+        if(activeKey === "deconnexion") {
+            AuthService.logout();
+            setLogin({});
+            setActiveKey("");
+            navigate("/login");
+        }else if (activeKey !== "" ) {
             navigate("/" + activeKey);
         }
-    }, [activeKey, navigate]);
+
+    }, [activeKey]);
 
     return (
         <div className='h-full'>
@@ -33,29 +53,33 @@ const SidebarNavigation = () => {
                             <Nav.Item eventKey="rechercher" icon={<MapSigns />}>
                                 <p>Rechercher</p>
                             </Nav.Item>
-                            <Nav.Item eventKey="mes_trajets" icon={<ListUl />}>
-                                <p>Mes trajets</p>
-                            </Nav.Item>
                             <Nav.Item eventKey="proposer" icon={<Car />}>
                                 <p>Proposer un trajet</p>
                             </Nav.Item>
-                            <Nav.Item eventKey="gestion_users" icon={<Group />}>
-                                <p>Gestion utilisateur</p>
+                            <Nav.Item eventKey="mes_trajets" icon={<ListUl />}>
+                                <p>Mes trajets</p>
                             </Nav.Item>
-                            <Nav.Item eventKey="gestion_centre" icon={<GearCircle />}>
-                                <p>Gestion du centre</p>
-                            </Nav.Item>
+                            {rolesUser.includes('ROLE_ADMIN') ? <>
+                                {rolesUser.includes('ROLE_TEACHER') ?
+                                    <Nav.Item eventKey="gestion_utilisateurs" icon={<Group />}>
+                                        <p>Gestion des utilisateurs</p>
+                                    </Nav.Item>
+                                : "" }
+                                <Nav.Item eventKey="gestion_centre" icon={<GearCircle />}>
+                                    <p>Gestion du centre</p>
+                                </Nav.Item>
+                            </> : "" }
                         </Nav>
                         <div>
                         <Nav activeKey={activeKey} onSelect={setActiveKey}>
                             <Nav.Item eventKey="profil" icon={<UserCircleO />}>
                                 <p>Profil</p>
                             </Nav.Item>
-                            <Nav.Item eventKey="notification" icon={<BellNotification />}>
-                                <p>Notification</p>
+                            <Nav.Item eventKey="notifications" icon={<BellNotification />}>
+                                <p>Notifications</p>
                             </Nav.Item>
                             <Nav.Item eventKey="deconnexion" icon={<Exit />}>
-                                <p className=''>Déconnexion</p>
+                                <p>Déconnexion</p>
                             </Nav.Item>
                         </Nav>
                         </div>

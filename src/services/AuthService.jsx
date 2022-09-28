@@ -1,64 +1,45 @@
+import { Navigate } from 'react-router-dom';
 import { api } from '../config/api';
-
+import { useSetLogin } from './UserLogin';
 
 class AuthService {
 
-
-
   async login(username, password) {
     let textResult;
-    try {
-      await fetch(api + "/login", {
-        method: "POST",
-        body: JSON.stringify({ "username": username, "password": password })
-      }).then((response) => {
-        return response.json();
-      }).then((text) => {
-        textResult = text;
-      });
-    } catch(error) {
-      console.error(error);
-      return {"errorMessage" : error.message };
+    if(localStorage.getItem('user')) {
+      textResult = localStorage.getItem('user');
+    }else if(sessionStorage.getItem('user')){
+      textResult = sessionStorage.getItem('user');
+    }else {
+      try {
+        await fetch(api + "/login", {
+          method: "POST",
+          body: JSON.stringify({ "username": username, "password": password })
+        }).then((response) => {
+          return response.json();
+        }).then((text) => {
+          textResult = text;
+        });
+      } catch(error) {
+        console.error(error);
+        return {"errorMessage" : error.message };
+      }
     }
-
     return textResult
-    /*
-    responseTest.then((result) => {
-      console.log("En-tête obtenue du serveur");
-      return result.body();
-    }).then((text) => {
-      console.log("Donnée obtenue du serveur : " + text);
-    });*/
-
-    /*
-    console.log("++++++++++++++++++ URL : " + api + "/login")
-    const response = await fetch(api + "/login", {
-      method: "POST",
-      headers: headerssss,
-      body: JSON.stringify({ "username": username, "password": password })  
-    });
-    
-    const jsonResponse = await response.json();
-    jsonResponse.then((result) => {
-        // Succès si seconde promesse (celle du résutlat) est complète (okay)
-        console.log("Result json:" + result.json())
-        if (result.ok) {
-          return JSON.stringify(result.data);
-        } else {
-          return "Email ou mot de passe erroné";
-        }
-      }).catch((error) => {
-          console.log("Error : " + error);
-          return "Erreur lors du requêtage";
-      });*/
   }
 
-  /*logout() {
-    localStorage.removeItem("token");
-  }*/
+  logout() {
+    if(localStorage.getItem('user')) {
+      localStorage.removeItem("user");
+    }
+    if(sessionStorage.getItem('user')) {
+      sessionStorage.removeItem("user");
+    }
+    
+  }
 
   getCurrentUser() {
-    return JSON.parse(localStorage.getItem('user'));;
+    return JSON.parse(localStorage.getItem('user'));
   }
 }
 
