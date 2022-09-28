@@ -1,21 +1,39 @@
-import { React, useState } from 'react';
+import { React, useState, useRef } from 'react';
 import { Form, ButtonToolbar, Button, Panel, Checkbox, RadioGroup, Radio, DatePicker, DateRangePicker, Stack } from 'rsuite';
 import { BsArrowDownUp } from "react-icons/bs";
 import { CheckBoxDays } from './CheckBoxDays';
 import FormGroup from 'rsuite/esm/FormGroup';
 import FormControl from 'rsuite/esm/FormControl';
-
+import { fetchLocation } from '../services/GeoCodingAPI';
+import { useEffect, useContext } from 'react';
+import { DestinationContext } from '../scenes/BookingForm';
 
 const SearchRidesForm = (props) => {
-    const [valueNbRideSearch, setValueNbRideSearch] = useState("return");
     const [rideType, setRideType] = useState("R");
-    const [afpaValue, setAfpaValue] = useState("AFPA Rochefort");
-    const [destinationValue, setDestinationValue] = useState("");
+    const [arrivalValue, setArrivalValue] = useState("AFPA Rochefort");
+    const [departureValue, setDepartureValue] = useState("");
+    const [isFromAfpa, setIsFromAfpa] = useState(false);
+    const departureInput = useRef();
+    const arrivalInput = useRef();
+    const { destination, setDestination } = useContext(DestinationContext);
+    
+    const getCoordinates = () => {
+        fetchLocation(departureValue).then((res) => {
+            console.log(departureValue);
+            setDestination({
+                lat: res[0].lat,
+                lon: res[0].lon
+            });
+        })
+    }
 
-
-    const nbRideSearchHandler = (event) => {
-        console.log(event.target.value);
-        setValueNbRideSearch(event.target.value)
+    const invertDestinationsInputs = () => {
+        const departure = departureInput.current;
+        const arrival = arrivalInput.current;
+        [departure.name, arrival.name] = [arrival.name, departure.name];
+        const prevArrivalValue = arrivalValue;
+        setArrivalValue(departureValue);
+        setDepartureValue(prevArrivalValue);
     }
 
     const datePickerRanges = [
@@ -34,23 +52,16 @@ const SearchRidesForm = (props) => {
             </RadioGroup>
             <Checkbox >Aller retour</Checkbox>
         </Stack>
-        <Form.Group className='pt-2' controlId='destinationInput'>
+        <Form.Group className='pt-2' ref={departureInput}>
             <Form.ControlLabel>Départ</Form.ControlLabel>
-            <Form.Control name="destination" value={destinationValue}/>
+            <Form.Control name="departure" value={departureValue} onChange={setDepartureValue} />
         </Form.Group>
-        <button className="text-xl w-full flex justify-center">
-            <BsArrowDownUp onClick={() => {
-                const destination = document.querySelector("#destinationInput");
-                const afpa = document.querySelector("#afpaInput");
-                [destination.name, afpa.name] = [afpa.name, destination.name];
-                const temp = afpaValue;
-                setAfpaValue(destinationValue);
-                setDestinationValue(temp);
-            }}/>
+        <button className="text-xl w-full flex justify-center hover:animation-bounce">
+            <BsArrowDownUp onClick={invertDestinationsInputs}/>
         </button>
-        <Form.Group controlId='afpaInput'>
+        <Form.Group ref={arrivalInput}>
             <Form.ControlLabel>Arrivée</Form.ControlLabel>
-            <Form.Control name="afpa" value={afpaValue}/>
+            <Form.Control name="arrival" value={arrivalValue}/>
         </Form.Group>
         <div className='h-36'>
         {rideType === "O" &&
@@ -68,14 +79,14 @@ const SearchRidesForm = (props) => {
                     </RadioGroup>
                 </FormGroup>
                 <FormGroup className='pt-0'>
-                    <Form.ControlLabel>Dates de début - fin</Form.ControlLabel>
-                    <DateRangePicker format="yyyy-MM-dd" ranges={datePickerRanges} placeholder={"aaaa-mm-jj"} showOneCalendar placement='topStart' />
+                    <Form.ControlLabel>Dates de début -&rsaquo; fin</Form.ControlLabel>
+                    <DateRangePicker className='w-full' format="yyyy-MM-dd" ranges={datePickerRanges} character={" -> "} placeholder={"aaaa-mm-jj -> aaaa-mm-jj"} showOneCalendar placement='topStart' />
                 </FormGroup>
             </>
         }
         </div>
-        <FormGroup className='flex justify-end'>
-            <Button appearance="primary">Rechercher</Button>
+        <FormGroup className='flex justify-end my-4'>
+            <Button appearance="primary" onClick={ getCoordinates }>Rechercher</Button>
         </FormGroup>
     </Form>);
 }

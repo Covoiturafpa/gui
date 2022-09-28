@@ -1,9 +1,13 @@
-import React, { useState, useEffect } from 'react';
-import { Content, FlexboxGrid, Col, Button } from 'rsuite';
+import React, { useState, useEffect, createContext } from 'react';
+import { Content, FlexboxGrid, Col } from 'rsuite';
 import { SearchRidesForm } from '../component/SearchRidesForm';
 import { MapLeaflet } from '../component/MapLeaflet';
 
+const DestinationContext = createContext();
+
 const BookingForm = () => {
+
+    const [destination, setDestination] = useState({ lat: null, lon: null });
 
     const [dimensions, setDimensions] = useState({
         height: window.innerHeight,
@@ -38,23 +42,23 @@ const BookingForm = () => {
     return (
         <Content className='h-full w-full flex justify-center align-middle'>
             <FlexboxGrid align='middle' justify='space-around' className='h-full w-full'>
-                <FlexboxGrid.Item as={Col} colspan={22} md={11} className='h-fit flex justify-end'>
-                    {<SearchRidesForm dimensions={dimensions} />}
-                </FlexboxGrid.Item>
-                {window.innerWidth >= 768 &&
-                    <FlexboxGrid.Item as={Col} colspan={22} md={11} className='h-full w-full'>
-                        <MapLeaflet />
+                <DestinationContext.Provider value={{ destination, setDestination }}>
+                    <FlexboxGrid.Item as={Col} colspan={22} md={11} className='h-fit flex justify-end'>
+                        {<SearchRidesForm dimensions={dimensions} />}
                     </FlexboxGrid.Item>
-                }
+                    {window.innerWidth >= 768 &&
+                        <FlexboxGrid.Item as={Col} colspan={22} md={11} className='h-full w-full'>
+                            <MapLeaflet />
+                        </FlexboxGrid.Item>
+                    }
+                </DestinationContext.Provider>
                 <FlexboxGrid.Item colspan={24} md={22} className='bg-green-100 h-full w-full'>
                     {<></>}
                 </FlexboxGrid.Item>
             </FlexboxGrid>
-            <FlexboxGrid>
 
-            </FlexboxGrid>
         </Content>
     );
 }
 
-export { BookingForm };
+export { DestinationContext, BookingForm };
