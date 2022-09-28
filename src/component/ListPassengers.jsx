@@ -6,7 +6,6 @@ import { BsCalendarCheck } from "react-icons/bs";
 
 const ListPassengers = (props) => {
     const [data, setData] = useState(props.passengers);
-    console.log(data);
     function statusIcon(status) {
         if (status == "PENDING") {
             return(<div className="text-yellow-500 text-xl">

@@ -12,13 +12,7 @@ const CheckBoxDays = (props) => {
     const [days, setDays] = useState(props.days);
 
     const handleChange = (event) => {
-        console.log(event.target);
 
-        if (event.target.children.checked) {
-           
-        }else {
-            
-        }
     }
     return (<div className='flex'>
                 {allDays.map((day) => {
