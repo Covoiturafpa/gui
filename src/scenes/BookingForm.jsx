@@ -38,11 +38,11 @@ const BookingForm = () => {
     return (
         <Content className='h-full w-full flex justify-center align-middle'>
             <FlexboxGrid align='middle' justify='space-around' className='h-full w-full'>
-                <FlexboxGrid.Item as={Col} colspan={22} md={11} className='flex justify-end'>
-                    {<SearchRidesForm />}
+                <FlexboxGrid.Item as={Col} colspan={22} md={11} className='h-fit flex justify-end'>
+                    {<SearchRidesForm dimensions={dimensions} />}
                 </FlexboxGrid.Item>
                 {window.innerWidth >= 768 &&
-                    <FlexboxGrid.Item as={Col} colspan={22} md={11} className='h-96 w-full'>
+                    <FlexboxGrid.Item as={Col} colspan={22} md={11} className='h-full w-full'>
                         <MapLeaflet />
                     </FlexboxGrid.Item>
                 }

@@ -2,7 +2,6 @@ import React from 'react';
 import { Route, Routes, Navigate } from 'react-router-dom';
 
 import { Content } from 'rsuite';
-import { Leaflet } from '../component/MapLeaflet';
 import { LoginForm } from '../component/LoginForm';
 import { RegistrationForm } from '../component/RegistrationForm';
 import { Accueil } from './Accueil';
