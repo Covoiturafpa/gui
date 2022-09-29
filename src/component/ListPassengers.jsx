@@ -5,7 +5,7 @@ import { FiAlertCircle, FiXCircle, FiArrowRight} from "react-icons/fi";
 import { BsCalendarCheck } from "react-icons/bs";
 
 const ListPassengers = (props) => {
-    const [data, setData] = useState(props.passengers);
+    const [data, setData] = useState(props.requestedPassengers);
     function statusIcon(status) {
         if (status == "PENDING") {
             return(<div className="text-yellow-500 text-xl">
