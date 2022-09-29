@@ -31,7 +31,6 @@ const SidebarNavigation = () => {
     }, [stateLogin])
 
     useEffect(() => {
-        debugger;
         if(activeKey === "deconnexion") {
             AuthService.logout();
             setLogin({});
@@ -59,16 +58,16 @@ const SidebarNavigation = () => {
                             <Nav.Item eventKey="mes_trajets" icon={<ListUl />}>
                                 <p>Mes trajets</p>
                             </Nav.Item>
-                            {rolesUser.includes('ROLE_ADMIN') ? <>
-                                {rolesUser.includes('ROLE_TEACHER') ?
-                                    <Nav.Item eventKey="gestion_utilisateurs" icon={<Group />}>
-                                        <p>Gestion des utilisateurs</p>
-                                    </Nav.Item>
-                                : "" }
+                            {rolesUser.includes('ROLE_TEACHER') || rolesUser.includes('ROLE_ADMIN') ?
+                                <Nav.Item eventKey="gestion_utilisateurs" icon={<Group />}>
+                                    <p>Gestion des utilisateurs</p>
+                                </Nav.Item>
+                            : "" }
+                            {rolesUser.includes('ROLE_ADMIN') ? 
                                 <Nav.Item eventKey="gestion_centre" icon={<GearCircle />}>
                                     <p>Gestion du centre</p>
                                 </Nav.Item>
-                            </> : "" }
+                            : "" }
                         </Nav>
                         <div>
                         <Nav activeKey={activeKey} onSelect={setActiveKey}>

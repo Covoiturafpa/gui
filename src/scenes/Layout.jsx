@@ -14,7 +14,6 @@ const Layout = (props) => {
   const [showSidebar, setShowSidebar] = useState(false);
 
   useEffect(() => {
-    debugger;
     if(sessionStorage.getItem('user') || localStorage.getItem('user')) {
       setShowSidebar(true);
     }else {

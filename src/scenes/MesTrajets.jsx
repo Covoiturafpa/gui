@@ -14,9 +14,11 @@ const MesTrajets = () => {
     const [error, setError] = useState(null);
     const setLogin = useSetLogin();
     const stateLogin = useTrackedLogin();
+    const [headers, setHeaders] = useState(AuthHeader());
     
     useEffect(() => {
-        fetch(api + "/users/"+ stateLogin.idUser + "/rides")
+        console.log(headers);
+        fetch(api + "/users/"+ stateLogin.userId + "/rides", headers)
         .then(res => res.json())
         .then(
             (result) => {
