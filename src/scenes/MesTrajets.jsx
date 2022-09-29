@@ -14,18 +14,26 @@ const MesTrajets = () => {
     const [error, setError] = useState(null);
     const setLogin = useSetLogin();
     const stateLogin = useTrackedLogin();
-    
+    const [headersss, setHeaders] = useState(authHeader());
+
+
     useEffect(() => {
-        fetch(api + "/users/"+ stateLogin.userId + "/rides", authHeader())
+        console.log(headersss.get("Authorization"));
+        fetch(api + "/users/"+ stateLogin.userId + "/rides", { 
+            method: "GET",
+            headers : headersss,
+            mode : "cors"
+        })
         .then(res => res.json())
         .then(
             (result) => {
                 setRideOwned([]);
                 setRideRequested([]);
+                console.log(result);
                 result.map(item => {
-                    const passengers = item.possiblePassengers;
+                    const passengers = item.requestedPassengers;
                     passengers.map(userToRide => {
-                        if(userToRide.user.id === stateLogin.idUser) {
+                        if(userToRide.person.id === stateLogin.idUser) {
                             if(userToRide.isDriver) {
                                 setRideOwned(rideOwned => [ item,...rideOwned]);
                             }else if(!userToRide.isDriver) {
@@ -50,6 +58,7 @@ const MesTrajets = () => {
 
 
     if (error) {
+
         return <div>Erreur : {error.message}</div>;
     } else if (!isLoaded) {
         return <div>Chargement...</div>;
