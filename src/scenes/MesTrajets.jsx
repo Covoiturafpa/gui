@@ -3,7 +3,7 @@ import { TableProposedRides } from '../component/TableProposedRides';
 import { TableRequestedRides } from '../component/TableRequestedRides';
 import { api } from '../config/api';
 import { useSetLogin, useTrackedLogin } from '../services/UserLogin';
-import AuthHeader from "../services/AuthHeader";
+import  authHeader  from "../services/AuthHeader";
 
 
 
@@ -14,11 +14,9 @@ const MesTrajets = () => {
     const [error, setError] = useState(null);
     const setLogin = useSetLogin();
     const stateLogin = useTrackedLogin();
-    const [headers, setHeaders] = useState(AuthHeader());
     
     useEffect(() => {
-        console.log(headers);
-        fetch(api + "/users/"+ stateLogin.userId + "/rides", headers)
+        fetch(api + "/users/"+ stateLogin.userId + "/rides", authHeader())
         .then(res => res.json())
         .then(
             (result) => {
