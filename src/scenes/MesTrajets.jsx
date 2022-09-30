@@ -18,7 +18,6 @@ const MesTrajets = () => {
 
 
     useEffect(() => {
-        console.log(headersss.get("Authorization"));
         fetch(api + "/users/"+ stateLogin.userId + "/rides", { 
             method: "GET",
             headers : headersss,
@@ -73,10 +72,10 @@ const MesTrajets = () => {
             <div className='container mx-auto px-4'>
                 <h1 className="text-center">Mes trajets</h1>
                 <div className='my-3'>
-                    <TableProposedRides id={stateLogin.idUser} rides={rideOwned} />
+                    <TableProposedRides id={stateLogin.userId} rides={rideOwned} />
                 </div>
                 <div className='my-3'>
-                   <TableRequestedRides id={stateLogin.idUser} rides={rideRequested} />
+                   <TableRequestedRides id={stateLogin.userId} rides={rideRequested} />
                 </div>
             </div>
         );

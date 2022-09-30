@@ -87,7 +87,7 @@ const TableProposedRides = (props) => {
      
 
         if(onEdit) {
-            return(<DetailOfRide isOwner={true} idUser={props.id} {...onEdit}/>);
+            return(<DetailOfRide isOwner={true} userId={props.id} {...onEdit}/>);
         }else if(props.rides == 0){
             return (
                 <div>
