@@ -1,9 +1,8 @@
 import { React, useState, useRef } from 'react';
-import { Form, ButtonToolbar, Button, Panel, Checkbox, RadioGroup, Radio, DatePicker, DateRangePicker, Stack } from 'rsuite';
+import { Form, Button, Checkbox, RadioGroup, Radio, DatePicker, DateRangePicker, Stack } from 'rsuite';
 import { BsArrowDownUp } from "react-icons/bs";
 import { CheckBoxDays } from './CheckBoxDays';
 import FormGroup from 'rsuite/esm/FormGroup';
-import FormControl from 'rsuite/esm/FormControl';
 import { fetchLocation } from '../services/GeoCodingAPI';
 import { useEffect, useContext } from 'react';
 import { DestinationContext } from '../scenes/BookingForm';
@@ -17,24 +16,49 @@ const SearchRidesForm = (props) => {
     const arrivalInput = useRef();
     const { destination, setDestination } = useContext(DestinationContext);
     
-    const getCoordinates = () => {
-        fetchLocation(departureValue).then((res) => {
-            console.log(departureValue);
-            setDestination({
-                lat: res[0].lat,
-                lon: res[0].lon
-            });
-        })
+    const updateCoordinates = () => {
+        let inputValue = departureInput.current.firstChild.value;
+
+        if (isFromAfpa) {
+            inputValue = arrivalInput.current.firstChild.value;
+        }
+        fetchLocation(inputValue).then((res) => {
+            if (res) {
+                setDestination({
+                    lat: res[0].lat,
+                    lon: res[0].lon
+                });
+            } else {
+                setDestination({
+                    lat: null,
+                    lon: null
+                })
+            }
+        });
     }
 
     const invertDestinationsInputs = () => {
         const departure = departureInput.current;
         const arrival = arrivalInput.current;
         [departure.name, arrival.name] = [arrival.name, departure.name];
+
         const prevArrivalValue = arrivalValue;
         setArrivalValue(departureValue);
         setDepartureValue(prevArrivalValue);
+
+        setIsFromAfpa(!isFromAfpa);
     }
+
+    // useEffect(() => {
+    //     if (departureInput && departureInput.current) {
+    //         console.log("entrée if")
+    //         departureInput.current.addEventListener("blur", () => {
+    //             console.log(departureInput.current.value)
+    //             setDepartureValue(departureInput.current.value);
+    //             getCoordinates(departureInput.current.value);
+    //         })
+    //     }
+    // }, [])
 
     const datePickerRanges = [
         {
@@ -46,22 +70,22 @@ const SearchRidesForm = (props) => {
 
     return (<Form fluid>
         <Stack wrap>
-            <RadioGroup inline={true} value={rideType} onChange={setRideType} className='mr-4'>
+            <RadioGroup inline={true} value={rideType} onChange={setRideType} on className='mr-4'>
                 <Radio value="O" >Ponctuel</Radio>
                 <Radio value="R" >Régulier</Radio>
             </RadioGroup>
             <Checkbox >Aller retour</Checkbox>
         </Stack>
-        <Form.Group className='pt-2' ref={departureInput}>
+        <Form.Group className='pt-2' >
             <Form.ControlLabel>Départ</Form.ControlLabel>
-            <Form.Control name="departure" value={departureValue} onChange={setDepartureValue} />
+            <Form.Control name="departure" value={departureValue} ref={departureInput} onChange={setDepartureValue} onBlur={updateCoordinates}  readOnly={isFromAfpa} />
         </Form.Group>
-        <button className="text-xl w-full flex justify-center hover:animation-bounce">
+        <button className="text-xl w-full flex justify-center">
             <BsArrowDownUp onClick={invertDestinationsInputs}/>
         </button>
-        <Form.Group ref={arrivalInput}>
+        <Form.Group>
             <Form.ControlLabel>Arrivée</Form.ControlLabel>
-            <Form.Control name="arrival" value={arrivalValue}/>
+            <Form.Control name="arrival" value={arrivalValue} ref={arrivalInput} onChange={setArrivalValue} onBlur={updateCoordinates} readOnly={!isFromAfpa}/>
         </Form.Group>
         <div className='h-36'>
         {rideType === "O" &&
@@ -80,13 +104,14 @@ const SearchRidesForm = (props) => {
                 </FormGroup>
                 <FormGroup className='pt-0'>
                     <Form.ControlLabel>Dates de début -&rsaquo; fin</Form.ControlLabel>
-                    <DateRangePicker className='w-full' format="yyyy-MM-dd" ranges={datePickerRanges} character={" -> "} placeholder={"aaaa-mm-jj -> aaaa-mm-jj"} showOneCalendar placement='topStart' />
+                    <DateRangePicker className='w-full' format="yyyy-MM-dd" ranges={datePickerRanges} character={" -> "} 
+                                     placeholder={"aaaa-mm-jj -> aaaa-mm-jj"} showOneCalendar placement='topStart' />
                 </FormGroup>
             </>
         }
         </div>
         <FormGroup className='flex justify-end my-4'>
-            <Button appearance="primary" onClick={ getCoordinates }>Rechercher</Button>
+            <Button appearance="primary" onClick={ updateCoordinates }>Rechercher</Button>
         </FormGroup>
     </Form>);
 }

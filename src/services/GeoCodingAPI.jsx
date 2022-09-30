@@ -7,11 +7,15 @@ const options = {
 };
 
 const fetchLocation = async (address) => {
-    const request = `https://forward-reverse-geocoding.p.rapidapi.com/v1/search?q=${address}&accept-language=en&polygon_threshold=0.0`;
-    const response = await fetch(request, options)
-        .then(response => response.json())
-        .catch(err => console.error(err));
-        return response;
+    if (address.length != 0) {
+        const request = `https://forward-reverse-geocoding.p.rapidapi.com/v1/search?q=${address}&accept-language=en&polygon_threshold=0.0`;
+        const response = await fetch(request, options)
+            .then(response => response.json())
+            .catch(err => console.error(err));
+            return response;
+    } else {
+        return null;
+    }
 }
 
 export { fetchLocation };
