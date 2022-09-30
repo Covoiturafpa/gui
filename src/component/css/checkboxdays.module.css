@@ -6,23 +6,34 @@
     z-index: 10000000;
 }
 
+.motherdiv {
+    position: absolute;
+    top: 13px;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    border: 1px solid black;
+    border-radius: 100%;
+    width: 20px;
+    height: 20px;
+}
 
-[type="checkbox"]:checked + label {
+[type="checkbox"]:checked + .motherdiv {
+    font-size: 1.1rem;
     background: black;
     color: white;
     text-align: center;
     cursor: pointer;
-
+    vertical-align: 15px;
 }
-.labelcheckbox {
 
+.labelcheckbox {
+    margin-top: -2.5px;
+    align-self: center;
+    font-size: 1.1rem;
+    font-weight: 400;
     user-select: none;
-    width: 20px;
-    height: 20px;
-    position: absolute;
-    margin-left: -20px;
-    border: 1px solid black;
-    border-radius: 100%;
     cursor: pointer;
-    text-align: center;
+    text-align : center;
+    writing-mode: horizontal-tb;
 }

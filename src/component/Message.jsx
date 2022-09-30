@@ -1,8 +1,10 @@
 import { Panel } from "rsuite";
-import { CharacterAuthorize, Member, InfoRound, CheckRound, BlockRound, Trash } from '@rsuite/icons';
+import { Member, InfoRound, CheckRound, BlockRound, Trash } from '@rsuite/icons';
 
-function returnByNotifType(type, nt_value, nr_value, ar_value, rr_value) {
+function returnByNotifType(type, ne_value, nt_value, nr_value, ar_value, rr_value) {
     switch (type) {
+        case "NEW_EMPLOYEE":
+            return ne_value;
         case "NEW_TRAINEE":
             return nt_value;
         case "NEW_RESERVATION":
@@ -17,7 +19,7 @@ function returnByNotifType(type, nt_value, nr_value, ar_value, rr_value) {
 }
 
 function createHeaderText(type) {
-    return returnByNotifType(type, "Nouveau Stagiaire", "Nouvelle Réservation", "Réservation acceptée", "Réservation Refusée")
+    return returnByNotifType(type, "Nouvel.le Employé.e", "Nouveau Stagiaire", "Nouvelle Réservation", "Réservation Acceptée", "Réservation Refusée")
 }
 
 const HeaderContent = (props) => {
@@ -26,12 +28,12 @@ const HeaderContent = (props) => {
 
 const MessageIcon = (props) => {
     let iconSize = "1.4em";
-    return returnByNotifType(props.type, <Member fontSize={iconSize} color="#f5a623"/>, <InfoRound fontSize={iconSize} color="blue"/>, <CheckRound fontSize={iconSize} color="green"/>, <BlockRound fontSize={iconSize} color="red"/>);
+    return returnByNotifType(props.type, <Member fontSize={iconSize} color="#f5a623"/>, <Member fontSize={iconSize} color="#f5a623"/>, <InfoRound fontSize={iconSize} color="blue"/>, <CheckRound fontSize={iconSize} color="green"/>, <BlockRound fontSize={iconSize} color="red"/>);
 }
 
 //TODO: couleur selon type et déjà lu = grisé
 function createBackgroundColor (type, unread) {
-    let backgroundColor = returnByNotifType(type, "bg-yellow-100", "bg-blue-100", "bg-green-100", "bg-red-100");
+    let backgroundColor = returnByNotifType(type, "bg-yellow-100", "bg-yellow-100", "bg-blue-100", "bg-green-100", "bg-red-100");
     if (unread === true) {
         return backgroundColor;
     }

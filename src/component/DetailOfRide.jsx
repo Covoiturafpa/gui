@@ -8,24 +8,31 @@ import { ListRow } from './ListRow';
 import { FaEuroSign } from "react-icons/fa";
 import { ListPassengers } from './ListPassengers';
 import { api } from '../config/api';
+import  authHeader  from "../services/AuthHeader";
 
 const DetailOfRide = (props) => {
     const [dataCar, setDataCar] = useState();
     const [carSelect, setCarSelect] = useState();
     const [isLoaded, setIsLoaded] = useState(false);
     const [error, setError] = useState(null);
+    const [headerss, setHeaders] = useState(authHeader());
 
     useEffect(() => {
-        fetch(api + "/users/" + props.idUser)
+        fetch(api + "/users/" + props.userId, { 
+            method: "GET",
+            headers : headerss,
+            mode : "cors"
+        })
         .then(res => res.json())
         .then(
             (result) => {
+                console.log(result);
                 const dataResult = result.cars.map(
                     car => ({ label: car.model, value: car.model, key: car.id })
                   );
                 setDataCar(dataResult); 
                 dataResult.map(item =>{
-                    if(item.key == props.car.id) {
+                    if(item.key == props.cars.model) {
                         setCarSelect(item.label);
                         setIsLoaded(true);
                     }
@@ -57,7 +64,7 @@ const DetailOfRide = (props) => {
             </h6>
             <List>
                 <ListRow label="Conducteur">
-                    {props.possiblePassengers.map(passenger => {
+                    {props.requestedPassengers.map(passenger => {
                         if(passenger.isDriver) {
                             return(<label>{ passenger.user.surname } {passenger.user.firstName.charAt(0)}.</label>);
                         }
@@ -100,9 +107,9 @@ const DetailOfRide = (props) => {
                 : "" }
                 <ListRow label="Nombre de place">
                     { props.isOwner ? <div style={{ width: 230 }}>
-                                            <InputNumber defaultValue={props.car.seats}/>
+                                            <InputNumber defaultValue={props.car.freeSeats}/>
                                         </div>
-                                    : <label>{props.car.seats}</label> }
+                                    : <label>{props.car.freeSeats}</label> }
                 </ListRow>
                 <ListRow label="Prix">
                 { props.isOwner ? <InputGroup inside style={{ width: 230 }}>
@@ -125,7 +132,7 @@ const DetailOfRide = (props) => {
                 </ListRow>
                 {props.isOwner ? 
                     <ListRow label="Passagers">
-                        <ListPassengers passengers={props.possiblePassengers}/>
+                        <ListPassengers passengers={props.requestedPassengers}/>
                     </ListRow>
                                 : "" }
             </List>
