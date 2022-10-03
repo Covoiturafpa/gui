@@ -5,7 +5,14 @@ import { MapContainer, TileLayer, Marker, Popup, Icon, useMap } from 'react-leaf
 import L from 'leaflet';
 import "leaflet-routing-machine";
 import { DestinationContext as DestinationContext } from "../scenes/BookingForm";
+import authHeader from '../services/AuthHeader';
+import FetchService from "../services/FetchService";
 
+let centreInformations = null;
+
+FetchService.get("/centre").then((result) => {
+    centreInformations = result;
+})
 
 const afpaIcon = new L.Icon({
     iconUrl: require(`../assets/LogoAfpa.jpg`),
