@@ -9,20 +9,6 @@ class FetchService {
         this.header = authHeader();
     }
 
-    async fetchDB(method, endpoint, body = null) {
-        let data = null;
-        await fetch(this.api + endpoint, {
-            method: method,
-            headers: this.header,
-            body: body
-        }).then((response) => {
-            return response.json();
-        }).then((result) => {
-            data = result;
-        })
-        return data;
-    }
-
     get(endpoint) {
         try {
             let response = this.fetchDB("GET", endpoint);
@@ -66,6 +52,20 @@ class FetchService {
         } catch (error) {
             return { "errorMessage": error.message };
         }
+    }
+
+    async fetchDB(method, endpoint, body = null) {
+        let data = null;
+        await fetch(this.api + endpoint, {
+            method: method,
+            headers: this.header,
+            body: body
+        }).then((response) => {
+            return response.json();
+        }).then((result) => {
+            data = result;
+        })
+        return data;
     }
 }
 
