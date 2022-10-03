@@ -16,7 +16,7 @@ async function fetchNotifications(id) {
         if (!response.ok) {
             let message = `Erreur ${response.status}`;
             throw new Error(message);
-        }
+        } 
         notifications = await response.json();
     }
     catch(error) {
@@ -79,7 +79,7 @@ const Notification = () => {
     const [readNotifications, setReadNotifications] = useState([]);
     const [isLoaded, setIsLoaded] = useState(false);
 
-    let idUser = 97
+    let idUser = 97;
 
     useEffect(() => {
         if (!isLoaded) {

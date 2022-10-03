@@ -69,6 +69,20 @@ class FetchService {
             return { "errorMessage": error.message };
         }
     }
+
+    async fetchDB(method, endpoint, body = null) {
+        let data = null;
+        await fetch(this.api + endpoint, {
+            method: method,
+            headers: this.header,
+            body: body
+        }).then((response) => {
+            return response.json();
+        }).then((result) => {
+            data = result;
+        })
+        return data;
+    }
 }
 
 export default new FetchService();
