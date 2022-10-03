@@ -65,11 +65,9 @@ const Routing = ({ waypoints }) => {
     const map = useMap();
 
     useEffect(() => {
-        if (!map || Object.keys(waypoints).length === 0) {
-            return;
-        }
-        if (Object.keys(waypoints).length != 0 && (waypoints.destination.lat === null
-            || waypoints.destination.lon === null)) {
+        if (!map 
+            || Object.keys(waypoints).length === 0 
+            || (waypoints.destination.lat === null || waypoints.destination.lon === null)) {
             return;
         }
         const routingControl = L.Routing.control({
@@ -80,11 +78,10 @@ const Routing = ({ waypoints }) => {
             lineOptions: {
                 styles: [{ color: "#6FA1EC", weight: 4 }]
             },
-            summaryTemplate: "<div>allo</div>",
+            summaryTemplate: "",
             itineraryClassName: styles.hide,
             fitSelectedRoutes: true
         }).addTo(map);
-
 
         return () => map.removeControl(routingControl);
     }, [waypoints]);
