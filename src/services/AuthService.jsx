@@ -38,11 +38,11 @@ class AuthService {
     
   }
 
-  getCurrentUser() {
+  getCurrentUserId() {
     if(localStorage.getItem('user')) {
-      return JSON.parse(localStorage.getItem('user'));
+      return localStorage.getItem('user').userId;
     }else if(sessionStorage.getItem('user')){
-      return JSON.parse(sessionStorage.getItem('user'));
+      return sessionStorage.getItem('user').userId;
     }
   }
 }
