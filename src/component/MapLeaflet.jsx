@@ -8,12 +8,6 @@ import { DestinationContext as DestinationContext } from "../scenes/BookingForm"
 import authHeader from '../services/AuthHeader';
 import FetchService from "../services/FetchService";
 
-let centreInformations = null;
-
-FetchService.get("/centre").then((result) => {
-    centreInformations = result;
-})
-
 const afpaIcon = new L.Icon({
     iconUrl: require(`../assets/LogoAfpa.jpg`),
     iconSize: [60, 30],
@@ -23,9 +17,12 @@ const afpaIcon = new L.Icon({
 
 const MapLeaflet = () => {
 
+
+
     const { destination } = useContext(DestinationContext);
     const [waypoints, setWaypoints] = useState({});
-    const afpaPos = [45.95810, -0.96423];
+    const [afpaPos, setAfpaPos] = useState([0, 0])
+    // [45.95810, -0.96423];
 
 
     delete L.Icon.Default.prototype._getIconUrl;
@@ -34,6 +31,13 @@ const MapLeaflet = () => {
         iconUrl: require('leaflet/dist/images/marker-icon.png'),
         shadowUrl: require('leaflet/dist/images/marker-shadow.png')
     });
+
+    useEffect(() => {
+        FetchService.get("/centre").then((data) => {
+            const centreInformations = data;
+            setAfpaPos([centreInformations.latitude, centreInformations.longitude]);
+        })
+    }, [])
 
     useEffect(() => {
 
@@ -72,8 +76,8 @@ const Routing = ({ waypoints }) => {
     const map = useMap();
 
     useEffect(() => {
-        if (!map 
-            || Object.keys(waypoints).length === 0 
+        if (!map
+            || Object.keys(waypoints).length === 0
             || (waypoints.destination.lat === null || waypoints.destination.lon === null)) {
             return;
         }
