@@ -3,42 +3,18 @@ import React from 'react';
 import { useEffect } from 'react';
 import { useState } from 'react';
 import FetchService from '../services/FetchService';
-
-// async function fetchHasNewNotifications(id) {
-//     let options = {
-//         method: "GET",
-//         headers: {
-//             "Content-type": "application/json;charset=UTF-8"
-//         },
-//         mode: "cors"
-//     }
-//     let hasNewNotifications = null;
-//     try {
-//         let response = await fetch(api + "/users/" + id + "/new_notifications", options);
-//         if (!response.ok) {
-//             let message = `Erreur ${response.status}`;
-//             throw new Error(message);
-//         }
-//         hasNewNotifications = await response.json();
-//     }
-//     catch(error) {
-//         console.log(error.message);
-//     }
-//     return hasNewNotifications;
-// }
+import AuthService from '../services/AuthService';
 
 const BellNotification = () => {
 
-    let idUser = 51;
-    
     function fetchHasNewNotifications() {
-        FetchService.get("/users/" + idUser + "/new_notifications").then(data => {
+        FetchService.get("/users/" + AuthService.getCurrentUserId() + "/new_notifications").then(data => {
             setHasNewNotifications(data);
         });
     }
 
-    let [hasNewNotifications, setHasNewNotifications] = useState(false);
-    let [intervalId, setIntervalId] = useState(null);
+    const [hasNewNotifications, setHasNewNotifications] = useState(false);
+    const [intervalId, setIntervalId] = useState(null);
 
     useEffect(() => {
         if (intervalId === null) {
@@ -49,7 +25,7 @@ const BellNotification = () => {
     }, []);
 
     return (<>
-        { hasNewNotifications && <span className="flex h-2 w-2 absolute top-2 left-8 z-10">
+        {hasNewNotifications && <span className="flex h-2 w-2 absolute top-2 left-8 z-10">
             <span className="animate-ping absolute inline-flex h-full w-full rounded-full bg-red-400 opacity-75"></span>
             <span className="relative inline-flex rounded-full h-2 w-2 bg-red-500"></span>
         </span>}

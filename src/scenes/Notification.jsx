@@ -1,46 +1,8 @@
 import React, { useState, useEffect } from 'react';
 import { Message } from '../component/Message';
 import { api } from '../config/api';
-
-async function fetchNotifications(id) {
-    let options = {
-        method: "GET",
-        headers: {
-            "Content-type": "application/json;charset=UTF-8"
-        },
-        mode: "cors"
-    }
-    let notifications = null;
-    try {
-        let response = await fetch(api + "/users/" + id + "/notifications", options);
-        if (!response.ok) {
-            let message = `Erreur ${response.status}`;
-            throw new Error(message);
-        } 
-        notifications = await response.json();
-    }
-    catch(error) {
-        console.log(error.message);
-    }
-    return notifications;
-}
-
-async function setAsReadAllNotifications(id) {
-    let options = {
-        method: "PUT",
-        mode: "cors"
-    }
-    try {
-        let response = await fetch(api + "/users/" + id + "/notifications", options);
-        if (!response.ok) {
-            let message = `Erreur ${response.status}`;
-            throw new Error(message);
-        }
-    }
-    catch(error) {
-        console.log(error.message);
-    }
-}
+import FetchService from '../services/FetchService';
+import AuthService from '../services/AuthService';
 
 function compareNotifications(notifA, notifB) {
     if (notifA.isUnread && !notifB.isUnread) {
@@ -74,31 +36,43 @@ function isLastUnreadNotif(notification, index, notifications) {
     return false;
 }
 
+const NotificationsDiv = (props) => {
+    return (<>
+                {(props.array.length > 0) && <div>
+                    <h2 className='text-2xl text-center'>{props.name}</h2>
+                    <ul className='p-2'>
+                        {props.array.map((notification) => (<li key={notification.id} className="m-2"><Message {...notification}/></li>))}
+                    </ul>
+                </div>}
+            </>)
+}
+
 const Notification = () => {
+
+    function fillNotificationArrays(data) {
+        let lastUnreadNotifIndex = data.findIndex(isLastUnreadNotif);
+        if (lastUnreadNotifIndex === -1) {
+            setReadNotifications(data);
+        }
+        else {
+            setUnreadNotifications(data.slice(0, lastUnreadNotifIndex + 1));
+            setReadNotifications(data.slice(lastUnreadNotifIndex + 1));
+        }
+    }
+
     const [unreadNotifications, setUnreadNotifications] = useState([]);
     const [readNotifications, setReadNotifications] = useState([]);
     const [isLoaded, setIsLoaded] = useState(false);
 
-    let idUser = 97;
-
     useEffect(() => {
         if (!isLoaded) {
-            fetchNotifications(idUser).then(data => {
+            FetchService.get("/users/" + AuthService.getCurrentUserId() + "/notifications").then(data => {
                 data.sort(compareNotifications);
-                let lastUnreadNotifIndex = data.findIndex(isLastUnreadNotif);
-                if (lastUnreadNotifIndex === -1) {
-                    setReadNotifications(data);
-                }
-                else {
-                    setUnreadNotifications(data.slice(0, lastUnreadNotifIndex + 1));
-                    setReadNotifications(data.slice(lastUnreadNotifIndex + 1));
-                }
+                fillNotificationArrays(data);
             });
             setIsLoaded(true);
         }
-        if (isLoaded) {
-            //setAsReadAllNotifications(idUser);
-        }
+        return () => {FetchService.put("/users/" + AuthService.getCurrentUserId() + "/notifications", {...unreadNotifications});}
     }, []);
 
     if (!isLoaded) {
@@ -106,14 +80,8 @@ const Notification = () => {
     }
     else {
         return (<>
-                    <h2 className='text-2xl text-center'>Nouvelles notifications</h2>
-                    <ul className='p-2'>
-                        {unreadNotifications.map((notification) => (<li key={notification.id} className="m-2"><Message {...notification}/></li>))}
-                    </ul>
-                    <h2 className='text-2xl text-center'>Anciennes notifications</h2>
-                    <ul className='p-2'>
-                        {readNotifications.map((notification) => (<li key={notification.id} className="m-2"><Message {...notification}/></li>))}
-                    </ul>
+                    <NotificationsDiv {...{name:"Nouvelles Notifications", array:unreadNotifications}}/>
+                    <NotificationsDiv {...{name:"Anciennes Notifications", array:readNotifications}}/>
                 </>);
     }
 }
