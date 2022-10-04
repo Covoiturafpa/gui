@@ -81,15 +81,15 @@
      inkscape:pagecheckerboard="0"
      inkscape:deskcolor="#d1d1d1"
      showgrid="false"
-     inkscape:zoom="6.3412324"
-     inkscape:cx="34.062779"
-     inkscape:cy="45.417039"
+     inkscape:zoom="8.9678569"
+     inkscape:cx="52.465155"
+     inkscape:cy="35.348468"
      inkscape:window-width="1920"
      inkscape:window-height="1017"
      inkscape:window-x="1912"
      inkscape:window-y="-8"
      inkscape:window-maximized="1"
-     inkscape:current-layer="svg2" />
+     inkscape:current-layer="g1091" />
   <image
      width="78.666664"
      height="93.333336"
@@ -103,6 +103,11 @@
   <g
      id="g1091">
     <path
+       d="m 68.450294,31.608753 c 0.339053,-0.405318 0.519205,-0.981457 0.681313,-1.431424 0.555128,-1.540896 0.645637,-2.48199 0.70828,-7.364621 l 0.05777,-4.502935 -3.721418,0.0586 c -3.989574,0.06283 -4.823394,0.15247 -6.583968,0.70785 -3.023854,0.953887 -5.513537,3.036833 -6.538592,5.47039 -1.234593,2.931015 -0.467452,6.107454 2.083399,8.62657 2.245682,2.217744 5.289905,2.711705 8.022594,2.227092 2.136315,-0.378852 3.898529,-2.127357 5.290622,-3.791522 z"
+       style="display:inline;fill:#ffffff;fill-opacity:1;stroke-width:0.111509"
+       id="path439"
+       sodipodi:nodetypes="asscssssaa" />
+    <path
        style="display:inline;fill:#85bc26;fill-opacity:1;stroke-width:0.111509"
        d="M 14,64.450442 C 8.650387,57.619788 3.2429082,50.282077 1,41.900815 -0.04700106,37.988399 0.30470983,33.740512 1,29.750552 1.6767131,25.867197 2.6386765,22.259987 5,18.621964 7.3613235,14.983941 9.7993487,11.390781 13,8.5302044 c 2.930111,-2.618782 6.222236,-5.1617477 10,-6.2443682 9.613046,-2.75487813 20.386954,-2.75487813 30,0 3.777764,1.0826205 7.069889,3.6255862 10,6.2443682 3.200651,2.8605766 5.873706,6.3932636 8,10.0917596 2.126294,3.698496 3.590737,7.64285 4.225228,11.75938 0.585381,3.79791 0.60139,7.823472 -0.450456,11.519471 C 72.41011,50.209818 67.012187,57.414169 62,64.450442 c -6.434372,9.032783 -22,24.95858 -22,24.95858 0,0 -18.592609,-15.500452 -26,-24.95858 z M 63.176953,35.374583 c 2.084742,-0.583258 4.243584,-2.130392 5.290621,-3.791526 0.212615,-0.337316 0.519205,-0.981457 0.681313,-1.431424 0.555128,-1.540896 0.645637,-2.48199 0.70828,-7.364621 l 0.05777,-4.502935 -3.721418,0.0586 c -3.989574,0.06283 -4.823394,0.15247 -6.583968,0.70785 -3.023854,0.953887 -5.513537,3.036833 -6.538592,5.47039 -1.234593,2.931015 -0.467452,6.107454 2.083399,8.62657 2.245682,2.217744 5.162166,3.027368 8.022594,2.227092 z"
        id="path655"
@@ -110,12 +115,16 @@
     <text
        xml:space="preserve"
        id="text915"
-       style="font-style:normal;font-variant:normal;font-weight:500;font-stretch:normal;font-size:24px;font-family:Gotham;-inkscape-font-specification:'Gotham Medium';letter-spacing:-1.3px;white-space:pre;shape-inside:url(#rect917);fill:#000000"
+       style="font-style:normal;font-variant:normal;font-weight:500;font-stretch:normal;font-size:24px;font-family:Gotham;-inkscape-font-specification:'Gotham Medium';letter-spacing:-1.3px;white-space:pre;shape-inside:url(#rect917);display:inline;fill:#000000"
        transform="translate(0.2802402,-0.2600338)"><tspan
          x="6.6914062"
          y="48.779143"
-         id="tspan1112"><tspan
+         id="tspan526"><tspan
            style="font-weight:normal;-inkscape-font-specification:Gotham"
-           id="tspan1110">Afpa</tspan></tspan></text>
+           id="tspan524">Afpa</tspan></tspan></text>
   </g>
+  <g
+     inkscape:groupmode="layer"
+     id="layer2"
+     inkscape:label="Layer 1" />
 </svg>
