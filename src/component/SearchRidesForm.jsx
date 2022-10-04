@@ -17,9 +17,9 @@ const SearchRidesForm = (props) => {
     const arrivalInput = useRef();
     const { destination, setDestination } = useContext(DestinationContext);
 
-    FetchService.get("/users/51/rides").then((data) => {
-        console.log(data)
-    })
+    // FetchService.get("/users/51/rides").then((data) => {
+    //     console.log(data)
+    // })
 
     const updateCoordinates = () => {
         let inputValue = departureInput.current.firstChild.value;

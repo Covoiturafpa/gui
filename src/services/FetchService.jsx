@@ -11,7 +11,7 @@ class FetchService {
 
     get(endpoint) {
         try {
-            let response = this.fetchDB("GET", endpoint);
+            let response = this.fetchAPI("GET", endpoint);
             return response;
         } catch (error) {
             return { "errorMessage": error.message };
@@ -20,7 +20,7 @@ class FetchService {
 
     post(endpoint, body) {
         try {
-            let response = this.fetchDB("POST", endpoint, body);
+            let response = this.fetchAPI("POST", endpoint, body);
             return response;
         } catch (error) {
             return { "errorMessage": error.message };
@@ -29,7 +29,7 @@ class FetchService {
 
     patch(endpoint, body) {
         try {
-            let response = this.fetchDB("PATCH", endpoint, body);
+            let response = this.fetchAPI("PATCH", endpoint, body);
             return response;
         } catch (error) {
             return { "errorMessage": error.message };
@@ -38,7 +38,7 @@ class FetchService {
 
     put(endpoint, body) {
         try {
-            let response = this.fetchDB("PUT", endpoint, body);
+            let response = this.fetchAPI("PUT", endpoint, body);
             return response;
         } catch (error) {
             return { "errorMessage": error.message };
@@ -47,19 +47,20 @@ class FetchService {
 
     delete(endpoint, body) {
         try {
-            let response = this.fetchDB("DELETE", endpoint, body);
+            let response = this.fetchAPI("DELETE", endpoint, body);
             return response;
         } catch (error) {
             return { "errorMessage": error.message };
         }
     }
 
-    async fetchDB(method, endpoint, body = null) {
+    async fetchAPI(method, endpoint, body = null) {
         let data = null;
         await fetch(this.api + endpoint, {
             method: method,
             headers: this.header,
-            body: body
+            body: body,
+            mode: "cors"
         }).then((response) => {
             return response.json();
         }).then((result) => {
