@@ -15,6 +15,11 @@ module.exports = {
         md: '768px',
         lg: '380px',
       },
+      backgroundImage : {
+        'header_footer' : "url('/src/assets/background_img.jpg')"
+      },
+
+
     },
   },
   plugins: [],

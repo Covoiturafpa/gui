@@ -22,7 +22,7 @@ const Layout = (props) => {
   }, [stateLogin]);
 
   return (<>
-    <Container className='h-screen w-full' content={props}>
+    <Container className='h-screen w-full bg-header_footer bg-no-repeat bg-cover bg-top ' content={props}>
       <LayoutHeader />
       <Container className='h-full overflow-auto'>
         {showSidebar ? 
@@ -34,6 +34,7 @@ const Layout = (props) => {
       </Container>
       <LayoutFooter />
     </Container>
+
   </>);
 };
 
