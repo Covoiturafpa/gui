@@ -39,11 +39,13 @@ class AuthService {
   }
 
   getCurrentUserId() {
+    let userId;
     if(localStorage.getItem('user')) {
-      return localStorage.getItem('user').userId;
-    }else if(sessionStorage.getItem('user')){
-      return sessionStorage.getItem('user').userId;
+      userId = JSON.parse(localStorage.getItem('user')).userId;
+    }if(sessionStorage.getItem('user')){
+      userId = JSON.parse(sessionStorage.getItem('user')).userId;
     }
+    return userId;
   }
 }
 
