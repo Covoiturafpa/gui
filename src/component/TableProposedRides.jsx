@@ -34,10 +34,7 @@ import Moment from 'moment';
             return (Moment(data.departureDay).format("DD/MM/YYYY"))
         }
         if (data.beginning) {
-            return ( <div className="flex flex-wrap">
-                    <p className="mr-2">Du {Moment(data.beginning).format("DD/MM/YYYY")} au {Moment(data.ending).format("DD/MM/YYYY")} les </p>
-                    <CheckBoxDays disabled={true} days={data.daysWeek}/>
-                </div>)
+            return (<p className="mr-2">Du {Moment(data.beginning).format("DD/MM/YYYY")} au {Moment(data.ending).format("DD/MM/YYYY")} les </p>)
         }
     }
     function rowDestination(data) {
@@ -51,20 +48,14 @@ import Moment from 'moment';
 const TableProposedRides = (props) => {
     const [onEdit, setOnEdit] = useState(null);
     const [expandedRowKeys, setExpandedRowKeys] = useState([]);
-    const [rowHeight, setRowHeight] = useState(60);
 
-    useEffect(()=> {
-        if (window.innerWidth > 1275) {
-            setRowHeight(45);
-        }
-    }, []);
-    
     const renderRowExpanded = rowData => {
         return (<div>
             <p className='flex'>Destination : </p>
             <p>{rowDestination(rowData)}</p>
             <p className='flex'>Date : </p>
             <p>{rowDate(rowData)}</p>
+            {rowData.beginning ? <CheckBoxDays disabled={true} days={rowData.daysWeek} /> : ""}
             <p>Heure : </p>
             <p>{rowData.departureTime}</p>
         </div>);
@@ -118,8 +109,7 @@ const TableProposedRides = (props) => {
                         rowKey={rowKey}
                         expandedRowKeys={expandedRowKeys}
                         renderRowExpanded={renderRowExpanded}
-                        rowExpandedHeight={200}
-                        rowHeight={rowHeight} >
+                        rowExpandedHeight={200} >
                         <Column width={70} align="center">
                             <HeaderCell>#</HeaderCell>
                             <ExpandCell  dataKey="id" expandedRowKeys={expandedRowKeys} onChange={handleExpanded} />

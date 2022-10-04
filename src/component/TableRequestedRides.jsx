@@ -1,9 +1,9 @@
 import { React, useState, useEffect } from 'react';
-import { Table, IconButton } from 'rsuite';
+import { Table, IconButton, Tooltip, Whisper } from 'rsuite';
 import CollaspedOutlineIcon from '@rsuite/icons/CollaspedOutline';
 import ExpandOutlineIcon from '@rsuite/icons/ExpandOutline';
-import { FiAlertCircle, FiXCircle, FiArrowRight} from "react-icons/fi";
-import { AiOutlineCheckCircle } from "react-icons/ai";
+import { FiAlertCircle, FiXCircle, FiArrowRight } from "react-icons/fi";
+import { AiOutlineCheckCircle, AiFillCheckCircle } from "react-icons/ai";
 import Moment from 'moment';
 import { CheckBoxDays } from './CheckBoxDays';
 import { BsCalendarCheck } from "react-icons/bs";
@@ -13,32 +13,29 @@ const rowKey = 'id';
 
 const ExpandCell = ({ rowData, dataKey, expandedRowKeys, onChange, ...props }) => (
     <Cell {...props} style={{ padding: 5 }}>
-      <IconButton
-        appearance="subtle"
-        onClick={() => {
-          onChange(rowData);
-        }}
-        icon={
-          expandedRowKeys.some(key => key === rowData[rowKey]) ? (
-            <CollaspedOutlineIcon />
-          ) : (
-            <ExpandOutlineIcon />
-          )
-        }
-      />
+        <IconButton
+            appearance="subtle"
+            onClick={() => {
+                onChange(rowData);
+            }}
+            icon={
+                expandedRowKeys.some(key => key === rowData[rowKey]) ? (
+                    <CollaspedOutlineIcon />
+                ) : (
+                    <ExpandOutlineIcon />
+                )
+            }
+        />
     </Cell>
 );
 
- 
+
 function rowDate(data) {
     if (data.departureDay) {
-        return (Moment(data.departureDay).format("DD/MM/YYYY"))
+        return <p>{Moment(data.departureDay).format("DD/MM/YYYY")}</p>
     }
     if (data.beginning) {
-        return ( <div className="flex flex-wrap">
-                <p className="mr-2">Du {Moment(data.beginning).format("DD/MM/YYYY")} au {Moment(data.ending).format("DD/MM/YYYY")} les </p>
-                <CheckBoxDays disabled={true} days={data.daysWeek}/>
-            </div>)
+        return (<p className="mr-2">Du {Moment(data.beginning).format("DD/MM/YYYY")} au {Moment(data.ending).format("DD/MM/YYYY")}</p>)
     }
 }
 function rowDestination(data) {
@@ -53,22 +50,23 @@ const TableRequestedRides = (props) => {
     const [idUser, setIdUser] = useState(props.id);
     const [userDriver, setUserDriver] = useState();
     const [expandedRowKeys, setExpandedRowKeys] = useState([]);
-    const [rowHeight, setRowHeight] = useState(60);
-
-    useEffect(()=> {
-        if (window.innerWidth > 1275) {
-            setRowHeight(45);
-        }
-    }, []);
 
     const renderRowExpanded = rowData => {
         return (<div>
             <p className='flex'>Destination : </p>
-            <p>{rowDestination(rowData)}</p>
+            {rowDestination(rowData)}
             <p className='flex'>Date : </p>
-            <p>{rowDate(rowData)}</p>
+            {rowDate(rowData)}
+            {rowData.beginning ? <CheckBoxDays disabled={true} days={rowData.daysWeek} /> : ""}
             <p>Heure : </p>
             <p>{rowData.departureTime}</p>
+            <p>Conducteur : </p>
+            {rowData.requestedPassengers.map(passenger => {
+                    if (passenger.isDriver) {
+                        console.log(passenger);
+                       return <p>{passenger.person.surname} {passenger.person.firstName.charAt(0)}.</p>
+                    }
+            })}
         </div>);
     };
 
@@ -77,26 +75,26 @@ const TableRequestedRides = (props) => {
         const nextExpandedRowKeys = [];
 
         expandedRowKeys.forEach(key => {
-        if (key === rowData[rowKey]) {
-            open = true;
-        } else {
-            nextExpandedRowKeys.push(key);
-        }
+            if (key === rowData[rowKey]) {
+                open = true;
+            } else {
+                nextExpandedRowKeys.push(key);
+            }
         });
         if (!open) {
             nextExpandedRowKeys.push(rowData[rowKey]);
-          }
-      
-          setExpandedRowKeys(nextExpandedRowKeys);
+        }
+
+        setExpandedRowKeys(nextExpandedRowKeys);
     }
 
     if (props.rides == 0) {
         return (<div>
-                    <div className="bg-white rounded-t-md py-1">
-                        <h5 className="text-center">Mes trajets sollicités</h5>
-                        <p className='text-center'>Vous sollicitez aucun trajet</p>
-                    </div>
-                </div>);
+            <div className="bg-white rounded-t-md py-1">
+                <h5 className="text-center">Mes trajets sollicités</h5>
+                <p className='text-center'>Vous sollicitez aucun trajet</p>
+            </div>
+        </div>);
     } else {
         return (
             <div>
@@ -108,15 +106,14 @@ const TableRequestedRides = (props) => {
                     rowKey={rowKey}
                     expandedRowKeys={expandedRowKeys}
                     renderRowExpanded={renderRowExpanded}
-                    rowExpandedHeight={200}
+                    rowExpandedHeight={250}
                     data={props.rides}
                     onRowClick={rowData => {
                         console.log(rowData);
-                    }}
-                    rowHeight={rowHeight}>
+                    }}>
                     <Column width={70} align="center">
                         <HeaderCell>#</HeaderCell>
-                        <ExpandCell  dataKey="id" expandedRowKeys={expandedRowKeys} onChange={handleExpanded} />
+                        <ExpandCell dataKey="id" expandedRowKeys={expandedRowKeys} onChange={handleExpanded} />
                     </Column>
                     <Column flexGrow={2}>
                         <HeaderCell>Destinations</HeaderCell>
@@ -129,7 +126,7 @@ const TableRequestedRides = (props) => {
                     <Column flexGrow={2}>
                         <HeaderCell>Date</HeaderCell>
                         <Cell>
-                            {rowData => (
+                        {rowData => (
                                 rowDate(rowData)
                             )}
                         </Cell>
@@ -138,27 +135,6 @@ const TableRequestedRides = (props) => {
                     <Column flexGrow={1}>
                         <HeaderCell>heure</HeaderCell>
                         <Cell dataKey="departureTime" />
-                    </Column>
-
-                    <Column flexGrow={1}>
-                        <HeaderCell>Conducteur</HeaderCell>
-                        <Cell>
-                            {rowData => {
-                                    setUserDriver();
-                                rowData.requestedPassengers.map(passenger => {
-                                    if(passenger.isDriver) {
-                                        setUserDriver(passenger.person);
-
-                                    }
-                                })
-                                if(userDriver) {
-                                    return(<div>
-                                        <p>{ userDriver.surname } {userDriver.firstName.charAt(0)}.</p>
-                                    </div>);
-                                } 
-
-                            }}
-                        </Cell>
                     </Column>
                     <Column flexGrow={1}>
                         <HeaderCell>prix</HeaderCell>
@@ -171,55 +147,29 @@ const TableRequestedRides = (props) => {
                     <Column flexGrow={0.5} >
                         <HeaderCell>État</HeaderCell>
                         <Cell>
-                        {rowData => {
-                            rowData.requestedPassengers.map(passenger => {
-                                if(passenger.person.id == idUser) {
-                                    console.log(passenger.status);
-                                    return <AiOutlineCheckCircle/>;
-                                    /*switch(passenger.status) {
-                                        case "PENDING" :
-                                            <div className="text-yellow-500 text-xl">
-                                                < FiAlertCircle/>
-                                            </div>
-                                            break;
-                                        case "ACCEPTED" :
-                                            <div className="text-green-600 text-xl">
-                                                <AiOutlineCheckCircle/>
-                                            </div>
-                                            break;
-                                        case "FINISHED" :
-                                            <div className="text-blue-900 text-xl">
-                                                <BsCalendarCheck/>
-                                            </div>
-                                            break;
-                                        default :
-                                                <div className="text-red-600 text-xl">
-                                                    <FiXCircle/>
-                                                </div>
+                            {rowData => (
+                                rowData.requestedPassengers.map((passenger) => {
+                                    if (passenger.person.id == idUser) {
+                                        switch (passenger.status) {
+                                            case "PENDING":
+                                                return <div className="text-yellow-500 text-xl"> <FiAlertCircle /> </div>
+                                            case "ACCEPTED":
+                                                return <div className="text-green-600 text-xl"> <AiOutlineCheckCircle /> </div>
+                                            case "FINISHED":
+                                                return   <Whisper
+                                                        followCursor
+                                                        trigger="hover"
+                                                        speaker={<Tooltip arrow={true}>Le trajet est fini</Tooltip>}
+                                                        >
+                                                            <div className="text-gray-500 text-xl"> <AiFillCheckCircle /> </div>
+                                                        </Whisper>
+                                            default:
+                                                return <div className="text-red-600 text-xl"> <FiXCircle /> </div>
+                                        }
+
                                     }
-                                    
-                                    if (passenger.status === "PENDING") {
-                                        return (<div className="text-yellow-500 text-xl">
-                                                    < FiAlertCircle/>
-                                                </div>)
-                                    }else if (passenger.status === "ACCEPTED") {
-                                        return (<div className="text-green-600 text-xl">
-                                                    <AiOutlineCheckCircle/>
-                                                </div>);
-                                    }else if (passenger.status === "FINISHED") {
-                                        return (<div className="text-blue-900 text-xl">
-                                                    <BsCalendarCheck/>
-                                                </div>)
-                                    }else if (!passenger.status) {
-                                        return (<div className="text-red-600 text-xl">
-                                                    <FiXCircle/>
-                                                </div>)
-                                    }*/
-                                }
-                            });
-                            
-                            
-                        }}
+                                })
+                            )}
                         </Cell>
                     </Column>
                 </Table>
