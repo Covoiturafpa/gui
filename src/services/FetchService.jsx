@@ -11,11 +11,11 @@ class FetchService {
 
     async fetchAPI(method, endpoint, body = null) {
         let data = null;
-        console.log("fetch " + endpoint)
         await fetch(this.api + endpoint, {
             method: method,
             headers: this.header,
-            body: body
+            body: body,
+            mode: "cors"
         }).then((response) => {
             return response.json();
         }).then((result) => {
@@ -26,7 +26,6 @@ class FetchService {
 
     get(endpoint) {
         try {
-            console.log("get " + endpoint)
             let response = this.fetchAPI("GET", endpoint);
             return response;
         } catch (error) {
@@ -68,20 +67,6 @@ class FetchService {
         } catch (error) {
             return { "errorMessage": error.message };
         }
-    }
-
-    async fetchDB(method, endpoint, body = null) {
-        let data = null;
-        await fetch(this.api + endpoint, {
-            method: method,
-            headers: this.header,
-            body: body
-        }).then((response) => {
-            return response.json();
-        }).then((result) => {
-            data = result;
-        })
-        return data;
     }
 }
 
