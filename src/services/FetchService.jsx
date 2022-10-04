@@ -9,21 +9,6 @@ class FetchService {
         this.header = authHeader();
     }
 
-    async fetchAPI(method, endpoint, body = null) {
-        let data = null;
-        await fetch(this.api + endpoint, {
-            method: method,
-            headers: this.header,
-            body: body,
-            mode: "cors"
-        }).then((response) => {
-            return response.json();
-        }).then((result) => {
-            data = result;
-        })
-        return data;
-    }
-
     get(endpoint) {
         try {
             let response = this.fetchAPI("GET", endpoint);
@@ -51,9 +36,9 @@ class FetchService {
         }
     }
 
-    update(endpoint, body) {
+    put(endpoint, body) {
         try {
-            let response = this.fetchAPI("UPDATE", endpoint, body);
+            let response = this.fetchAPI("PUT", endpoint, body);
             return response;
         } catch (error) {
             return { "errorMessage": error.message };
@@ -67,6 +52,21 @@ class FetchService {
         } catch (error) {
             return { "errorMessage": error.message };
         }
+    }
+
+    async fetchAPI(method, endpoint, body = null) {
+        let data = null;
+        await fetch(this.api + endpoint, {
+            method: method,
+            headers: this.header,
+            body: body,
+            mode: "cors"
+        }).then((response) => {
+            return response.json();
+        }).then((result) => {
+            data = result;
+        })
+        return data;
     }
 }
 

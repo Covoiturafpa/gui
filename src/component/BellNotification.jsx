@@ -29,18 +29,21 @@ import FetchService from '../services/FetchService';
 
 const BellNotification = () => {
 
+    let idUser = 51;
+    
+    function fetchHasNewNotifications() {
+        FetchService.get("/users/" + idUser + "/new_notifications").then(data => {
+            setHasNewNotifications(data);
+        });
+    }
+
     let [hasNewNotifications, setHasNewNotifications] = useState(false);
     let [intervalId, setIntervalId] = useState(null);
 
-    let idUser = 97;
-
     useEffect(() => {
         if (intervalId === null) {
-            setIntervalId(setInterval(() => {
-                FetchService.get("/users/51/new_notifications").then(data => {
-                    setHasNewNotifications(true);
-                })
-            },5000));
+            fetchHasNewNotifications();
+            setIntervalId(setInterval(fetchHasNewNotifications,5000));
         }
         return () => {clearInterval(intervalId)};
     }, []);
