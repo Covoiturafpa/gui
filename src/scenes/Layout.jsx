@@ -32,8 +32,9 @@ const Layout = (props) => {
         : "" }
         {props.content}
       </Container>
-      <LayoutFooter />
     </Container>
+    <LayoutFooter />
+
 
   </>);
 };
