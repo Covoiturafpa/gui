@@ -10,7 +10,6 @@ const CheckBoxDays = (props) => {
                                             {"name":"SATURDAY","translate":"Samedi"},
                                             {"name":"SUNDAY", "translate":"Dimanche"}]);
     const [days, setDays] = useState(props.days);
-
     const handleChange = (event) => {
 
     }
@@ -18,14 +17,14 @@ const CheckBoxDays = (props) => {
                 {allDays.map((day) => {
                     if(days === 0 || !days.some(item => item.name === day.name)) {
                         return(<div key={day.name}>
-                            <input type="checkbox" key={day.name} id={day.name} className={styles.checkbox} name={day.translate} />
+                            <input disabled={props.disabled} type="checkbox" key={day.name} id={day.name} className={styles.checkbox} name={day.translate} />
                             <div className={styles.motherdiv}>
                                 <label htmlFor={day.name} className={styles.labelcheckbox}>{day.translate.charAt(0).toUpperCase()}</label> 
                             </div>
                         </div>);
                     }else if (days.some(item => item.name === day.name)){
                         return(<div key={day.name}>
-                            <input type="checkbox" key={day.name} id={day.name} className={styles.checkbox} name={day.translate} checked/>  
+                            <input disabled={props.disabled} type="checkbox" key={day.name} id={day.name} className={styles.checkbox} name={day.translate} checked/>  
                             <div className={styles.motherdiv}>
                                 <label htmlFor={day.name} className={styles.labelcheckbox}>{day.translate.charAt(0).toUpperCase()}</label>
                             </div>

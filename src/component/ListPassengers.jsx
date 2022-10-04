@@ -5,7 +5,8 @@ import { FiAlertCircle, FiXCircle, FiArrowRight} from "react-icons/fi";
 import { BsCalendarCheck } from "react-icons/bs";
 
 const ListPassengers = (props) => {
-    const [data, setData] = useState(props.requestedPassengers);
+    const [data, setData] = useState(props.passengers);
+    console.log(props.passengers)
     function statusIcon(status) {
         if (status == "PENDING") {
             return(<div className="text-yellow-500 text-xl">
@@ -29,13 +30,13 @@ const ListPassengers = (props) => {
         <List>
             {data.map((item) => {
                 return(
-                <List.Item key={item.user.id} >
+                <List.Item key={item.person.id} >
                     <FlexboxGrid>
                         <FlexboxGrid.Item colspan={2}>
-                            <Avatar size="xs" circle src={item.user.photo_path} alt={item.user.surname} />
+                            <Avatar size="xs" circle src={item.person.photo_path} alt={item.person.surname} />
                         </FlexboxGrid.Item>
                         <FlexboxGrid.Item colspan={18}>
-                            <label>{item.user.surname} {item.user.firstName}</label>
+                            <label>{item.person.surname} {item.person.firstName}</label>
                         </FlexboxGrid.Item>
                         <FlexboxGrid.Item colspan={1}>
                             <a className="text-xl">

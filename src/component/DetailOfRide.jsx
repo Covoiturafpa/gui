@@ -1,6 +1,6 @@
 import { React, useState, useEffect } from 'react';
 import { FiArrowRight, FiPlusCircle   } from "react-icons/fi";
-import { List, DatePicker, Button, ButtonToolbar, SelectPicker, Input, InputNumber, InputGroup, Whisper, Tooltip } from 'rsuite';
+import { List, DatePicker, Button, ButtonToolbar, SelectPicker, Input, InputNumber, InputGroup, Whisper, Tooltip, Checkbox } from 'rsuite';
 import InfoIcon from '@rsuite/icons/legacy/Info';
 import Moment from 'moment';
 import { CheckBoxDays } from './CheckBoxDays';
@@ -26,13 +26,15 @@ const DetailOfRide = (props) => {
         .then(res => res.json())
         .then(
             (result) => {
+                console.log(props)
                 console.log(result);
                 const dataResult = result.cars.map(
                     car => ({ label: car.model, value: car.model, key: car.id })
                   );
                 setDataCar(dataResult); 
-                dataResult.map(item =>{
-                    if(item.key == props.cars.model) {
+                console.log(dataResult);
+                dataResult.map(item => {
+                    if(item.value == props.car.model) {
                         setCarSelect(item.label);
                         setIsLoaded(true);
                     }
@@ -63,10 +65,16 @@ const DetailOfRide = (props) => {
                                     </span> }
             </h6>
             <List>
+                <ListRow label="Disponibilité">
+                    {props.isActive ?
+                        <Checkbox checked>Trajet disponible</Checkbox>
+                    :
+                        <Checkbox>Trajet indisponible</Checkbox> }
+                </ListRow>
                 <ListRow label="Conducteur">
                     {props.requestedPassengers.map(passenger => {
                         if(passenger.isDriver) {
-                            return(<label>{ passenger.user.surname } {passenger.user.firstName.charAt(0)}.</label>);
+                            return(<label>{ passenger.person.surname } {passenger.person.firstName.charAt(0)}.</label>);
                         }
                     })}
                     
@@ -91,40 +99,20 @@ const DetailOfRide = (props) => {
                 { props.daysWeek ? 
                     <ListRow label="Jours">
                         <div>
-                            <CheckBoxDays days={props.daysWeek}/>
+                            <CheckBoxDays disabled={props.isOwner ? false : true} days={props.daysWeek}/>
                         </div>
                     </ListRow>
                 : "" }
                 {props.isOwner ? 
                     <ListRow label="Véhicule">
-                        <SelectPicker  defaultValue={carSelect} data={dataCar} style={{ width: 230 }} />
-                        <Button color="green" appearance="subtle">
-                            <p className="hover:text-white transition duration-150 text-xl text-green-500 " >
-                                <FiPlusCircle/>
-                            </p>
-                        </Button>
+                        <label>{props.car.model}</label> 
                     </ListRow>
                 : "" }
                 <ListRow label="Nombre de place">
-                    { props.isOwner ? <div style={{ width: 230 }}>
-                                            <InputNumber defaultValue={props.car.freeSeats}/>
-                                        </div>
-                                    : <label>{props.car.freeSeats}</label> }
+                    <label>{props.freeSeats}</label>
                 </ListRow>
                 <ListRow label="Prix">
-                { props.isOwner ? <InputGroup inside style={{ width: 230 }}>
-                                        <InputGroup.Addon>
-                                            <Whisper placement="top"  speaker={<Tooltip>Le choix du prix est irrémédiable</Tooltip>}>
-                                            <InfoIcon />
-                                            </Whisper>
-                                        </InputGroup.Addon>
-                                        <Input className='w-20' value={props.price}/>
-                                        <InputGroup.Addon>
-                                            <FaEuroSign/>
-                                        </InputGroup.Addon>
-                                    </InputGroup>
-                                    : <label>{props.price} €</label> }
-                    
+                    <label>{props.price} €</label> 
                 </ListRow>
                 <ListRow label="Commentaire">
                     { props.isOwner ? <Input as="textarea" rows={3} placeholder={props.comment} />

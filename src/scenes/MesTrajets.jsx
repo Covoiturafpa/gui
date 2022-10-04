@@ -3,7 +3,8 @@ import { TableProposedRides } from '../component/TableProposedRides';
 import { TableRequestedRides } from '../component/TableRequestedRides';
 import { api } from '../config/api';
 import { useSetLogin, useTrackedLogin } from '../services/UserLogin';
-import  authHeader  from "../services/AuthHeader";
+import  authService  from "../services/AuthService";
+import  FetchService  from "../services/FetchService";
 
 
 
@@ -12,27 +13,18 @@ const MesTrajets = () => {
     const [rideOwned, setRideOwned] = useState([]);
     const [rideRequested, setRideRequested] = useState([]);
     const [error, setError] = useState(null);
-    const setLogin = useSetLogin();
-    const stateLogin = useTrackedLogin();
-    const [headersss, setHeaders] = useState(authHeader());
-
+    const [userId, setUserId] = useState(authService.getCurrentUserId());
 
     useEffect(() => {
-        fetch(api + "/users/"+ stateLogin.userId + "/rides", { 
-            method: "GET",
-            headers : headersss,
-            mode : "cors"
-        })
-        .then(res => res.json())
-        .then(
+        const fetch = FetchService.get("/users/"+ userId + "/rides");
+        fetch.then(
             (result) => {
                 setRideOwned([]);
                 setRideRequested([]);
-                console.log(result);
                 result.map(item => {
                     const passengers = item.requestedPassengers;
                     passengers.map(userToRide => {
-                        if(userToRide.person.id === stateLogin.idUser) {
+                        if(userToRide.person.id == userId) {
                             if(userToRide.isDriver) {
                                 setRideOwned(rideOwned => [ item,...rideOwned]);
                             }else if(!userToRide.isDriver) {
@@ -46,6 +38,7 @@ const MesTrajets = () => {
                         }
                     });
                 });
+
             },
             (error) => {
                 setIsLoaded(true);
@@ -72,10 +65,10 @@ const MesTrajets = () => {
             <div className='container mx-auto px-4'>
                 <h1 className="text-center">Mes trajets</h1>
                 <div className='my-3'>
-                    <TableProposedRides id={stateLogin.userId} rides={rideOwned} />
+                    <TableProposedRides id={userId} rides={rideOwned} />
                 </div>
                 <div className='my-3'>
-                   <TableRequestedRides id={stateLogin.userId} rides={rideRequested} />
+                   <TableRequestedRides id={userId} rides={rideRequested} />
                 </div>
             </div>
         );

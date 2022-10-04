@@ -1,17 +1,94 @@
 import { React, useState, useEffect } from 'react';
-import { Table } from 'rsuite';
+import { Table, IconButton } from 'rsuite';
+import CollaspedOutlineIcon from '@rsuite/icons/CollaspedOutline';
+import ExpandOutlineIcon from '@rsuite/icons/ExpandOutline';
 import { FiAlertCircle, FiXCircle, FiArrowRight} from "react-icons/fi";
 import { AiOutlineCheckCircle } from "react-icons/ai";
 import Moment from 'moment';
 import { CheckBoxDays } from './CheckBoxDays';
 import { BsCalendarCheck } from "react-icons/bs";
 
+const { Column, HeaderCell, Cell } = Table;
+const rowKey = 'id';
+
+const ExpandCell = ({ rowData, dataKey, expandedRowKeys, onChange, ...props }) => (
+    <Cell {...props} style={{ padding: 5 }}>
+      <IconButton
+        appearance="subtle"
+        onClick={() => {
+          onChange(rowData);
+        }}
+        icon={
+          expandedRowKeys.some(key => key === rowData[rowKey]) ? (
+            <CollaspedOutlineIcon />
+          ) : (
+            <ExpandOutlineIcon />
+          )
+        }
+      />
+    </Cell>
+);
+
+ 
+function rowDate(data) {
+    if (data.departureDay) {
+        return (Moment(data.departureDay).format("DD/MM/YYYY"))
+    }
+    if (data.beginning) {
+        return ( <div className="flex flex-wrap">
+                <p className="mr-2">Du {Moment(data.beginning).format("DD/MM/YYYY")} au {Moment(data.ending).format("DD/MM/YYYY")} les </p>
+                <CheckBoxDays disabled={true} days={data.daysWeek}/>
+            </div>)
+    }
+}
+function rowDestination(data) {
+    if (data.destination.isFromAfpa) {
+        return (<p className='flex '>AFPA <FiArrowRight className='mx-2' /> {data.destination.city.name}</p>);
+    } else if (!data.destination.isFromAfpa) {
+        return (<p className='flex '>{data.destination.city.name} <FiArrowRight className='mx-2' /> AFPA</p>);
+    }
+}
 
 const TableRequestedRides = (props) => {
     const [idUser, setIdUser] = useState(props.id);
     const [userDriver, setUserDriver] = useState();
-    const [statusType, setStatusType]= useState("");
-    const { Column, HeaderCell, Cell } = Table;
+    const [expandedRowKeys, setExpandedRowKeys] = useState([]);
+    const [rowHeight, setRowHeight] = useState(60);
+
+    useEffect(()=> {
+        if (window.innerWidth > 1275) {
+            setRowHeight(45);
+        }
+    }, []);
+
+    const renderRowExpanded = rowData => {
+        return (<div>
+            <p className='flex'>Destination : </p>
+            <p>{rowDestination(rowData)}</p>
+            <p className='flex'>Date : </p>
+            <p>{rowDate(rowData)}</p>
+            <p>Heure : </p>
+            <p>{rowData.departureTime}</p>
+        </div>);
+    };
+
+    const handleExpanded = (rowData, dataKey) => {
+        let open = false;
+        const nextExpandedRowKeys = [];
+
+        expandedRowKeys.forEach(key => {
+        if (key === rowData[rowKey]) {
+            open = true;
+        } else {
+            nextExpandedRowKeys.push(key);
+        }
+        });
+        if (!open) {
+            nextExpandedRowKeys.push(rowData[rowKey]);
+          }
+      
+          setExpandedRowKeys(nextExpandedRowKeys);
+    }
 
     if (props.rides == 0) {
         return (<div>
@@ -28,36 +105,33 @@ const TableRequestedRides = (props) => {
                 </div>
                 <Table className='rounded-b-md'
                     autoHeight={true}
+                    rowKey={rowKey}
+                    expandedRowKeys={expandedRowKeys}
+                    renderRowExpanded={renderRowExpanded}
+                    rowExpandedHeight={200}
                     data={props.rides}
                     onRowClick={rowData => {
                         console.log(rowData);
-                    }}>
-                        
-                    <Column align="center" flexGrow={2}>
+                    }}
+                    rowHeight={rowHeight}>
+                    <Column width={70} align="center">
+                        <HeaderCell>#</HeaderCell>
+                        <ExpandCell  dataKey="id" expandedRowKeys={expandedRowKeys} onChange={handleExpanded} />
+                    </Column>
+                    <Column flexGrow={2}>
                         <HeaderCell>Destinations</HeaderCell>
                         <Cell>
-                            {rowData => {
-                                if (rowData.destination.isFromAfpa) {
-                                    return (<p className='flex justify-center align-center'>AFPA <FiArrowRight className='mx-2' /> {rowData.destination.city.name}</p>)
-                                } else if (!rowData.destination.isFromAfpa) {
-                                    return (<p className='flex justify-center'>{rowData.destination.city.name} <FiArrowRight className='mx-2' /> AFPA</p>)
-                                }
-                            }}
+                            {rowData => (
+                                rowDestination(rowData)
+                            )}
                         </Cell>
                     </Column>
                     <Column flexGrow={2}>
                         <HeaderCell>Date</HeaderCell>
                         <Cell>
-                            {rowData => {
-                                if (rowData.departureDay) {
-                                    return (Moment(rowData.departureDay).format("DD/MM/YYYY"))
-                                }
-                                if (rowData.beginning) {
-                                    return ( <div>
-                                        <p>{Moment(rowData.beginning).format("DD/MM/YYYY")} au {Moment(rowData.ending).format("DD/MM/YYYY")}</p>
-                                    </div>)
-                                }
-                            }}
+                            {rowData => (
+                                rowDate(rowData)
+                            )}
                         </Cell>
                     </Column>
 
@@ -71,10 +145,9 @@ const TableRequestedRides = (props) => {
                         <Cell>
                             {rowData => {
                                     setUserDriver();
-                                rowData.possiblePassengers.map(passenger => {
+                                rowData.requestedPassengers.map(passenger => {
                                     if(passenger.isDriver) {
-                                        setUserDriver(passenger.user);
-                                    console.log(passenger.user);
+                                        setUserDriver(passenger.person);
 
                                     }
                                 })
@@ -99,29 +172,52 @@ const TableRequestedRides = (props) => {
                         <HeaderCell>État</HeaderCell>
                         <Cell>
                         {rowData => {
-                            console.log(rowData.possiblePassengers);
-                            rowData.possiblePassengers.map(passenger => {
-                                if(passenger.user.id === idUser) {
-                                    setStatusType(passenger.statusType)
+                            rowData.requestedPassengers.map(passenger => {
+                                if(passenger.person.id == idUser) {
+                                    console.log(passenger.status);
+                                    return <AiOutlineCheckCircle/>;
+                                    /*switch(passenger.status) {
+                                        case "PENDING" :
+                                            <div className="text-yellow-500 text-xl">
+                                                < FiAlertCircle/>
+                                            </div>
+                                            break;
+                                        case "ACCEPTED" :
+                                            <div className="text-green-600 text-xl">
+                                                <AiOutlineCheckCircle/>
+                                            </div>
+                                            break;
+                                        case "FINISHED" :
+                                            <div className="text-blue-900 text-xl">
+                                                <BsCalendarCheck/>
+                                            </div>
+                                            break;
+                                        default :
+                                                <div className="text-red-600 text-xl">
+                                                    <FiXCircle/>
+                                                </div>
+                                    }
+                                    
+                                    if (passenger.status === "PENDING") {
+                                        return (<div className="text-yellow-500 text-xl">
+                                                    < FiAlertCircle/>
+                                                </div>)
+                                    }else if (passenger.status === "ACCEPTED") {
+                                        return (<div className="text-green-600 text-xl">
+                                                    <AiOutlineCheckCircle/>
+                                                </div>);
+                                    }else if (passenger.status === "FINISHED") {
+                                        return (<div className="text-blue-900 text-xl">
+                                                    <BsCalendarCheck/>
+                                                </div>)
+                                    }else if (!passenger.status) {
+                                        return (<div className="text-red-600 text-xl">
+                                                    <FiXCircle/>
+                                                </div>)
+                                    }*/
                                 }
                             });
-                            if (statusType === "PENDING") {
-                                return (<div className="text-yellow-500 text-xl">
-                                            < FiAlertCircle/>
-                                        </div>)
-                            }else if (statusType === "ACCEPTED") {
-                                return (<div className="text-green-600 text-xl">
-                                            <AiOutlineCheckCircle/>
-                                        </div>)
-                            }else if (statusType === "FINISHED") {
-                                return (<div className="text-blue-900 text-xl">
-                                            <BsCalendarCheck/>
-                                        </div>)
-                            }else if (!statusType) {
-                                return (<div className="text-red-600 text-xl">
-                                            <FiXCircle/>
-                                        </div>)
-                            }
+                            
                             
                         }}
                         </Cell>

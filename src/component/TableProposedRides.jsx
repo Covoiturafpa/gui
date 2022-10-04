@@ -9,6 +9,8 @@ import Moment from 'moment';
 
     const { Column, HeaderCell, Cell } = Table;
     const rowKey = 'id';
+
+
     const ExpandCell = ({ rowData, dataKey, expandedRowKeys, onChange, ...props }) => (
         <Cell {...props} style={{ padding: 5 }}>
           <IconButton
@@ -34,12 +36,11 @@ import Moment from 'moment';
         if (data.beginning) {
             return ( <div className="flex flex-wrap">
                     <p className="mr-2">Du {Moment(data.beginning).format("DD/MM/YYYY")} au {Moment(data.ending).format("DD/MM/YYYY")} les </p>
-                    <CheckBoxDays  days={data.daysWeek}/>
+                    <CheckBoxDays disabled={true} days={data.daysWeek}/>
                 </div>)
         }
     }
     function rowDestination(data) {
-        console.log(data);
         if (data.destination.isFromAfpa) {
             return (<p className='flex '>AFPA <FiArrowRight className='mx-2' /> {data.destination.city.name}</p>);
         } else if (!data.destination.isFromAfpa) {
@@ -50,14 +51,22 @@ import Moment from 'moment';
 const TableProposedRides = (props) => {
     const [onEdit, setOnEdit] = useState(null);
     const [expandedRowKeys, setExpandedRowKeys] = useState([]);
+    const [rowHeight, setRowHeight] = useState(60);
 
+    useEffect(()=> {
+        if (window.innerWidth > 1275) {
+            setRowHeight(45);
+        }
+    }, []);
+    
     const renderRowExpanded = rowData => {
         return (<div>
             <p className='flex'>Destination : </p>
             <p>{rowDestination(rowData)}</p>
             <p className='flex'>Date : </p>
             <p>{rowDate(rowData)}</p>
-            <p>Heure : {rowData.departureTime}</p>
+            <p>Heure : </p>
+            <p>{rowData.departureTime}</p>
         </div>);
       };
 
@@ -109,7 +118,8 @@ const TableProposedRides = (props) => {
                         rowKey={rowKey}
                         expandedRowKeys={expandedRowKeys}
                         renderRowExpanded={renderRowExpanded}
-                        rowExpandedHeight={200}>
+                        rowExpandedHeight={200}
+                        rowHeight={rowHeight} >
                         <Column width={70} align="center">
                             <HeaderCell>#</HeaderCell>
                             <ExpandCell  dataKey="id" expandedRowKeys={expandedRowKeys} onChange={handleExpanded} />
@@ -136,27 +146,7 @@ const TableProposedRides = (props) => {
                             <Cell dataKey="departureTime" />
                         </Column>
 
-                        <Column flexGrow={0.5}>
-                            <HeaderCell>Disponibilité</HeaderCell>
-                            <Cell>
-                                {rowData => {
-                                    if (rowData.isActive === true) {
-                                        return (
-                                            <span>
-                                                <a className="text-xl"> <FiEye /> </a>
-                                            </span>
-                                        )
-                                    } else if (rowData.isActive === false) {
-                                        return (
-                                            <span>
-                                                <a className="text-xl"> <FiEyeOff /> </a>
-                                            </span>
-                                        )
-                                    }
-                                }
-                                }
-                            </Cell>
-                        </Column>
+                        
                         <Column flexGrow={0.5} >
                             <HeaderCell>Modif.</HeaderCell>
                             <Cell>
