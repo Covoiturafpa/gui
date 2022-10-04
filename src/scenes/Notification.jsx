@@ -4,46 +4,6 @@ import { api } from '../config/api';
 import FetchService from '../services/FetchService';
 import AuthService from '../services/AuthService';
 
-async function fetchNotifications(id) {
-    let options = {
-        method: "GET",
-        headers: {
-            "Content-type": "application/json;charset=UTF-8"
-        },
-        mode: "cors"
-    }
-    let notifications = null;
-    try {
-        let response = await fetch(api + "/users/" + id + "/notifications", options);
-        if (!response.ok) {
-            let message = `Erreur ${response.status}`;
-            throw new Error(message);
-        } 
-        notifications = await response.json();
-    }
-    catch(error) {
-        console.log(error.message);
-    }
-    return notifications;
-}
-
-async function setAsReadAllNotifications(id) {
-    let options = {
-        method: "PUT",
-        mode: "cors"
-    }
-    try {
-        let response = await fetch(api + "/users/" + id + "/notifications", options);
-        if (!response.ok) {
-            let message = `Erreur ${response.status}`;
-            throw new Error(message);
-        }
-    }
-    catch(error) {
-        console.log(error.message);
-    }
-}
-
 function compareNotifications(notifA, notifB) {
     if (notifA.isUnread && !notifB.isUnread) {
         return -1;
@@ -110,6 +70,7 @@ const Notification = () => {
             });
             setIsLoaded(true);
         }
+        return () => {FetchService.put("/users/" + AuthService.getCurrentUserId() + "/notifications", {...unreadNotifications});}
     }, []);
 
     if (!isLoaded) {
