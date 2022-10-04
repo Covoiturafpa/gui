@@ -104,7 +104,7 @@
      id="g1091">
     <path
        d="m 68.470007,31.589041 c 0.179698,-0.355943 0.519205,-0.981457 0.681313,-1.431424 0.555128,-1.540896 0.645637,-2.48199 0.70828,-7.364621 l 0.05777,-4.502935 -3.721418,0.0586 c -3.989574,0.06283 -4.823394,0.15247 -6.583968,0.70785 -3.023854,0.953887 -5.513537,3.036833 -6.538592,5.47039 -1.234593,2.931015 -0.467452,6.107454 2.083399,8.62657 2.245682,2.217744 5.162166,3.027368 8.022594,2.227092 1.58348,-0.501099 4.369156,-1.966298 5.290622,-3.791522 z"
-       style="display:none;fill:#ffffff;fill-opacity:1;stroke-width:0.111509"
+       style="display:inline;fill:#ffffff;fill-opacity:1;stroke-width:0.111509"
        id="path536"
        sodipodi:nodetypes="ssscsssscs"
        inkscape:label="path536" />
@@ -116,11 +116,11 @@
     <text
        xml:space="preserve"
        id="text915"
-       style="font-style:normal;font-variant:normal;font-weight:500;font-stretch:normal;font-size:24px;font-family:Gotham;-inkscape-font-specification:'Gotham Medium';letter-spacing:-1.3px;white-space:pre;shape-inside:url(#rect917);fill:#000000"
+       style="font-style:normal;font-variant:normal;font-weight:500;font-stretch:normal;font-size:24px;font-family:Gotham;-inkscape-font-specification:'Gotham Medium';letter-spacing:-1.3px;white-space:pre;shape-inside:url(#rect917);display:inline;fill:#000000"
        transform="translate(0.2802402,-0.2600338)"><tspan
          x="6.6914062"
          y="48.779143"
-         id="tspan675">Afpa</tspan></text>
+         id="tspan719">Afpa</tspan></text>
   </g>
   <g
      inkscape:groupmode="layer"
