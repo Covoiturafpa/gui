@@ -38,10 +38,12 @@ function isLastUnreadNotif(notification, index, notifications) {
 
 const NotificationsDiv = (props) => {
     return (<>
-                <h2 className='text-2xl text-center'>{props.name}</h2>
-                <ul className='p-2'>
-                    {props.array.map((notification) => (<li key={notification.id} className="m-2"><Message {...notification}/></li>))}
-                </ul>
+                {(props.array.length > 0) && <div>
+                    <h2 className='text-2xl text-center'>{props.name}</h2>
+                    <ul className='p-2'>
+                        {props.array.map((notification) => (<li key={notification.id} className="m-2"><Message {...notification}/></li>))}
+                    </ul>
+                </div>}
             </>)
 }
 
