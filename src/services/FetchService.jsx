@@ -36,9 +36,9 @@ class FetchService {
         }
     }
 
-    update(endpoint, body) {
+    put(endpoint, body) {
         try {
-            let response = this.fetchDB("UPDATE", endpoint, body);
+            let response = this.fetchDB("PUT", endpoint, body);
             return response;
         } catch (error) {
             return { "errorMessage": error.message };
