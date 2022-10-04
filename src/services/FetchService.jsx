@@ -36,7 +36,7 @@ class FetchService {
         }
     }
 
-    put(endpoint, body) {
+    put(endpoint, body = null) {
         try {
             let response = this.fetchAPI("PUT", endpoint, body);
             return response;
