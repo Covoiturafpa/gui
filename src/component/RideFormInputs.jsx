@@ -1,20 +1,21 @@
 import { React, useState, useRef } from 'react';
-import { Form, Checkbox, RadioGroup, Radio, DatePicker, DateRangePicker, Stack } from 'rsuite';
-import FormGroup from 'rsuite/esm/FormGroup';
+import { Form, Checkbox, RadioGroup, Radio, DatePicker, DateRangePicker, Stack, CheckboxGroup } from 'rsuite';
 import { BsArrowDownUp } from "react-icons/bs";
 import { CheckBoxDays } from './CheckBoxDays';
 import { fetchLocation } from '../services/GeoCodingAPI';
 import { useContext } from 'react';
-import { DestinationContext } from '../scenes/BookingForm';
+import { DestinationContext } from '../scenes/Booking';
+import { FormContext } from './SearchRidesForm';
 
 const RideFormInputs = () => {
-    const [rideType, setRideType] = useState("R");
+    const [rideType, setRideType] = useState("O");
     const [arrivalValue, setArrivalValue] = useState("AFPA Rochefort");
     const [departureValue, setDepartureValue] = useState("");
     const [isFromAfpa, setIsFromAfpa] = useState(false);
     const departureInput = useRef();
     const arrivalInput = useRef();
-    const { destination, setDestination } = useContext(DestinationContext);
+    const { setDestination } = useContext(DestinationContext);
+    const formContext = useContext(FormContext);
 
     const updateCoordinates = () => {
         let inputValue = departureInput.current.firstChild.value;
@@ -38,6 +39,7 @@ const RideFormInputs = () => {
     }
 
     const invertDestinationsInputs = () => {
+        console.log(formContext)
         const departure = departureInput.current;
         const arrival = arrivalInput.current;
         [departure.name, arrival.name] = [arrival.name, departure.name];
@@ -47,59 +49,65 @@ const RideFormInputs = () => {
         setDepartureValue(prevArrivalValue);
 
         setIsFromAfpa(!isFromAfpa);
+        
     }
-
-    const datePickerRanges = [
-        {
-            label: "Aujourd'hui",
-            value: new Date(),
-            closeOverlay: true
-        },
-    ];
 
     return (
         <>
-            <Stack wrap>
-                <RadioGroup inline={true} value={rideType} onChange={setRideType} className='mr-4'>
-                    <Radio value="O" >Ponctuel</Radio>
-                    <Radio value="R" >Régulier</Radio>
-                </RadioGroup>
-                <Checkbox >Aller retour</Checkbox>
+            <Stack wrap >
+                <Form.Group controlId='radioRideType'>
+                    <Form.Control  accepter={RadioGroup} name="rideType" inline={true} 
+                                   value={formContext.rideType.value} onChange={formContext.rideType.setValue} className='mr-4'>
+                        <Radio value="O">Ponctuel</Radio>
+                        <Radio value="R">Régulier</Radio>
+                    </Form.Control>
+                </Form.Group>
+                <Form.Group className='flex items-center' controlId='checkBoxRoundTrip'>
+                    <Form.Control accepter={CheckboxGroup} name="isRoundTrip" value={formContext.isRoundTrip.value} onChange={formContext.isRoundTrip.setValue} >
+                        <Checkbox />
+                    </Form.Control>
+                    <Form.ControlLabel classPrefix='' htmlFor='checkBoxRoundTrip'>Aller&nbsp;retour</Form.ControlLabel>
+                </Form.Group>
             </Stack>
-            <Form.Group className='pt-2' >
+            <Form.Group className='pt-2' controlId='inputDeparture'>
                 <Form.ControlLabel>Départ</Form.ControlLabel>
-                <Form.Control name="departure" value={departureValue} ref={departureInput} onChange={setDepartureValue} 
-                              onBlur={updateCoordinates} readOnly={isFromAfpa} />
+                <Form.Control name="departure" ref={departureInput} value={formContext.departure.value} onChange={formContext.departure.setValue}
+                    onBlur={updateCoordinates} readOnly={isFromAfpa} />
             </Form.Group>
             <button className="text-xl w-full flex justify-center">
                 <BsArrowDownUp onClick={invertDestinationsInputs} />
             </button>
-            <Form.Group>
+            <Form.Group controlId='inputArrival'>
                 <Form.ControlLabel>Arrivée</Form.ControlLabel>
-                <Form.Control name="arrival" value={arrivalValue} ref={arrivalInput} onChange={setArrivalValue} 
-                              onBlur={updateCoordinates} readOnly={!isFromAfpa} />
+                <Form.Control name="arrival" ref={arrivalInput} value={formContext.arrival.value} onChange={formContext.arrival.setValue}
+                    onBlur={updateCoordinates} readOnly={!isFromAfpa} />
             </Form.Group>
             <div className='h-36'>
                 {rideType === "O" &&
-                    <FormGroup className='pt-3'>
-                        <Form.ControlLabel>Date de début</Form.ControlLabel>
-                        <DatePicker format="yyyy-MM-dd" ranges={datePickerRanges} placeholder={"aaaa-mm-jj"} />
-                    </FormGroup>
+                    <Form.Group className='pt-3'>
+                        <Form.ControlLabel>Date de départ</Form.ControlLabel>
+                        <Form.Control name="date" accepter={DatePicker} className='w-full' format="yyyy-MM-dd" 
+                                      placeholder={"aaaa-mm-jj"} value={formContext.departureDay.value} onChange={formContext.departureDay.setValue}>
+                            <DatePicker />
+                        </Form.Control>
+                    </Form.Group>
                 }
                 {rideType === "R" &&
                     <>
-                        <FormGroup className='pl-1 pt-3'>
+                        {/* <Form.Group className='pl-1 pt-3' >
                             <Form.ControlLabel>Jours</Form.ControlLabel>
                             <RadioGroup>
-
                                 <CheckBoxDays days={0} />
                             </RadioGroup>
-                        </FormGroup>
-                        <FormGroup className='pt-0'>
+                        </Form.Group> */}
+                        <Form.Group className='pt-0'>
                             <Form.ControlLabel>Dates de début -&rsaquo; fin</Form.ControlLabel>
-                            <DateRangePicker className='w-full' format="yyyy-MM-dd" ranges={datePickerRanges} character={" -> "}
-                                placeholder={"aaaa-mm-jj -> aaaa-mm-jj"} showOneCalendar placement='topStart' />
-                        </FormGroup>
+                            <Form.Control name="dates" accepter={DateRangePicker} className='w-full' format="yyyy-MM-dd" character={" -> "}
+                                placeholder={"aaaa-mm-jj -> aaaa-mm-jj"} showOneCalendar placement='topStart'
+                                value={formContext.recurringDates.value} onChange={formContext.recurringDates.setValue}>
+                            <DateRangePicker />
+                            </Form.Control>
+                        </Form.Group>
                     </>
                 }
             </div>
