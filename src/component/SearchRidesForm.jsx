@@ -49,7 +49,7 @@ const SearchRidesForm = () => {
         }   
     };
 
-    function createRideStringRequestParameters() {
+    function createRideSearchParameters() {
         let jsonRequest = {
             rideType: rideType,
             destination: {
@@ -75,7 +75,7 @@ const SearchRidesForm = () => {
 
     const submitForm = () => {
         console.log(formStates)
-        const searchParameters = createRideStringRequestParameters();
+        const searchParameters = createRideSearchParameters();
         FetchService.get("/rides?searchParams=" + searchParameters).then((results) => {
             console.log(results)
         });
