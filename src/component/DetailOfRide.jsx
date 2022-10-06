@@ -16,8 +16,7 @@ const DetailOfRide = (props) => {
 
     useEffect(() => {
         const fetch = FetchService.get("/users/"+ authService.getCurrentUserId());
-        fetch.then(res => res.json())
-        .then(
+        fetch.then(
             (result) => {
                 console.log(props)
                 console.log(result);

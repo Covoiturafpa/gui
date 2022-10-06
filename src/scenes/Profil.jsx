@@ -12,31 +12,11 @@ import AuthService from "../services/AuthService";
 const Profil = () => {
 
     const [user, setUser] = useState({});
-    const [authorities, setAuthorities] = useState([]);
-    const [isLoaded, setIsLoaded] = useState(false);
 
     useEffect(() => {
         FetchService.get(`/users/${AuthService.getCurrentUserId()}/`).then((user) => {
             setUser(user);
         })
-        if (!isLoaded) {
-            user.authorities.map((item) => {
-                let role = null;
-                let newAuthorities = authorities;
-                if (item.authority === "ROLE_USER") {
-                    role = "Stagiaire";
-                }
-                if (item.authority === "ROLE_TEACHER") {
-                    role = "Formateur";
-                }
-                if (item.authority === "ROLE_ADMIN") {
-                    role = "Admin";
-                }
-                newAuthorities.push(role);
-                setAuthorities(newAuthorities);
-                setIsLoaded(true);
-            })
-        }
     }, []);
 
     return (
