@@ -5,7 +5,7 @@ import { Content } from 'rsuite';
 import { LoginForm } from '../component/LoginForm';
 import { RegistrationForm } from '../component/RegistrationForm';
 import { Accueil } from './Accueil';
-import { BookingForm } from './BookingForm';
+import { Booking } from './Booking';
 import { FormLayout } from './FormLayout';
 import { MesTrajets } from './MesTrajets';
 import { SuggestRide } from './SuggestRide';
@@ -33,7 +33,7 @@ const ContentLayout = () => {
                     <Route path="*" element={<Navigate to="/login"/>} /> 
                     <Route path="login" element={<FormLayout title={""} form={<LoginForm/>} />} /> 
                     {pathAccess ? <>                    
-                        <Route path="rechercher" element={<BookingForm />} />
+                        <Route path="rechercher" element={<Booking />} />
                         <Route path="mes_trajets" element={<MesTrajets className='h-100' />} />
                         <Route path="proposer" element={<SuggestRide />} />
                         <Route path="gestion_utilisateurs" element={<h1 className="text-center">Gestion utilisateur</h1>} />

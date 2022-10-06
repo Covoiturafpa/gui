@@ -5,7 +5,7 @@ import { MapLeaflet } from '../component/MapLeaflet';
 
 const DestinationContext = createContext();
 
-const BookingForm = () => {
+const Booking = () => {
 
     const [destination, setDestination] = useState({ lat: null, lon: null });
 
@@ -44,7 +44,7 @@ const BookingForm = () => {
             <FlexboxGrid align='middle' justify='space-around' className='h-full w-full'>
                 <DestinationContext.Provider value={{ destination, setDestination }}>
                     <FlexboxGrid.Item as={Col} colspan={22} md={11} className='h-fit flex justify-end'>
-                        {<SearchRidesForm dimensions={dimensions} />}
+                        {<SearchRidesForm />}
                     </FlexboxGrid.Item>
                     {window.innerWidth >= 768 &&
                         <FlexboxGrid.Item as={Col} colspan={22} md={11} className='h-full w-full'>
@@ -52,7 +52,7 @@ const BookingForm = () => {
                         </FlexboxGrid.Item>
                     }
                 </DestinationContext.Provider>
-                <FlexboxGrid.Item colspan={24} md={22} className='bg-green-100 h-full w-full'>
+                <FlexboxGrid.Item colspan={24} md={22} className='h-full w-full'>
                     {<></>}
                 </FlexboxGrid.Item>
             </FlexboxGrid>
@@ -61,4 +61,4 @@ const BookingForm = () => {
     );
 }
 
-export { DestinationContext, BookingForm };
+export { DestinationContext, Booking };

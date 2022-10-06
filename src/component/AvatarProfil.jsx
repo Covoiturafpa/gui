@@ -2,17 +2,17 @@ import { React } from 'react';
 import { List, Button, Checkbox, Uploader, FlexboxGrid, Col } from 'rsuite';
 import { AvatarUploader } from './AvatarUploader';
 
-const AvatarProfil = (props) => {
+const AvatarProfil = (user) => {
     return (
         <div className='flex justify-center items-center'>
             {/* <button className=' h-50 w-50 rounded-md overflow-hidden'>
                 <img src='https://avatars.githubusercontent.com/u/12592949'
-                    alt={props.user.surname + " " + props.user.firstName}
+                    alt={user.surname + " " + user.firstName}
                     className='object-cover object-center' />
             </button> */}
             <div className='flex-col mx-auto'>
                 <div >
-                    <AvatarUploader></AvatarUploader>
+                    <AvatarUploader avatar={user.photo_path}></AvatarUploader>
                 </div>
                 <div >
                     <Checkbox name='isAvatarDeleted'>Effacer la photo</Checkbox>

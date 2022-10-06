@@ -4,7 +4,7 @@ import styles from './css/mapleaflet.module.css';
 import L from 'leaflet';
 import { MapContainer, TileLayer, Marker, Popup, useMap } from 'react-leaflet';
 import "leaflet-routing-machine";
-import { DestinationContext as DestinationContext } from "../scenes/BookingForm";
+import { DestinationContext } from "../scenes/Booking";
 import FetchService from "../services/FetchService";
 import { AfpaIconSvg } from "./AfpaIconSvg";
 

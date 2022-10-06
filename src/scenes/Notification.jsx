@@ -1,6 +1,5 @@
 import React, { useState, useEffect } from 'react';
 import { Message } from '../component/Message';
-import { api } from '../config/api';
 import FetchService from '../services/FetchService';
 import AuthService from '../services/AuthService';
 
@@ -69,10 +68,10 @@ const Notification = () => {
             FetchService.get("/users/" + AuthService.getCurrentUserId() + "/notifications").then(data => {
                 data.sort(compareNotifications);
                 fillNotificationArrays(data);
+                FetchService.put("/users/" + AuthService.getCurrentUserId() + "/notifications", {...unreadNotifications});
+                setIsLoaded(true);
             });
-            setIsLoaded(true);
         }
-        return () => {FetchService.put("/users/" + AuthService.getCurrentUserId() + "/notifications", {...unreadNotifications});}
     }, []);
 
     if (!isLoaded) {

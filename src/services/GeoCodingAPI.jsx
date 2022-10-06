@@ -8,7 +8,7 @@ const options = {
 
 const fetchLocation = async (address) => {
     if (address.length != 0) {
-        const request = `https://forward-reverse-geocoding.p.rapidapi.com/v1/search?q=${address}&accept-language=en&polygon_threshold=0.0`;
+        const request = `https://forward-reverse-geocoding.p.rapidapi.com/v1/search?q=${address}&addressdetails=1&accept-language=en&polygon_threshold=0.0`;
         const response = await fetch(request, options)
             .then(response => response.json())
             .catch(err => console.error(err));
