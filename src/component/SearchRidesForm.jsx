@@ -8,8 +8,8 @@ const SearchRidesForm = (props) => {
 
     const [departureDay, setDepartureDay] = useState();
     const [recurringDates, setRecurringDates] = useState();
-    const [arrival, setArrival] = useState("AFPA Rochefort");
-    const [departure, setDeparture] = useState();
+    const [arrival, setArrival] = useState("");
+    const [departure, setDeparture] = useState("");
     const [rideType, setRideType] = useState();
     const [isRoundTrip, setIsRoundTrip] = useState();
 
