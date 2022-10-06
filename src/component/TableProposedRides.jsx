@@ -1,15 +1,14 @@
-import { React, useState, useEffect } from 'react';
-import { Table, Tag, IconButton } from 'rsuite';
+import { React, useState } from 'react';
+import { Table, IconButton } from 'rsuite';
 import CollaspedOutlineIcon from '@rsuite/icons/CollaspedOutline';
 import ExpandOutlineIcon from '@rsuite/icons/ExpandOutline';
-import { FiEdit2, FiEye, FiEyeOff, FiArrowRight   } from "react-icons/fi";
+import { FiEdit2, FiArrowRight   } from "react-icons/fi";
 import { CheckBoxDays } from './CheckBoxDays';
 import { DetailOfRide } from './DetailOfRide';
 import Moment from 'moment';
 
     const { Column, HeaderCell, Cell } = Table;
     const rowKey = 'id';
-
 
     const ExpandCell = ({ rowData, dataKey, expandedRowKeys, onChange, ...props }) => (
         <Cell {...props} style={{ padding: 5 }}>
@@ -75,11 +74,8 @@ const TableProposedRides = (props) => {
         if (!open) {
             nextExpandedRowKeys.push(rowData[rowKey]);
           }
-      
           setExpandedRowKeys(nextExpandedRowKeys);
     }
-
-
 
     function showDetail(ride){
         setOnEdit(ride);
@@ -91,7 +87,7 @@ const TableProposedRides = (props) => {
         }else if(props.rides == 0){
             return (
                 <div>
-                    <div className="bg-white rounded-t-md py-1">
+                    <div className="bg-gray-background rounded-t-md py-1">
                         <h5 className="text-center">Mes trajets proposés</h5>
                         <p className='text-center'>Vous proposez aucun trajet</p>
                     </div>
@@ -100,7 +96,7 @@ const TableProposedRides = (props) => {
         }else {
             return (
                 <div>
-                    <div className="bg-white rounded-t-md py-1">
+                    <div className="bg-gray-background rounded-t-md py-1">
                         <h5 className="text-center">Mes trajets proposés</h5>
                     </div>
                     <Table className='rounded-b-md'
@@ -109,7 +105,8 @@ const TableProposedRides = (props) => {
                         rowKey={rowKey}
                         expandedRowKeys={expandedRowKeys}
                         renderRowExpanded={renderRowExpanded}
-                        rowExpandedHeight={200} >
+                        rowExpandedHeight={200} 
+                        >
                         <Column width={70} align="center">
                             <HeaderCell>#</HeaderCell>
                             <ExpandCell  dataKey="id" expandedRowKeys={expandedRowKeys} onChange={handleExpanded} />

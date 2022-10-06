@@ -1,6 +1,4 @@
-import { Navigate } from 'react-router-dom';
-import { api } from '../config/api';
-import { useSetLogin } from './UserLogin';
+import FetchService from './FetchService';
 
 class AuthService {
 
@@ -12,7 +10,7 @@ class AuthService {
       textResult = sessionStorage.getItem('user');
     }else {
       try {
-        await fetch(api + "/login", {
+        await fetch(FetchService.api + "/login", {
           method: "POST",
           body: JSON.stringify({ "username": username, "password": password })
         }).then((response) => {

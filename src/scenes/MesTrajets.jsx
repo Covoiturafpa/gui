@@ -1,8 +1,6 @@
 import React, { useState, useEffect } from 'react';
 import { TableProposedRides } from '../component/TableProposedRides';
 import { TableRequestedRides } from '../component/TableRequestedRides';
-import { api } from '../config/api';
-import { useSetLogin, useTrackedLogin } from '../services/UserLogin';
 import  authService  from "../services/AuthService";
 import  FetchService  from "../services/FetchService";
 
@@ -46,11 +44,8 @@ const MesTrajets = () => {
             }
         )
     }, []);
-
-
-
+    
     if (error) {
-
         return <div>Erreur : {error.message}</div>;
     } else if (!isLoaded) {
         return <div>Chargement...</div>;
