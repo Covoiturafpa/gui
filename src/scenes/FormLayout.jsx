@@ -6,7 +6,7 @@ const FormLayout = (props) => {
         <Content className='h-full'>
             <h2 className='text-center'>{props.title}</h2>
             <FlexboxGrid justify="center" align='middle' className='h-full'>
-                <FlexboxGrid.Item as={Col} colspan={22} md={20} lg={14}>
+                <FlexboxGrid.Item classPrefix="p-4" as={Col} colspan={22} md={20} lg={14} className="bg-gray-background p-4">
                     {props.form}
                 </FlexboxGrid.Item>
             </FlexboxGrid>

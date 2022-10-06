@@ -8,6 +8,7 @@ import { Accueil } from './Accueil';
 import { BookingForm } from './BookingForm';
 import { FormLayout } from './FormLayout';
 import { MesTrajets } from './MesTrajets';
+import { SuggestRide } from './SuggestRide';
 import { Notification } from './Notification';
 import { Profil } from './Profil';
 import { useTrackedLogin } from '../services/UserLogin';
@@ -27,14 +28,14 @@ const ContentLayout = () => {
     }, [stateLogin]);
 
         return (<>
-            <Content className='min-h-100 overflow-auto'>
+            <Content className='overflow-auto'>
                 <Routes>
                     <Route path="*" element={<Navigate to="/login"/>} /> 
-                    <Route path="login" element={<FormLayout title={"Login"} form={<LoginForm/>} />} /> 
+                    <Route path="login" element={<FormLayout title={""} form={<LoginForm/>} />} /> 
                     {pathAccess ? <>                    
                         <Route path="rechercher" element={<BookingForm />} />
                         <Route path="mes_trajets" element={<MesTrajets className='h-100' />} />
-                        <Route path="proposer" element={<h1 className="text-center">Proposer un trajet</h1>} />
+                        <Route path="proposer" element={<SuggestRide />} />
                         <Route path="gestion_utilisateurs" element={<h1 className="text-center">Gestion utilisateur</h1>} />
                         <Route path="gestion_centre" element={<h1 className="text-center">Gestion du centre</h1>} />
                         <Route path="inscription" element={<FormLayout title={"Inscription"} form={<RegistrationForm/>} />} />

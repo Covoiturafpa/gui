@@ -90,7 +90,7 @@ const TableRequestedRides = (props) => {
 
     if (props.rides == 0) {
         return (<div>
-            <div className="bg-white rounded-t-md py-1">
+            <div className="bg-gray-background rounded-t-md py-1">
                 <h5 className="text-center">Mes trajets sollicités</h5>
                 <p className='text-center'>Vous sollicitez aucun trajet</p>
             </div>
@@ -98,10 +98,10 @@ const TableRequestedRides = (props) => {
     } else {
         return (
             <div>
-                <div className="bg-white rounded-t-md py-1">
+                <div className="bg-gray-background rounded-t-md py-1">
                     <h5 className="text-center">Mes trajets sollicités</h5>
                 </div>
-                <Table className='rounded-b-md'
+                <Table className='rounded-b-md bg-gray-background'
                     autoHeight={true}
                     rowKey={rowKey}
                     expandedRowKeys={expandedRowKeys}
@@ -111,28 +111,28 @@ const TableRequestedRides = (props) => {
                     onRowClick={rowData => {
                         console.log(rowData);
                     }}>
-                    <Column width={70} align="center">
+                    <Column className="bg-gray-background" width={70} align="center">
                         <HeaderCell>#</HeaderCell>
-                        <ExpandCell dataKey="id" expandedRowKeys={expandedRowKeys} onChange={handleExpanded} />
+                        <ExpandCell className="bg-gray-background" dataKey="id" expandedRowKeys={expandedRowKeys} onChange={handleExpanded} />
                     </Column>
-                    <Column flexGrow={2}>
+                    <Column className="bg-gray-background" flexGrow={2} >
                         <HeaderCell>Destinations</HeaderCell>
-                        <Cell>
+                        <Cell className='bg-gray-background'>
                             {rowData => (
                                 rowDestination(rowData)
                             )}
                         </Cell>
                     </Column>
-                    <Column flexGrow={2}>
+                    <Column className="bg-gray-background" flexGrow={2}>
                         <HeaderCell>Date</HeaderCell>
-                        <Cell>
+                        <Cell className="bg-gray-background">
                         {rowData => (
                                 rowDate(rowData)
                             )}
                         </Cell>
                     </Column>
 
-                    <Column flexGrow={1}>
+                    <Column className="bg-gray-background" flexGrow={1}>
                         <HeaderCell>heure</HeaderCell>
                         <Cell dataKey="departureTime" />
                     </Column>

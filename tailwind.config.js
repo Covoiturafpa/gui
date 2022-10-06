@@ -16,19 +16,20 @@ module.exports = {
         lg: '380px',
       },
       backgroundImage : {
-        'header_footer' : "url('/src/assets/background_img.jpg')"
+        'header_footer' : "url('/src/assets/background_img3.jpg')"
       },
       keyframes: {
         scroll: {
           '0%': { transform: 'translateX(0)' },
-          '100%': { transform: 'translateX(calc(-300px * 6))' },
+          '100%': { transform: 'translateX(calc(-200px * 6))' },
         }
       },
       animation: {
-        scroll : 'scroll 15s linear infinite',
+        scroll : 'scroll 10s linear infinite',
       },
       colors : {
-        'green-afpa' : '#58a03a', 
+        'green-background' : '#58a03a', 
+        'gray-background' : '#fcfcfc'
       }
 
     },
