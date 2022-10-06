@@ -7,7 +7,8 @@ import { DeleteAccountModal } from '../component/DeleteAccountModal';
 import { ListRow } from '../component/ListRow';
 import { connectedUser } from '../config/api';
 import { profilFormSchema } from '../services/SchemaType';
-
+import FetchService from "../services/FetchService";
+import AuthService from "../services/AuthService";
 
 const Profil = (props) => {
 
@@ -16,8 +17,9 @@ const Profil = (props) => {
     const [isLoaded, setIsLoaded] = useState(false);
 
     useEffect(() => {
-        setUser(connectedUser);
-        console.log()
+        FetchService.get(`/users/${AuthService.getCurrentUserId()}/`).then((user) => {
+            setUser(user);
+        })
         if (!isLoaded) {
             connectedUser.authorities.map((item) => {
                 let role = null;

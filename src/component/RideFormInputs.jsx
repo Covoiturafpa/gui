@@ -101,12 +101,12 @@ const RideFormInputs = () => {
                 }
                 {formContext.rideType.value === "R" &&
                     <>
-                        {/* <Form.Group className='pl-1 pt-3' >
+                        <Form.Group className='pl-1 pt-3' >
                             <Form.ControlLabel>Jours</Form.ControlLabel>
                             <RadioGroup>
                                 <CheckBoxDays days={0} />
                             </RadioGroup>
-                        </Form.Group> */}
+                        </Form.Group>
                         <Form.Group className='pt-0'>
                             <Form.ControlLabel>Dates de début -&rsaquo; fin</Form.ControlLabel>
                             <Form.Control name="dates" accepter={DateRangePicker} className='w-full' format="yyyy-MM-dd" character={" -> "}
