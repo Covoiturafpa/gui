@@ -8,9 +8,9 @@ import AuthService from '../services/AuthService';
 const BellNotification = () => {
 
     function fetchHasNewNotifications() {
-        // FetchService.get("/users/" + AuthService.getCurrentUserId() + "/new_notifications").then(data => {
-        //     setHasNewNotifications(data);
-        // });
+        FetchService.get("/users/" + AuthService.getCurrentUserId() + "/new_notifications").then(data => {
+            setHasNewNotifications(data);
+        });
     }
 
     const [hasNewNotifications, setHasNewNotifications] = useState(false);
@@ -19,7 +19,7 @@ const BellNotification = () => {
     useEffect(() => {
         if (intervalId === null) {
             fetchHasNewNotifications();
-            setIntervalId(setInterval(fetchHasNewNotifications,5000));
+            setIntervalId(setInterval(fetchHasNewNotifications,500000));
         }
         return () => {clearInterval(intervalId)};
     }, []);
