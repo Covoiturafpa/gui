@@ -5,12 +5,11 @@ import FormGroup from 'rsuite/esm/FormGroup';
 import { AvatarProfil } from '../component/AvatarProfil';
 import { DeleteAccountModal } from '../component/DeleteAccountModal';
 import { ListRow } from '../component/ListRow';
-import { connectedUser } from '../config/api';
 import { profilFormSchema } from '../services/SchemaType';
 import FetchService from "../services/FetchService";
 import AuthService from "../services/AuthService";
 
-const Profil = (props) => {
+const Profil = () => {
 
     const [user, setUser] = useState({});
     const [authorities, setAuthorities] = useState([]);
@@ -21,7 +20,7 @@ const Profil = (props) => {
             setUser(user);
         })
         if (!isLoaded) {
-            connectedUser.authorities.map((item) => {
+            user.authorities.map((item) => {
                 let role = null;
                 let newAuthorities = authorities;
                 if (item.authority === "ROLE_USER") {
