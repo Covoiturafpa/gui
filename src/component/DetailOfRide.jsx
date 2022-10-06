@@ -1,29 +1,22 @@
 import { React, useState, useEffect } from 'react';
-import { FiArrowRight, FiPlusCircle   } from "react-icons/fi";
-import { List, DatePicker, Button, ButtonToolbar, SelectPicker, Input, InputNumber, InputGroup, Whisper, Tooltip, Checkbox } from 'rsuite';
-import InfoIcon from '@rsuite/icons/legacy/Info';
+import { FiArrowRight   } from "react-icons/fi";
+import { List, DatePicker, Button, ButtonToolbar,Input, Checkbox } from 'rsuite';
 import Moment from 'moment';
 import { CheckBoxDays } from './CheckBoxDays';
 import { ListRow } from './ListRow';
-import { FaEuroSign } from "react-icons/fa";
 import { ListPassengers } from './ListPassengers';
-import { api } from '../config/api';
-import  authHeader  from "../services/AuthHeader";
+import  FetchService  from "../services/FetchService";
+import  authService  from "../services/AuthService";
 
 const DetailOfRide = (props) => {
     const [dataCar, setDataCar] = useState();
     const [carSelect, setCarSelect] = useState();
     const [isLoaded, setIsLoaded] = useState(false);
     const [error, setError] = useState(null);
-    const [headerss, setHeaders] = useState(authHeader());
 
     useEffect(() => {
-        fetch(api + "/users/" + props.userId, { 
-            method: "GET",
-            headers : headerss,
-            mode : "cors"
-        })
-        .then(res => res.json())
+        const fetch = FetchService.get("/users/"+ authService.getCurrentUserId());
+        fetch.then(res => res.json())
         .then(
             (result) => {
                 console.log(props)
