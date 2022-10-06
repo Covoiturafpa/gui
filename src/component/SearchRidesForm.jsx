@@ -1,10 +1,11 @@
 import { useState, createContext } from 'react';
 import { Form, Button } from 'rsuite';
 import { RideFormInputs } from './RideFormInputs';
+import FetchService from '../services/FetchService';
 
 const FormContext = createContext();
 
-const SearchRidesForm = (props) => {
+const SearchRidesForm = () => {
 
     const [departureDay, setDepartureDay] = useState();
     const [recurringDates, setRecurringDates] = useState();
@@ -41,7 +42,9 @@ const SearchRidesForm = (props) => {
     };
 
     const submitForm = () => {
-        console.log(formStates);
+        FetchService.get("/rides").then((results) => {
+            console.log(results)
+        });
     }
 
     return (

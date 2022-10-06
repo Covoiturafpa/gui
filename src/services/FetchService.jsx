@@ -9,9 +9,9 @@ class FetchService {
         this.header = authHeader();
     }
 
-    get(endpoint) {
+    get(endpoint, body) {
         try {
-            let response = this.fetchAPI("GET", endpoint);
+            let response = this.fetchAPI("GET", endpoint, body);
             return response;
         } catch (error) {
             return { "errorMessage": error.message };
