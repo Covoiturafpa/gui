@@ -3,9 +3,7 @@ import { Form, ButtonToolbar, Button, Checkbox } from 'rsuite';
 import AuthService from "../services/AuthService";
 import { loginFormSchema} from '../services/SchemaType';
 import { useNavigate } from 'react-router-dom';
-import { api } from '../config/api';
 import { useSetLogin, useTrackedLogin } from '../services/UserLogin';
-import { FaCommentsDollar, FaRegCaretSquareLeft } from 'react-icons/fa';
 import { useEffect } from 'react';
 
 const LoginForm = () => {
