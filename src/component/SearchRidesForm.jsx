@@ -1,7 +1,8 @@
-import { useState, createContext } from 'react';
+import { useState, createContext, useContext } from 'react';
 import { Form, Button } from 'rsuite';
 import { RideFormInputs } from './RideFormInputs';
 import FetchService from '../services/FetchService';
+import { DestinationContext } from '../scenes/Booking';
 
 const FormContext = createContext();
 
@@ -12,9 +13,16 @@ const SearchRidesForm = () => {
     const [arrival, setArrival] = useState("");
     const [departure, setDeparture] = useState("");
     const [rideType, setRideType] = useState();
+    const [isFromAfpa, setIsFromAfpa] = useState(false);
     const [isRoundTrip, setIsRoundTrip] = useState();
+    const { destination } = useContext(DestinationContext);
 
+    // TODO : checkboxdays
     const formStates = {
+        isFromAfpa : {
+            value : isFromAfpa,
+            setValue: setIsFromAfpa
+        },
         isRoundTrip : {
             value: isRoundTrip,
             setValue: setIsRoundTrip
@@ -41,8 +49,34 @@ const SearchRidesForm = () => {
         }   
     };
 
+    function createRideStringRequestParameters() {
+        let jsonRequest = {
+            rideType: rideType,
+            destination: {
+                isFromAfpa: isFromAfpa,
+                latitude: destination.lat,
+                longitude: destination.lon,
+                city: {
+                    name: (isFromAfpa ? arrival : departure)
+                }
+            }
+    
+        };
+
+        if (departureDay !== undefined) {
+            jsonRequest.departureDay = departureDay.toISOString().substring(0,10);
+        } else {
+            jsonRequest.beginning = recurringDates[0].toISOString().substring(0,10);
+            jsonRequest.ending = recurringDates[1].toISOString().substring(0,10);
+        }
+        jsonRequest = JSON.stringify(jsonRequest);
+        return encodeURI(jsonRequest);
+    }
+
     const submitForm = () => {
-        FetchService.get("/rides").then((results) => {
+        console.log(formStates)
+        const searchParameters = createRideStringRequestParameters();
+        FetchService.get("/rides?searchParams=" + searchParameters).then((results) => {
             console.log(results)
         });
     }

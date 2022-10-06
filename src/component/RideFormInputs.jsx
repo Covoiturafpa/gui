@@ -10,7 +10,6 @@ import FetchService from "../services/FetchService";
 
 const RideFormInputs = () => {
     const [afpaName, setAfpaName] = useState("");
-    const [isFromAfpa, setIsFromAfpa] = useState(false);
     const departureInput = useRef();
     const arrivalInput = useRef();
     const { setDestination } = useContext(DestinationContext);
@@ -26,7 +25,7 @@ const RideFormInputs = () => {
     const updateCoordinates = () => {
         let inputValue = departureInput.current.firstChild.value;
 
-        if (isFromAfpa) {
+        if (formContext.isFromAfpa.value) {
             inputValue = arrivalInput.current.firstChild.value;
         }
         fetchLocation(inputValue).then((res) => {
@@ -52,7 +51,7 @@ const RideFormInputs = () => {
         const prevArrivalValue = formContext.arrival.value;
         formContext.arrival.setValue(formContext.departure.value);
         formContext.departure.setValue(prevArrivalValue);
-        setIsFromAfpa(!isFromAfpa);  
+        formContext.isFromAfpa.setValue(!formContext.isFromAfpa.value);  
     }
 
     return (
@@ -77,7 +76,7 @@ const RideFormInputs = () => {
                 <Form.ControlLabel>Départ</Form.ControlLabel>
                 <Form.Control name="departure" ref={departureInput} value={formContext.departure.value} 
                               onChange={formContext.departure.setValue}
-                              onBlur={updateCoordinates} readOnly={isFromAfpa} />
+                              onBlur={updateCoordinates} readOnly={formContext.isFromAfpa.value} />
             </Form.Group>
             <button className="text-xl w-full flex justify-center">
                 <BsArrowDownUp onClick={invertDestinationsInputs} />
@@ -86,7 +85,7 @@ const RideFormInputs = () => {
                 <Form.ControlLabel>Arrivée</Form.ControlLabel>
                 <Form.Control name="arrival" ref={arrivalInput} value={formContext.arrival.value} 
                               onChange={formContext.arrival.setValue}
-                              onBlur={updateCoordinates} readOnly={!isFromAfpa} />
+                              onBlur={updateCoordinates} readOnly={!formContext.isFromAfpa.value} />
             </Form.Group>
             <div className='h-36'>
                 {formContext.rideType.value === "O" &&
