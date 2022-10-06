@@ -1,5 +1,7 @@
 import { Panel } from "rsuite";
 import { Member, InfoRound, CheckRound, BlockRound, Trash } from '@rsuite/icons';
+import FetchService from "../services/FetchService";
+import AuthService from '../services/AuthService';
 
 function returnByNotifType(type, ne_value, nt_value, nr_value, ar_value, rr_value) {
     switch (type) {
@@ -22,16 +24,6 @@ function createHeaderText(type) {
     return returnByNotifType(type, "Nouvel.le Employé.e", "Nouveau Stagiaire", "Nouvelle Réservation", "Réservation Acceptée", "Réservation Refusée")
 }
 
-const HeaderContent = (props) => {
-    return (<div className="font-bold text-base">{createHeaderText(props.type)}</div>);
-}
-
-const MessageIcon = (props) => {
-    let iconSize = "1.4em";
-    return returnByNotifType(props.type, <Member fontSize={iconSize} color="#f5a623"/>, <Member fontSize={iconSize} color="#f5a623"/>, <InfoRound fontSize={iconSize} color="blue"/>, <CheckRound fontSize={iconSize} color="green"/>, <BlockRound fontSize={iconSize} color="red"/>);
-}
-
-//TODO: couleur selon type et déjà lu = grisé
 function createBackgroundColor (type, unread) {
     let backgroundColor = returnByNotifType(type, "bg-yellow-100", "bg-yellow-100", "bg-blue-100", "bg-green-100", "bg-red-100");
     if (unread === true) {
@@ -42,13 +34,27 @@ function createBackgroundColor (type, unread) {
     }
 }
 
+const HeaderContent = (props) => {
+    return (<div className="font-bold text-base">{createHeaderText(props.type)}</div>);
+}
+
+const MessageIcon = (props) => {
+    let iconSize = "1.4em";
+    return returnByNotifType(props.type, <Member fontSize={iconSize} color="#f5a623"/>, <Member fontSize={iconSize} color="#f5a623"/>, <InfoRound fontSize={iconSize} color="blue"/>, <CheckRound fontSize={iconSize} color="green"/>, <BlockRound fontSize={iconSize} color="red"/>);
+}
+
 const Message = (props) => {
+
+    function deleteMessage() {
+        FetchService.delete("/users/" + AuthService.getCurrentUserId() + "/notifications?idNotification=" + props.id, props);
+    }
+
     return (
             <Panel shaded bordered bodyFill>
                 <div className={"grid grid-cols-12 items-center px-2 py-1 " + createBackgroundColor(props.type, props.isUnread)}>
                     <div className="col-span-2 justify-self-start "><MessageIcon {...{"type" : props.type}}/></div>
                     <div className="col-span-8 justify-self-center"><HeaderContent {...{"type" : props.type}} className='text-center'/></div>
-                    <Trash className="col-span-2 justify-self-end" fontSize="1.3em"/>
+                    <Trash className="col-span-2 justify-self-end cursor-pointer" fontSize="1.3em" onClick={deleteMessage}/>
                     <div className="col-span-12  justify-self-center">{props.content}</div>
                 </div>
             </Panel>
