@@ -14,25 +14,11 @@ const SuggestRide = () => {
 
     useEffect(() => {
         console.log(dataDays);
-    }, [dataDays]);
-    useEffect(() => {
-        console.log(dataDays);
-    }, []);
-    return (<CheckboxDaysContext.Provider value={{ dataDays, setDataDays}}>
-        <CheckBoxDays disabled={false} days={0}/>
+    },[dataDays]);
+
+    return(<CheckboxDaysContext.Provider value={{ dataDays, setDataDays}}>
+        <CheckBoxDays days={0} disabled={false} context={CheckboxDaysContext}/>
     </CheckboxDaysContext.Provider>);
-    /*return (
-        <DestinationContext.Provider value={{ destination, setDestination }}>
-        <FlexboxGrid.Item as={Col} colspan={22} md={11} className='h-fit flex justify-end'>
-            {<AddRideForm dimensions={dimensions} />}
-        </FlexboxGrid.Item>
-        {window.innerWidth >= 768 &&
-            <FlexboxGrid.Item as={Col} colspan={22} md={11} className='h-full w-full'>
-                <MapLeaflet />
-            </FlexboxGrid.Item>
-        }
-    </DestinationContext.Provider>
-    );*/
 }
 
-export { CheckboxDaysContext, SuggestRide };
+export { SuggestRide };
