@@ -1,11 +1,15 @@
 import { useEffect } from 'react';
+import { useContext } from 'react';
 import {React, useState} from 'react';
 import styles from './css/checkboxdays.module.css';
 import { DaysTranslate } from './DaysTranslate';
+import { CheckboxDaysContext } from '../scenes/SuggestRide';
 
 const CheckBoxDays = (props) => {
     const [days, setDays] = useState(props.days);
     const [checkboxes, setCheckboxes] = useState([]);
+    const [dataCheckboxes, setDataCheckboxes] = useState([]);
+    const {dataDays, setDataDays} = useContext(CheckboxDaysContext);
 
       useEffect(() => {
         setCheckboxes([]);
@@ -14,19 +18,33 @@ const CheckBoxDays = (props) => {
             if(props.days === 0 || !props.days.some(item => item.idDayWeek == day.id)) {
                 newCheckboxes.push({id: day.id, name: day.name, translate: day.translate, checked: false});
                 setCheckboxes(newCheckboxes);
+
             }else if (props.days.some(item => item.idDayWeek == day.id)){ 
                 newCheckboxes.push({id: day.id, name: day.name, translate: day.translate, checked: true});
                 setCheckboxes(newCheckboxes);
             }
         });
-        console.log(checkboxes)
       }, []);
 
+      useEffect(() => {
+        setDataCheckboxes([]);
+        let newData = [];
+        checkboxes.map((checkbox) => {
+            if(checkbox.checked == true) {
+                newData.push({name: checkbox.name});
+                setDataCheckboxes(newData);
+            }
+        });
+        console.log(dataCheckboxes);
+        setDataDays(dataCheckboxes);
+      }, [checkboxes]);
+
       const toggleCheckbox = (id, index) => {
-        const checkboxData = [...checkboxes];
-        checkboxData[index].checked = !checkboxData[index].checked;
-        setCheckboxes(checkboxData);
-        console.log(checkboxes)
+        const checkboxDataFront = [...checkboxes];
+        checkboxDataFront[index].checked = !checkboxDataFront[index].checked;
+        setCheckboxes(checkboxDataFront);
+        console.log(checkboxes);
+
       }
       if(days == 0)
       return (
