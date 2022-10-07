@@ -10,7 +10,7 @@ class AuthService {
       textResult = sessionStorage.getItem('user');
     }else {
       try {
-        await fetch(FetchService.api + "/login", {
+        await fetch(FetchService.urlApi + "/login", {
           method: "POST",
           body: JSON.stringify({ "username": username, "password": password })
         }).then((response) => {

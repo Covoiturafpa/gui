@@ -1,13 +1,8 @@
 import authHeader from './AuthHeader'
 
-const api = "http://127.0.0.1:8443";
-
 class FetchService {
 
-    constructor() {
-        this.api = api;
-        this.header = authHeader();
-    }
+    #urlApi = "http://127.0.0.1:8443";
 
     get(endpoint, body) {
         try {
@@ -55,10 +50,11 @@ class FetchService {
     }
 
     async fetchAPI(method, endpoint, body = null) {
+        const header = authHeader();
         let data = null;
-        await fetch(this.api + endpoint, {
+        await fetch(this.#urlApi + endpoint, {
             method: method,
-            headers: this.header,
+            headers: header,
             body: body,
             mode: "cors"
         }).then((response) => {
@@ -67,6 +63,13 @@ class FetchService {
             data = result;
         })
         return data;
+    }
+
+    get urlApi() {
+        return this.#urlApi;
+    }
+
+    set urlApi(newUrlApi) {
     }
 }
 
