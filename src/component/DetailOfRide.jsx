@@ -1,8 +1,12 @@
 import { React, useState, useEffect } from 'react';
+
 import { FiArrowRight   } from "react-icons/fi";
+
 import { List, DatePicker, Button, ButtonToolbar,Input, Checkbox } from 'rsuite';
+
 import Moment from 'moment';
-import { CheckBoxDays } from './CheckBoxDays';
+
+import CheckBoxDays from './CheckBoxDays/CheckBoxDays';
 import { ListRow } from './ListRow';
 import { ListPassengers } from './ListPassengers';
 import  FetchService  from "../services/FetchService";

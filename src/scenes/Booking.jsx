@@ -1,7 +1,8 @@
 import React, { useState, useEffect, createContext } from 'react';
 import { Content, FlexboxGrid, Col } from 'rsuite';
-import { SearchRidesForm } from '../component/SearchRidesForm';
-import { MapLeaflet } from '../component/MapLeaflet';
+import SearchRidesForm from '../component/RideForms/SearchRidesForm';
+import { MapLeaflet } from '../component/Map/MapLeaflet';
+import { RideFormContextProvider } from '../component/RideForms/RideFormContextProvider';
 
 const DestinationContext = createContext();
 
@@ -44,9 +45,11 @@ const Booking = () => {
             <FlexboxGrid align='middle' justify='space-around' className='h-full w-full'>
                 <DestinationContext.Provider value={{ destination, setDestination }}>
                     <FlexboxGrid.Item as={Col} colspan={22} md={11} className='h-fit flex justify-end'>
-                        {<SearchRidesForm />}
+                        <RideFormContextProvider>
+                            <SearchRidesForm />
+                        </RideFormContextProvider>
                     </FlexboxGrid.Item>
-                    {window.innerWidth >= 768 &&
+                    { window.innerWidth >= 768 &&
                         <FlexboxGrid.Item as={Col} colspan={22} md={11} className='h-full w-full'>
                             <MapLeaflet />
                         </FlexboxGrid.Item>

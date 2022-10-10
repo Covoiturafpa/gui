@@ -1,8 +1,8 @@
 import React, {useEffect, useState}from 'react';
 import { Footer, Stack } from 'rsuite';
 import { SlidePartner } from '../component/SlidePartnaire';
-import { FooterAfpaInformations } from '../component/FooterAfpaInformations';
-import { FooterAfpaLocation } from '../component/FooterAfpaLocation';
+import { FooterAfpaInformations } from '../component/Footer/FooterAfpaInformations';
+import { FooterAfpaLocation } from '../component/Footer/FooterAfpaLocation';
 import  authService  from "../services/AuthService";
 import  FetchService  from "../services/FetchService";
 

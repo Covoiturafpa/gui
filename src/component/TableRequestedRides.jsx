@@ -5,7 +5,8 @@ import ExpandOutlineIcon from '@rsuite/icons/ExpandOutline';
 import { FiAlertCircle, FiXCircle, FiArrowRight } from "react-icons/fi";
 import { AiOutlineCheckCircle, AiFillCheckCircle } from "react-icons/ai";
 import Moment from 'moment';
-import { CheckBoxDays } from './CheckBoxDays';
+
+import CheckBoxDays from './CheckBoxDays/CheckBoxDays';
 import { BsCalendarCheck } from "react-icons/bs";
 
 const { Column, HeaderCell, Cell } = Table;

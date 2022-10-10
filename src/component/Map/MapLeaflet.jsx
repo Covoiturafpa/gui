@@ -1,13 +1,17 @@
 import { useEffect, useContext, useState } from "react";
-import "../../node_modules/leaflet/dist/leaflet.css";
-import styles from './css/mapleaflet.module.css';
+
+import "/node_modules/leaflet/dist/leaflet.css"; // ../.. Faut-il remonter de 2 dossiers ? WORKING ?!
+import styles from './mapleaflet.module.css';
+
 import { Message } from 'rsuite';
+
 import L from 'leaflet';
 import { MapContainer, TileLayer, Marker, Popup, useMap } from 'react-leaflet';
 import "leaflet-routing-machine";
-import { DestinationContext } from "../scenes/Booking";
-import FetchService from "../services/FetchService";
-import { AfpaIconSvg } from "./AfpaIconSvg";
+
+import { DestinationContext } from "../../scenes/Booking";
+import FetchService from "../../services/FetchService";
+import { AfpaIconSvg } from "../AfpaIconSvg";
 
 const MapLeaflet = () => {
 

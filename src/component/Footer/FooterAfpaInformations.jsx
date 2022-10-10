@@ -1,5 +1,6 @@
 import React, { useState } from 'react';
-import { AfpaDaysTimetable } from './AfpaDaysTimetable';
+
+import { AfpaDaysTimetable } from '../AfpaDaysTimetable';
 
 const FooterAfpaInformations = (props) => {
     const [daysTimetable, setDaysTimetable] = useState(props.centre.daysTimetable);

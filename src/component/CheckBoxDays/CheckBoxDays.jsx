@@ -1,9 +1,9 @@
-import { useEffect } from 'react';
-import { useContext } from 'react';
-import {React, useState} from 'react';
-import styles from './css/checkboxdays.module.css';
-import { DaysTranslate } from './DaysTranslate';
-import { CheckboxDaysContext } from './RideFormInputs';
+import { React, useState, useEffect, useContext } from 'react';
+
+import styles from './checkboxdays.module.css';
+
+import { DaysTranslate } from '../DaysTranslate';
+import CheckboxDaysContext from './CheckBoxDaysContext';
 
 const CheckBoxDays = (props) => {
     const [days, setDays] = useState(props.days);
@@ -58,4 +58,4 @@ const CheckBoxDays = (props) => {
       );
 };
 
-export  { CheckBoxDays };
+export default CheckBoxDays;

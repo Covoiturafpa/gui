@@ -1,6 +1,6 @@
-import { useState, createContext} from 'react';
+import { useState, createContext } from 'react';
 
-const FormContext = createContext();
+const RideFormContext = createContext();
 
 const RideFormContextProvider = ({ children }) => {
     const [departureDay, setDepartureDay] = useState();
@@ -10,41 +10,47 @@ const RideFormContextProvider = ({ children }) => {
     const [rideType, setRideType] = useState("R");
     const [isFromAfpa, setIsFromAfpa] = useState(false);
     const [isRoundTrip, setIsRoundTrip] = useState(true);
+    const [destination, setDestination] = useState({ lat: null, lon: null });
+
     const formStates = {
-        isFromAfpa : {
-            value : isFromAfpa,
+        "isFromAfpa": {
+            value: isFromAfpa,
             setValue: setIsFromAfpa
         },
-        isRoundTrip : {
+        "isRoundTrip": {
             value: isRoundTrip,
             setValue: setIsRoundTrip
         },
-        rideType : {
+        "rideType": {
             value: rideType,
             setValue: setRideType
         },
-        arrival : {
+        "arrival": {
             value: arrival,
             setValue: setArrival
         },
-        departure : {
+        "departure": {
             value: departure,
             setValue: setDeparture
         },
-        departureDay : {
+        "departureDay": {
             value: departureDay,
             setValue: setDepartureDay
         },
-        recurringDates : {
+        "recurringDates": {
             value: recurringDates,
             setValue: setRecurringDates
-        }   
+        },
+        "destination": {
+            value: destination,
+            setValue: setDestination
+        }
     };
     return (
-        <FormContext.Provider value={formStates}>
+        <RideFormContext.Provider value={formStates}>
             {children}
-        </FormContext.Provider>
+        </RideFormContext.Provider>
     );
 }
 
-export { RideFormContextProvider, FormContext};
+export { RideFormContextProvider, RideFormContext };
