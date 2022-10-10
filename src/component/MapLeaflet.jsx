@@ -1,6 +1,7 @@
 import { useEffect, useContext, useState } from "react";
 import "../../node_modules/leaflet/dist/leaflet.css";
 import styles from './css/mapleaflet.module.css';
+import { Message } from 'rsuite';
 import L from 'leaflet';
 import { MapContainer, TileLayer, Marker, Popup, useMap } from 'react-leaflet';
 import "leaflet-routing-machine";
@@ -11,15 +12,39 @@ import { AfpaIconSvg } from "./AfpaIconSvg";
 const MapLeaflet = () => {
 
     const { destination } = useContext(DestinationContext);
-    const [waypoints, setWaypoints] = useState({});
-    const [afpaPos, setAfpaPos] = useState([])
+    const [waypoints, setWaypoints] = useState({
+        destination,
+        "arrival": {
+            "lat": null,
+            "lon": null
+        }
+    });
 
     useEffect(() => {
         FetchService.get("/centre").then((data) => {
-            const coordinates = [data.latitude, data.longitude];
-            setAfpaPos(coordinates);
+            if (data.latitude !== undefined && data.longitude != undefined) {
+                setWaypoints(
+                    {
+                        ...waypoints,
+                        "arrival": {
+                            "lat": data.latitude,
+                            "lon": data.longitude
+                        }
+                    })
+            }
         })
     }, [])
+
+    useEffect(() => {
+        setWaypoints(
+            {
+                ...waypoints,
+                "destination": {
+                    "lat": destination.lat,
+                    "lon": destination.lon
+                }
+            })
+    }, [destination])
 
     const afpaSvgIcon = L.divIcon({
         html: AfpaIconSvg,
@@ -28,7 +53,7 @@ const MapLeaflet = () => {
         iconAnchor: [19, 22.5],
         draggable: false
     })
-    
+
     delete L.Icon.Default.prototype._getIconUrl;
     L.Icon.Default.mergeOptions({
         iconRetinaUrl: require('leaflet/dist/images/marker-icon-2x.png'),
@@ -36,34 +61,25 @@ const MapLeaflet = () => {
         shadowUrl: require('leaflet/dist/images/marker-shadow.png')
     });
 
-    useEffect(() => {
-        setWaypoints({
-            destination: {
-                lat: destination.lat,
-                lon: destination.lon
-            },
-            arrival: {
-                lat: afpaPos[0],
-                lon: afpaPos[1]
-            }
-        })
-    }, [destination])
-
     return (
-        afpaPos.length != 0 ?
-            <MapContainer center={afpaPos} zoom={12} scrollWheelZoom={true} className='h-full w-full'>
+        waypoints.arrival.lat !== null && waypoints.arrival.lon !== null ?
+            <MapContainer center={[waypoints.arrival.lat, waypoints.arrival.lon]} zoom={12} scrollWheelZoom={true} className='h-full w-full'>
                 <TileLayer
                     attribution='&copy; <a href="https://www.openstreetmap.org/copyright">OpenStreetMap</a> contributors'
                     url="https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png"
                 />
-                <Marker position={afpaPos} icon={afpaSvgIcon} >
+                <Marker position={[waypoints.arrival.lat, waypoints.arrival.lon]} icon={afpaSvgIcon} >
                     <Popup>
                         AFPA Rochefort
                     </Popup>
                 </Marker>
-                <Routing waypoints={waypoints} />
+                {waypoints.arrival !== undefined ? <Routing waypoints={waypoints} /> : null}
             </MapContainer>
-            : null
+            : <div className="flex flex-col justify-center items-center h-full">
+                <Message className="relative" showIcon type="error" header="Erreur" full>
+                    Récupération des données du centre impossible
+                </Message>
+            </div>
     )
 }
 
@@ -72,6 +88,7 @@ const Routing = ({ waypoints }) => {
     const map = useMap();
 
     useEffect(() => {
+        console.log(waypoints)
         if (!map
             || Object.keys(waypoints).length === 0
             || (waypoints.destination.lat === null || waypoints.destination.lon === null)) {
