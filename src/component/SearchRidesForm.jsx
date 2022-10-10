@@ -14,7 +14,7 @@ const SearchRidesForm = () => {
     const [departure, setDeparture] = useState("");
     const [rideType, setRideType] = useState();
     const [isFromAfpa, setIsFromAfpa] = useState(false);
-    const [isRoundTrip, setIsRoundTrip] = useState();
+    const [isRoundTrip, setIsRoundTrip] = useState(false);
     const { destination } = useContext(DestinationContext);
 
     // TODO : checkboxdays

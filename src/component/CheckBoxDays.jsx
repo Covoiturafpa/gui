@@ -48,7 +48,7 @@ const CheckBoxDays = (props) => {
         <div className='flex'>
             {checkboxes.map((checkbox, index )=> {
                 return <div key={checkbox.id}>
-                    <input disabled={props.disabled} type="checkbox" key={checkbox.id} id={checkbox.id} className={styles.checkbox} name={checkbox.translate} checked={checkbox.checked} onClick={() => toggleCheckbox(checkbox.id, index)}/>
+                    <input disabled={props.disabled} type="checkbox" key={checkbox.id} id={checkbox.id} className={styles.checkbox} name={checkbox.translate} checked={checkbox.checked} onChange={() => toggleCheckbox(checkbox.id, index)}/>
                     <div className={styles.motherdiv}>
                         <label htmlFor={checkbox.name} className={styles.labelcheckbox}>{checkbox.translate.charAt(0).toUpperCase()}</label> 
                     </div>

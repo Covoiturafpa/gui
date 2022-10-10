@@ -92,7 +92,6 @@ const RideFormInputs = () => {
                               onChange={formContext.arrival.setValue}
                               onBlur={updateCoordinates} readOnly={!formContext.isFromAfpa.value} />
             </Form.Group>
-            <div className='h-36'>
                 {formContext.rideType.value === "O" &&
                     <Form.Group className='pt-3'>
                         <Form.ControlLabel>Date de départ</Form.ControlLabel>
@@ -123,7 +122,6 @@ const RideFormInputs = () => {
                         </Form.Group>
                     </>
                 }
-            </div>
         </>
     )
 }
