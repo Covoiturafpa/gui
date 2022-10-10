@@ -56,7 +56,6 @@ const Booking = () => {
                     {<></>}
                 </FlexboxGrid.Item>
             </FlexboxGrid>
-
         </Content>
     );
 }

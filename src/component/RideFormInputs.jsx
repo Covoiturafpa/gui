@@ -1,4 +1,4 @@
-import { React, useState, useRef, useEffect } from 'react';
+import { React, useState, useRef, useEffect, createContext } from 'react';
 import { Form, Checkbox, RadioGroup, Radio, DatePicker, DateRangePicker, Stack, CheckboxGroup } from 'rsuite';
 import { BsArrowDownUp } from "react-icons/bs";
 import { CheckBoxDays } from './CheckBoxDays';
@@ -8,12 +8,16 @@ import { DestinationContext } from '../scenes/Booking';
 import { FormContext } from './SearchRidesForm';
 import FetchService from "../services/FetchService";
 
+const CheckboxDaysContext = createContext();
+
+
 const RideFormInputs = () => {
     const [afpaName, setAfpaName] = useState("");
     const departureInput = useRef();
     const arrivalInput = useRef();
     const { setDestination } = useContext(DestinationContext);
     const formContext = useContext(FormContext);
+    const [dataDays, setDataDays] = useState([]);
 
     useEffect(() => {
         FetchService.get("/centre").then((data) => {
@@ -21,6 +25,7 @@ const RideFormInputs = () => {
             formContext.arrival.setValue(data.name);
         })
     }, [])
+
 
     const updateCoordinates = () => {
         let inputValue = departureInput.current.firstChild.value;
@@ -103,7 +108,9 @@ const RideFormInputs = () => {
                         <Form.Group className='pl-1 pt-3' >
                             <Form.ControlLabel>Jours</Form.ControlLabel>
                             <RadioGroup>
-                                <CheckBoxDays days={0} />
+                                <CheckboxDaysContext.Provider value={{ dataDays, setDataDays}}>
+                                    <CheckBoxDays disabled={false} days={0} />
+                                </CheckboxDaysContext.Provider>
                             </RadioGroup>
                         </Form.Group>
                         <Form.Group className='pt-0'>
@@ -121,4 +128,4 @@ const RideFormInputs = () => {
     )
 }
 
-export { RideFormInputs }
+export { CheckboxDaysContext, RideFormInputs }

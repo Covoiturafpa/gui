@@ -3,12 +3,13 @@ import { useContext } from 'react';
 import {React, useState} from 'react';
 import styles from './css/checkboxdays.module.css';
 import { DaysTranslate } from './DaysTranslate';
+import { CheckboxDaysContext } from './RideFormInputs';
 
 const CheckBoxDays = (props) => {
     const [days, setDays] = useState(props.days);
     const [checkboxes, setCheckboxes] = useState([]);
     const [dataCheckboxes, setDataCheckboxes] = useState([]);
-    const {dataDays, setDataDays} = useContext(props.context);
+    const {dataDays, setDataDays} = useContext(CheckboxDaysContext);
 
       useEffect(() => {
         setCheckboxes([]);
