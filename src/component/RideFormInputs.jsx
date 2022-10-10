@@ -1,5 +1,5 @@
 import { React, useState, useRef, useEffect, createContext } from 'react';
-import { Form, Checkbox, RadioGroup, Radio, DatePicker, DateRangePicker, Stack, CheckboxGroup } from 'rsuite';
+import { Form, Checkbox, RadioGroup, Radio, DatePicker, DateRangePicker, Stack, Divider } from 'rsuite';
 import { BsArrowDownUp } from "react-icons/bs";
 import { CheckBoxDays } from './CheckBoxDays';
 import { fetchLocation } from '../services/GeoCodingAPI';
@@ -61,21 +61,22 @@ const RideFormInputs = () => {
 
     return (
         <>
-            <Stack wrap >
-                <Form.Group controlId='radioRideType'>
-                    <Form.Control  accepter={RadioGroup} name="rideType" inline={true} 
-                                   value={formContext.rideType.value} onChange={formContext.rideType.setValue} className='mr-4'>
-                        <Radio value="O">Ponctuel</Radio>
+            <Stack wrap alignItems='baseline' justifyContent='space-around'>
+                <Form.Group className='flex justify-center items-center' controlId='radioRideType'>
+                    <Form.Control style={{width: 220}} accepter={RadioGroup} name="rideType" inline appearance="picker" 
+                                value={formContext.rideType.value} onChange={formContext.rideType.setValue} className='my-2 justify-center'>
                         <Radio value="R">Régulier</Radio>
+                        <Divider className="self-center" vertical/>
+                        <Radio value="O">Ponctuel</Radio>
                     </Form.Control>
                 </Form.Group>
-                <Form.Group className='flex items-center' controlId='checkBoxRoundTrip'>
-                    <Form.Control accepter={CheckboxGroup} name="isRoundTrip" value={formContext.isRoundTrip.value} 
-                                  onChange={formContext.isRoundTrip.setValue} >
-                        <Checkbox key="isRoundTrip" checked/>
-                        <Checkbox key="isRoundTrip2" checked/>
+                <Form.Group className='flex justify-center items-center' controlId='checkBoxRoundTrip'>
+                    <Form.Control style={{width: 220}} accepter={RadioGroup} inline appearance="picker" name="isRoundTrip" value={formContext.isRoundTrip.value} 
+                                    onChange={formContext.isRoundTrip.setValue} className='my-2 justify-center'>
+                            <Radio value={true} >Aller&nbsp;retour</Radio>
+                            <Divider className="self-center" vertical/>
+                            <Radio value={false}>Aller&nbsp;simple</Radio>
                     </Form.Control>
-                    <Form.ControlLabel classPrefix='' htmlFor='checkBoxRoundTrip'>Aller&nbsp;retour</Form.ControlLabel>
                 </Form.Group>
             </Stack>
             <Form.Group className='pt-2' controlId='inputDeparture'>

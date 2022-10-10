@@ -62,7 +62,7 @@ const SearchRidesForm = () => {
             }
     
         };
-
+        
         if (departureDay !== undefined) {
             jsonRequest.departureDay = departureDay.toISOString().substring(0,10);
         } else {
