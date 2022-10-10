@@ -11,8 +11,7 @@ import { DestinationContext } from './Booking';
 
 
 const SuggestRide = () => {
-    const [dataDays, setDataDays] = useState([]);
-    const [destination, setDestination] = useState({ lat: 1, lon: 1 });
+    const [destination, setDestination] = useState({ lat: null, lon: null });
 
     const [dimensions, setDimensions] = useState({
         height: window.innerHeight,
@@ -43,15 +42,13 @@ const SuggestRide = () => {
         window.addEventListener('resize', debouncedHandleResize);
     }, []);
 
-    useEffect(() => {
-        console.log(dataDays);
-    },[dataDays]);
+
 
     return(<Content className='h-full w-full flex justify-center align-middle'>
     <FlexboxGrid align='middle' justify='space-around' className='h-full w-full'>
         <DestinationContext.Provider value={{ destination, setDestination }}>
             <FlexboxGrid.Item as={Col} colspan={22} md={11} className='h-fit flex justify-end'>
-                {<SearchRidesForm />}
+                {<AddRideForm />}
             </FlexboxGrid.Item>
             {window.innerWidth >= 768 &&
                 <FlexboxGrid.Item as={Col} colspan={22} md={11} className='h-full w-full'>

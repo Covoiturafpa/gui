@@ -72,7 +72,8 @@ const RideFormInputs = () => {
                 <Form.Group className='flex items-center' controlId='checkBoxRoundTrip'>
                     <Form.Control accepter={CheckboxGroup} name="isRoundTrip" value={formContext.isRoundTrip.value} 
                                   onChange={formContext.isRoundTrip.setValue} >
-                        <Checkbox value="checked"/>
+                        <Checkbox key="isRoundTrip" checked/>
+                        <Checkbox key="isRoundTrip2" checked/>
                     </Form.Control>
                     <Form.ControlLabel classPrefix='' htmlFor='checkBoxRoundTrip'>Aller&nbsp;retour</Form.ControlLabel>
                 </Form.Group>
