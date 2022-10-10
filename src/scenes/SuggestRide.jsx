@@ -4,54 +4,21 @@ import { Content, FlexboxGrid, Col } from 'rsuite';
 import { SearchRidesForm } from '../component/SearchRidesForm';
 import { MapLeaflet } from '../component/MapLeaflet';
 import { AddRideForm } from '../component/AddRideForm';
+import { CheckBoxDays } from '../component/CheckBoxDays';
 
-const DestinationContext = createContext();
+const CheckboxDaysContext = createContext();
 
 
 const SuggestRide = () => {
-    const [destination, setDestination] = useState({ lat: null, lon: null });
-
-    const [dimensions, setDimensions] = useState({
-        height: window.innerHeight,
-        width: window.innerWidth
-    })
-
-    function debounce(fn, ms) {
-        let timer
-        return () => {
-            clearTimeout(timer)
-            timer = setTimeout(() => {
-                timer = null
-                fn.apply(this, arguments)
-            }, ms)
-        };
-    }
-
-    const debouncedHandleResize = debounce(
-        function handleResize() {
-            setDimensions({
-                height: window.innerHeight,
-                width: window.innerWidth
-            })
-        }, 1000
-    );
+    const [dataDays, setDataDays] = useState([]);
 
     useEffect(() => {
-        window.addEventListener('resize', debouncedHandleResize);
-    }, []);
+        console.log(dataDays);
+    },[dataDays]);
 
-    return (
-        <DestinationContext.Provider value={{ destination, setDestination }}>
-        <FlexboxGrid.Item as={Col} colspan={22} md={11} className='h-fit flex justify-end'>
-            {<AddRideForm dimensions={dimensions} />}
-        </FlexboxGrid.Item>
-        {window.innerWidth >= 768 &&
-            <FlexboxGrid.Item as={Col} colspan={22} md={11} className='h-full w-full'>
-                <MapLeaflet />
-            </FlexboxGrid.Item>
-        }
-    </DestinationContext.Provider>
-    );
+    return(<CheckboxDaysContext.Provider value={{ dataDays, setDataDays}}>
+        <CheckBoxDays days={0} disabled={false} context={CheckboxDaysContext}/>
+    </CheckboxDaysContext.Provider>);
 }
 
 export { SuggestRide };

@@ -8,32 +8,9 @@ import  FetchService  from "../services/FetchService";
 
 const LayoutFooter = () => {
     const [userId, setUserId] = useState(authService.getCurrentUserId());
-    const [isLoaded, setIsLoaded] = useState(false);
     const [centre, setCentre] = useState({});
     const [partners, setPartners] = useState([]);
-    const [error, setError] = useState(null);
 
-    useEffect(() => {
-        const fetch = FetchService.get("/centre");
-        fetch.then(
-            (result) => {
-                setCentre(result);
-                setPartners(result.partners);
-                setIsLoaded(true);
-
-            },
-            (error) => {
-                setIsLoaded(true);
-                setError(error);
-            }
-        )
-    }, [userId]);
-
-    if (error) {
-        return <div></div>;
-    } else if (!isLoaded) {
-        return <div>Chargement...</div>;
-    }else {
         return (<Footer className="bg-header_footer bg-bottom h-min-content">
             {/*<div className='flex justify-around'>
                 <FooterAfpaInformations centre={centre} />
@@ -53,7 +30,6 @@ const LayoutFooter = () => {
                 <p className='text-center text-black p-1'>© Copyright Centre Afpa de Rochefort. Tous les droits sont réservés.</p>
             </div>
         </Footer>);
-    }
 }
 
 export { LayoutFooter };
