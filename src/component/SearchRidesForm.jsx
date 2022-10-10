@@ -3,61 +3,23 @@ import { Form, Button } from 'rsuite';
 import { RideFormInputs } from './RideFormInputs';
 import FetchService from '../services/FetchService';
 import { DestinationContext } from '../scenes/Booking';
+import { RideFormContextProvider, FormContext } from './contexts/RideFormContextProvider';
 
-const FormContext = createContext();
+
 
 const SearchRidesForm = () => {
-
-    const [departureDay, setDepartureDay] = useState();
-    const [recurringDates, setRecurringDates] = useState();
-    const [arrival, setArrival] = useState("");
-    const [departure, setDeparture] = useState("");
-    const [rideType, setRideType] = useState();
-    const [isFromAfpa, setIsFromAfpa] = useState(false);
-    const [isRoundTrip, setIsRoundTrip] = useState(false);
     const { destination } = useContext(DestinationContext);
-
-    // TODO : checkboxdays
-    const formStates = {
-        isFromAfpa : {
-            value : isFromAfpa,
-            setValue: setIsFromAfpa
-        },
-        isRoundTrip : {
-            value: isRoundTrip,
-            setValue: setIsRoundTrip
-        },
-        rideType : {
-            value: rideType,
-            setValue: setRideType
-        },
-        arrival : {
-            value: arrival,
-            setValue: setArrival
-        },
-        departure : {
-            value: departure,
-            setValue: setDeparture
-        },
-        departureDay : {
-            value: departureDay,
-            setValue: setDepartureDay
-        },
-        recurringDates : {
-            value: recurringDates,
-            setValue: setRecurringDates
-        }   
-    };
-
+    const formContext = useContext(FormContext);
+    
     function createRideSearchParameters() {
         let jsonRequest = {
-            rideType: rideType,
+            rideType: formContext.rideType,
             destination: {
-                isFromAfpa: isFromAfpa,
-                latitude: destination.lat,
-                longitude: destination.lon,
+                isFromAfpa: formContext.isFromAfpa,
+                latitude: formContext.destination.lat,
+                longitude: formContext.destination.lon,
                 city: {
-                    name: (isFromAfpa ? arrival : departure)
+                    name: (formContext.isFromAfpa ? formContext.arrival : formContext.departure)
                 }
             }
     
@@ -83,9 +45,9 @@ const SearchRidesForm = () => {
 
     return (
         <Form fluid>
-            <FormContext.Provider value={formStates}>
+            <RideFormContextProvider>
                 <RideFormInputs />
-            </FormContext.Provider>
+            </RideFormContextProvider>
             <Form.Group className='flex justify-end my-4'>
                 <Button appearance="primary" onClick={submitForm}>Rechercher</Button>
             </Form.Group>
@@ -93,4 +55,4 @@ const SearchRidesForm = () => {
     );
 }
 
-export { SearchRidesForm, FormContext };
+export { SearchRidesForm  };

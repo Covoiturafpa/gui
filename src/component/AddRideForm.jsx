@@ -5,34 +5,35 @@ import FetchService from '../services/FetchService';
 import  authService  from "../services/AuthService";
 import { RideFormInputs } from './RideFormInputs';
 import { DestinationContext } from '../scenes/Booking';
-import { FormContext } from './SearchRidesForm';
 import { FiPlusCircle } from "react-icons/fi";
+import { RideFormContextProvider, FormContext } from './contexts/RideFormContextProvider';
 
 const Textarea = React.forwardRef((props, ref) => <Input {...props} as="textarea" ref={ref} />);
 
-const AddRideForm = () => {
-    const [departureDay, setDepartureDay] = useState();
-    const [recurringDates, setRecurringDates] = useState();
-    const [arrival, setArrival] = useState("");
-    const [departure, setDeparture] = useState("");
-    const [rideType, setRideType] = useState();
-    const [isFromAfpa, setIsFromAfpa] = useState(false);
-    const [isRoundTrip, setIsRoundTrip] = useState();
+const AddRideForm = (props) => {
+    
     const { destination } = useContext(DestinationContext);
     const [dataDays, setDataDays] = useState([]);
     const [carsUser, setCarsUser] = useState([]);
     const [userId, setUserId] = useState(authService.getCurrentUserId());
     const [isLoaded, setIsLoaded] = useState(false);
     const [error, setError] = useState(null);
+    const [placeholderCars, setPlaceholderCars] = useState("");
+    const formContext = useContext(FormContext);
 
     useEffect(() => {
+        console.log(formContext);
         const fetch = FetchService.get("/users/"+ userId);
         fetch.then(
             (result) => {
+                console.log(result);
                 const dataResult = result.cars.map(
                     car => ({ label: car.model, value: car.model, key: car.id })
                   );
                 setCarsUser(dataResult);
+                if(dataResult.length == 0) {
+                    setPlaceholderCars("Vous posséder aucune voiture");
+                }
                 setIsLoaded(true);
             },
             (error) => {
@@ -42,36 +43,7 @@ const AddRideForm = () => {
         )
     },[]);
 
-    const formValues = {
-        isFromAfpa : {
-            value : isFromAfpa,
-            setValue: setIsFromAfpa
-        },
-        isRoundTrip : {
-            value: isRoundTrip,
-            setValue: setIsRoundTrip
-        },
-        rideType : {
-            value: rideType,
-            setValue: setRideType
-        },
-        arrival : {
-            value: arrival,
-            setValue: setArrival
-        },
-        departure : {
-            value: departure,
-            setValue: setDeparture
-        },
-        departureDay : {
-            value: departureDay,
-            setValue: setDepartureDay
-        },
-        recurringDates : {
-            value: recurringDates,
-            setValue: setRecurringDates
-        }   
-    };
+    
     const submitForm = () => {
 
     }
@@ -82,16 +54,14 @@ const AddRideForm = () => {
     }else {
         return(
             <Form fluid>
-
-                <FormContext.Provider value={formValues}>
+                <RideFormContextProvider>
                     <RideFormInputs />
-                </FormContext.Provider>
                     <div className='flex justify-between'>
                         <Form.Group className="mb-[24px]" controlId='inputArrivalTime'>
                             <Form.ControlLabel>Heure de départ</Form.ControlLabel>
                             <DatePicker format="HH:mm" />
                         </Form.Group>
-                        {formValues.isRoundTrip.value && formValues.isRoundTrip.value[0] == 'checked' ?
+                        {formContext.isRoundTrip.value && formContext.isRoundTrip.value[0] == 'checked' ?
                             <Form.Group controlId='inputArrivalTimeReturn'>
                                 <Form.ControlLabel>Heure de départ retour</Form.ControlLabel>
                                 <DatePicker format="HH:mm" />
@@ -101,7 +71,7 @@ const AddRideForm = () => {
                     <div className="flex w-full">
                         <Form.Group className='w-full' controlId='inputChoiceCar'>
                             <Form.ControlLabel>Choix du véhicule :</Form.ControlLabel>
-                            <SelectPicker data={carsUser} block/>
+                            <SelectPicker data={carsUser} block placeholder={placeholderCars}/>
                         </Form.Group>
                             <Button className="h-[36px] self-center" color="green" appearance="subtle">
                                 <FiPlusCircle className="text-xl !text-green-600 hover:text-white"/>
@@ -120,7 +90,7 @@ const AddRideForm = () => {
                         <Form.Control rows={5} name="textarea" accepter={Textarea} />
                     </Form.Group>
                 
-                
+                    </RideFormContextProvider>
                 <Form.Group className='flex justify-end my-4'>
                     <Button appearance="primary" onClick={submitForm}>Rechercher</Button>
                 </Form.Group>
