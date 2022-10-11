@@ -8,10 +8,9 @@ import { Message } from 'rsuite';
 import L from 'leaflet';
 import { MapContainer, TileLayer, Marker, Popup, useMap } from 'react-leaflet';
 import "leaflet-routing-machine";
-import { RideFormContext } from '../RideForms/RideFormContextProvider';
 import FetchService from "../../services/FetchService";
 import { AfpaIconSvg } from "../AfpaIconSvg";
-import { RideFormContext } from '../RideForms/RideFormContextProvider';
+import {RideFormContext } from '../RideForms/RideFormContextProvider';
 
 const MapLeaflet = () => {
 
