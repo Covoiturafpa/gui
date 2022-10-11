@@ -1,6 +1,6 @@
 import React, {useEffect, useState}from 'react';
 import { Footer, Stack } from 'rsuite';
-import { SlidePartner } from '../component/SlidePartnaire';
+import { SlidePartner } from '../component/SlidePartner';
 import { FooterAfpaInformations } from '../component/FooterAfpaInformations';
 import { FooterAfpaLocation } from '../component/FooterAfpaLocation';
 import  authService  from "../services/AuthService";

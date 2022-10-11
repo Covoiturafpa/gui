@@ -32,13 +32,13 @@ const ContentLayout = () => {
                 <Routes>
                     <Route path="*" element={<Navigate to="/login"/>} /> 
                     <Route path="login" element={<FormLayout title={""} form={<LoginForm/>} />} /> 
+                    <Route path="inscription" element={<FormLayout title={"Inscription"} form={<RegistrationForm/>} />} />
                     {pathAccess ? <>                    
                         <Route path="rechercher" element={<Booking />} />
                         <Route path="mes_trajets" element={<MesTrajets className='h-100' />} />
                         <Route path="proposer" element={<SuggestRide />} />
                         <Route path="gestion_utilisateurs" element={<h1 className="text-center">Gestion utilisateur</h1>} />
                         <Route path="gestion_centre" element={<h1 className="text-center">Gestion du centre</h1>} />
-                        <Route path="inscription" element={<FormLayout title={"Inscription"} form={<RegistrationForm/>} />} />
                         <Route path="profil" element={<FormLayout title={"Profil"} form={<Profil/>} />} />
                         <Route path="notifications" element={<Notification />} />
                         <Route path="accueil" element={<Accueil />} />

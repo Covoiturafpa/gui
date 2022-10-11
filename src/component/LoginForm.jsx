@@ -34,6 +34,10 @@ const LoginForm = () => {
         setPassword(newPassword);
     };
 
+    function sendToInscription() {
+        navigate("/inscription");
+    }
+
     const handleLogin = (e) => {
         const stringResult = AuthService.login(username, password);
 
@@ -78,7 +82,8 @@ const LoginForm = () => {
                     <Form.Group>
                         <ButtonToolbar>
                             <Button onClick={handleLogin} appearance="primary">Connexion</Button>
-                            <Button appearance="link">Mot de passe oublié?</Button>
+                            <Button appearance="link">Mot de passe oublié ?</Button>
+                            <Button onClick={sendToInscription} appearance="link">S'inscrire</Button>
                         </ButtonToolbar>
                     </Form.Group>
                 </Form>

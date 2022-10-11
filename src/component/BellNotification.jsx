@@ -20,7 +20,7 @@ const BellNotification = () => {
         let interv;
         if (intervalId === null) {
             fetchHasNewNotifications();
-            interv =  setInterval(fetchHasNewNotifications,5000)
+            interv =  setInterval(fetchHasNewNotifications,500000)
             setIntervalId(interv);
         }
         return () => {clearInterval(interv)};
