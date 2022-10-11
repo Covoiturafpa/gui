@@ -74,9 +74,13 @@ const Notification = () => {
         }
     }
 
-    function fonction(notification) {
-        console.log("test");
-        setReadNotifications(readNotifications.remove())
+    function remove(notification) {
+        if (notification.isUnread) {
+            setUnreadNotifications(unreadNotifications.filter(notif => notif.id !== notification.id));
+        }
+        else {
+            setReadNotifications(readNotifications.filter(notif => notif.id !== notification.id));
+        }
     }
 
     if (!isLoaded) {
@@ -84,8 +88,8 @@ const Notification = () => {
     }
     else {
         return (<>
-                    <NotificationsDiv {...{name:"Nouvelles Notifications", array:unreadNotifications, onChange:fonction}}/>
-                    <NotificationsDiv {...{name:"Anciennes Notifications", array:readNotifications, onChange:fonction}}/>
+                    <NotificationsDiv {...{name:"Nouvelles Notifications", array:unreadNotifications, onChange:remove}}/>
+                    <NotificationsDiv {...{name:"Anciennes Notifications", array:readNotifications, onChange:remove}}/>
                 </>);
     }
 }

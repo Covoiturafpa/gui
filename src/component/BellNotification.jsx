@@ -17,11 +17,13 @@ const BellNotification = () => {
     const [intervalId, setIntervalId] = useState(null);
 
     useEffect(() => {
+        let interv;
         if (intervalId === null) {
             fetchHasNewNotifications();
-            setIntervalId(setInterval(fetchHasNewNotifications,500000));
+            interv =  setInterval(fetchHasNewNotifications,5000)
+            setIntervalId(interv);
         }
-        return () => {clearInterval(intervalId)};
+        return () => {clearInterval(interv)};
     }, []);
 
     return (<>
