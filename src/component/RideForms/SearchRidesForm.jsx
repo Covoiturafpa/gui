@@ -6,7 +6,7 @@ import FetchService from '../../services/FetchService';
 import { RideFormContext } from './RideFormContextProvider';
 
 const SearchRidesForm = () => {
-    const [rideType, isFromAfpa, arrival, departure, departureDay, recurringDates, destination] = useContext(RideFormContext);
+    const { rideType, isFromAfpa, arrival, departure, departureDay, recurringDates, destination } = useContext(RideFormContext);
     
     function createRideSearchParameters() {
         let jsonRequest = {
