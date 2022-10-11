@@ -11,6 +11,7 @@ import "leaflet-routing-machine";
 import { RideFormContext } from '../RideForms/RideFormContextProvider';
 import FetchService from "../../services/FetchService";
 import { AfpaIconSvg } from "../AfpaIconSvg";
+import { RideFormContext } from '../RideForms/RideFormContextProvider';
 
 const MapLeaflet = () => {
 
@@ -79,7 +80,7 @@ const MapLeaflet = () => {
                 {waypoints.arrival !== undefined ? <Routing waypoints={waypoints} /> : null}
             </MapContainer>
             : <div className="flex flex-col justify-center items-center h-full">
-                <Message className="relative" showIcon type="error" header="Erreur" full>
+                <Message className="!relative justify-center" showIcon type="error" header="Erreur" full>
                     Récupération des données du centre impossible
                 </Message>
             </div>

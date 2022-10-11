@@ -1,5 +1,4 @@
-import { useContext, useEffect } from 'react';
-
+import { useContext } from 'react';
 import { Form, Button } from 'rsuite';
 
 import RideFormInputs from './RideFormInputs';
@@ -7,34 +6,26 @@ import FetchService from '../../services/FetchService';
 import { RideFormContext } from './RideFormContextProvider';
 
 const SearchRidesForm = () => {
-    // Récupération de tous les états du "RideFormContext"
-    // formStates est le nom du JSON contenant les états et leurs setters
-    // dans "RideFormContext"
-    const { arrival, departure, departureDay, recurringDates, rideType, isFromAfpa, destination } = useContext(RideFormContext);
-
-    /* useEffect(() => {
-        console.log("USE EFFECT DESTINATION !!"); 
-    }, [destination.value]); */
-
+    const [rideType, isFromAfpa, arrival, departure, departureDay, recurringDates, destination] = useContext(RideFormContext);
+    
     function createRideSearchParameters() {
-        // construction de la requête JSON 
         let jsonRequest = {
-            "rideType": rideType.value,
-            "destination": {
-                "isFromAfpa": isFromAfpa.value,
-                "latitude": destination.lat.value,
-                "longitude": destination.lon.value,
-                "city": {
-                    "name": (isFromAfpa.value ? arrival.value : departure.value)
+            rideType: rideType,
+            destination: {
+                isFromAfpa: isFromAfpa,
+                latitude: destination.lat,
+                longitude: destination.lon,
+                city: {
+                    name: (isFromAfpa ? arrival : departure)
                 }
             }
         };
 
-        if (departureDay.value !== undefined) {
-            jsonRequest.departureDay = departureDay.value.toISOString().substring(0, 10);
+        if (departureDay !== undefined) {
+            jsonRequest.departureDay = departureDay.toISOString().substring(0,10);
         } else {
-            jsonRequest.beginning = recurringDates.value[0].toISOString().substring(0, 10);
-            jsonRequest.ending = recurringDates.value[1].toISOString().substring(0, 10);
+            jsonRequest.beginning = recurringDates[0].toISOString().substring(0,10);
+            jsonRequest.ending = recurringDates[1].toISOString().substring(0,10);
         }
         jsonRequest = JSON.stringify(jsonRequest);
         return encodeURI(jsonRequest);
@@ -43,7 +34,7 @@ const SearchRidesForm = () => {
     const submitForm = () => {
         const searchParameters = createRideSearchParameters();
         FetchService.get("/rides?searchParams=" + searchParameters).then((results) => {
-             // console.log(results)
+            console.log(results)
         });
     }
 
