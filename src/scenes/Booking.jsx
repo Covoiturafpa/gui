@@ -1,14 +1,10 @@
-import React, { useState, useEffect, createContext } from 'react';
+import React, { useState, useEffect } from 'react';
 import { Content, FlexboxGrid, Col } from 'rsuite';
 import SearchRidesForm from '../component/RideForms/SearchRidesForm';
 import { MapLeaflet } from '../component/Map/MapLeaflet';
 import { RideFormContextProvider } from '../component/RideForms/RideFormContextProvider';
 
-const DestinationContext = createContext();
-
 const Booking = () => {
-
-    const [destination, setDestination] = useState({ lat: null, lon: null });
 
     const [dimensions, setDimensions] = useState({
         height: window.innerHeight,
@@ -43,7 +39,6 @@ const Booking = () => {
     return (
         <Content className='h-full w-full flex justify-center align-middle'>
             <FlexboxGrid align='middle' justify='space-around' className='h-full w-full'>
-                { /*<DestinationContext.Provider value={{ destination, setDestination }}> */}
                 <RideFormContextProvider>
                     <FlexboxGrid.Item as={Col} colspan={22} md={11} className='h-fit flex justify-end'>
                             <SearchRidesForm />
@@ -54,7 +49,6 @@ const Booking = () => {
                         </FlexboxGrid.Item>
                     }
                 </RideFormContextProvider>
-                { /* </DestinationContext.Provider>*/}
                 <FlexboxGrid.Item colspan={24} md={22} className='h-full w-full'>
                     {<></>}
                 </FlexboxGrid.Item>
@@ -63,4 +57,4 @@ const Booking = () => {
     );
 }
 
-export { DestinationContext, Booking };
+export { Booking };

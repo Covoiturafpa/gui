@@ -9,13 +9,13 @@ import L from 'leaflet';
 import { MapContainer, TileLayer, Marker, Popup, useMap } from 'react-leaflet';
 import "leaflet-routing-machine";
 
-import { DestinationContext } from "../../scenes/Booking";
 import FetchService from "../../services/FetchService";
 import { AfpaIconSvg } from "../AfpaIconSvg";
+import { RideFormContext } from '../RideForms/RideFormContextProvider';
 
 const MapLeaflet = () => {
 
-    const { destination } = useContext(DestinationContext);
+    const { destination } = useContext(RideFormContext);
     const [waypoints, setWaypoints] = useState({
         destination,
         "arrival": {
@@ -80,7 +80,7 @@ const MapLeaflet = () => {
                 {waypoints.arrival !== undefined ? <Routing waypoints={waypoints} /> : null}
             </MapContainer>
             : <div className="flex flex-col justify-center items-center h-full">
-                <Message className="relative" showIcon type="error" header="Erreur" full>
+                <Message className="!relative justify-center" showIcon type="error" header="Erreur" full>
                     Récupération des données du centre impossible
                 </Message>
             </div>

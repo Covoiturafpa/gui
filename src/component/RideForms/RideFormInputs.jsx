@@ -1,12 +1,11 @@
 import { React, useState, useRef, useEffect, createContext, useContext } from 'react';
-import { Form, Checkbox, RadioGroup, Radio, DatePicker, DateRangePicker, Stack, CheckboxGroup, Toggle, Divider } from 'rsuite';
+import { Form, RadioGroup, Radio, DatePicker, DateRangePicker, Stack, Divider } from 'rsuite';
 import { BsArrowDownUp } from "react-icons/bs";
 
 import CheckBoxDays from '../CheckBoxDays/CheckBoxDays';
 import CheckBoxDaysContext from '../CheckBoxDays/CheckBoxDaysContext';
 
 import { fetchLocation } from '../../services/GeoCodingAPI';
-import { DestinationContext } from '../../scenes/Booking';
 import FetchService from "../../services/FetchService";
 import { RideFormContext } from './RideFormContextProvider';
 
@@ -17,7 +16,7 @@ const RideFormInputs = () => {
     const departureInput = useRef();
     const arrivalInput = useRef();
 
-    const { arrival, departure, destination, isFromAfpa, rideType, isRoundTrip, departureDay, recurringDates }= useContext(RideFormContext);
+    const { arrival, departure, destination, isFromAfpa, rideType, isRoundTrip, departureDay, recurringDates } = useContext(RideFormContext);
 
     useEffect(() => {
         FetchService.get("/centre").then((data) => {
