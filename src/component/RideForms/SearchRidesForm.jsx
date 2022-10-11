@@ -6,26 +6,26 @@ import FetchService from '../../services/FetchService';
 import { RideFormContext } from './RideFormContextProvider';
 
 const SearchRidesForm = () => {
-    const { rideType, isFromAfpa, arrival, departure, departureDay, recurringDates, destination } = useContext(RideFormContext);
-    
+    const { rideType, isFromAfpa, arrival, departure, departureDay, recurringDates, destination, rides } = useContext(RideFormContext);
+
     function createRideSearchParameters() {
         let jsonRequest = {
-            rideType: rideType,
+            rideType: rideType.value,
             destination: {
-                isFromAfpa: isFromAfpa,
-                latitude: destination.lat,
-                longitude: destination.lon,
+                isFromAfpa: isFromAfpa.value,
+                latitude: destination.value.lat,
+                longitude: destination.value.lon,
                 city: {
-                    name: (isFromAfpa ? arrival : departure)
+                    name: (isFromAfpa.value ? arrival.value : departure.value)
                 }
             }
         };
 
         if (departureDay !== undefined) {
-            jsonRequest.departureDay = departureDay.toISOString().substring(0,10);
+            jsonRequest.departureDay = departureDay.value.toISOString().substring(0, 10);
         } else {
-            jsonRequest.beginning = recurringDates[0].toISOString().substring(0,10);
-            jsonRequest.ending = recurringDates[1].toISOString().substring(0,10);
+            jsonRequest.beginning = recurringDates.value[0].toISOString().substring(0, 10);
+            jsonRequest.ending = recurringDates.value[1].toISOString().substring(0, 10);
         }
         jsonRequest = JSON.stringify(jsonRequest);
         return encodeURI(jsonRequest);
@@ -34,7 +34,7 @@ const SearchRidesForm = () => {
     const submitForm = () => {
         const searchParameters = createRideSearchParameters();
         FetchService.get("/rides?searchParams=" + searchParameters).then((results) => {
-            console.log(results)
+            rides.setValue(results);
         });
     }
 
