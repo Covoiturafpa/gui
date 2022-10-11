@@ -44,18 +44,19 @@ const MessageIcon = (props) => {
 }
 
 const Message = (props) => {
+    console.log(props);
 
     function deleteMessage() {
-        FetchService.delete("/users/" + AuthService.getCurrentUserId() + "/notifications?idNotification=" + props.id, props);
+        FetchService.delete("/users/" + AuthService.getCurrentUserId() + "/notifications?idNotification=" + props.notification.id, props.notification).then(() => {props.onChange(props.notification);});
     }
 
     return (
             <Panel shaded bordered bodyFill>
-                <div className={"grid grid-cols-12 items-center px-2 py-1 " + createBackgroundColor(props.type, props.isUnread)}>
-                    <div className="col-span-2 justify-self-start "><MessageIcon {...{"type" : props.type}}/></div>
-                    <div className="col-span-8 justify-self-center"><HeaderContent {...{"type" : props.type}} className='text-center'/></div>
+                <div className={"grid grid-cols-12 items-center px-2 py-1 " + createBackgroundColor(props.notification.type, props.notification.isUnread)}>
+                    <div className="col-span-2 justify-self-start "><MessageIcon {...{"type" : props.notification.type}}/></div>
+                    <div className="col-span-8 justify-self-center"><HeaderContent {...{"type" : props.notification.type}} className='text-center'/></div>
                     <Trash className="col-span-2 justify-self-end cursor-pointer" fontSize="1.3em" onClick={deleteMessage}/>
-                    <div className="col-span-12  justify-self-center">{props.content}</div>
+                    <div className="col-span-12  justify-self-center">{props.notification.content}</div>
                 </div>
             </Panel>
     )

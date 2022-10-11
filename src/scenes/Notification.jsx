@@ -40,13 +40,28 @@ const NotificationsDiv = (props) => {
                 {(props.array.length > 0) && <div>
                     <h2 className='text-2xl text-center'>{props.name}</h2>
                     <ul className='p-2'>
-                        {props.array.map((notification) => (<li key={notification.id} className="m-2"><Message {...notification}/></li>))}
+                        {props.array.map((notification) => (<li key={notification.id} className="m-2"><Message {...{onChange:props.onChange, notification:notification}}/></li>))}
                     </ul>
                 </div>}
             </>)
 }
 
 const Notification = () => {
+
+    const [unreadNotifications, setUnreadNotifications] = useState([]);
+    const [readNotifications, setReadNotifications] = useState([]);
+    const [isLoaded, setIsLoaded] = useState(false);
+
+    useEffect(() => {
+        if (!isLoaded) {
+            FetchService.get("/users/" + AuthService.getCurrentUserId() + "/notifications").then(data => {
+                data.sort(compareNotifications);
+                fillNotificationArrays(data);
+                FetchService.put("/users/" + AuthService.getCurrentUserId() + "/notifications", unreadNotifications);
+                setIsLoaded(true);
+            });
+        }
+    }, []);
 
     function fillNotificationArrays(data) {
         let lastUnreadNotifIndex = data.findIndex(isLastUnreadNotif);
@@ -59,28 +74,18 @@ const Notification = () => {
         }
     }
 
-    const [unreadNotifications, setUnreadNotifications] = useState([]);
-    const [readNotifications, setReadNotifications] = useState([]);
-    const [isLoaded, setIsLoaded] = useState(false);
-
-    useEffect(() => {
-        if (!isLoaded) {
-            FetchService.get("/users/" + AuthService.getCurrentUserId() + "/notifications").then(data => {
-                data.sort(compareNotifications);
-                fillNotificationArrays(data);
-                FetchService.put("/users/" + AuthService.getCurrentUserId() + "/notifications", {...unreadNotifications});
-                setIsLoaded(true);
-            });
-        }
-    }, []);
+    function fonction(notification) {
+        console.log("test");
+        setReadNotifications(readNotifications.remove())
+    }
 
     if (!isLoaded) {
         return(<div>Chargement...</div>);
     }
     else {
         return (<>
-                    <NotificationsDiv {...{name:"Nouvelles Notifications", array:unreadNotifications}}/>
-                    <NotificationsDiv {...{name:"Anciennes Notifications", array:readNotifications}}/>
+                    <NotificationsDiv {...{name:"Nouvelles Notifications", array:unreadNotifications, onChange:fonction}}/>
+                    <NotificationsDiv {...{name:"Anciennes Notifications", array:readNotifications, onChange:fonction}}/>
                 </>);
     }
 }
