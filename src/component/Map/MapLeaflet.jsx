@@ -43,11 +43,11 @@ const MapLeaflet = () => {
             {
                 ...waypoints,
                 "destination": {
-                    "lat": destination.lat,
-                    "lon": destination.lon
+                    "lat": destination.value.lat,
+                    "lon": destination.value.lon
                 }
             })
-    }, [destination])
+    }, [destination.value])
 
     const afpaSvgIcon = L.divIcon({
         html: AfpaIconSvg,
@@ -91,7 +91,6 @@ const Routing = ({ waypoints }) => {
     const map = useMap();
 
     useEffect(() => {
-        console.log(waypoints)
         if (!map
             || Object.keys(waypoints).length === 0
             || (waypoints.destination.lat === null || waypoints.destination.lon === null)) {

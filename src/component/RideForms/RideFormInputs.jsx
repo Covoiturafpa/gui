@@ -1,4 +1,4 @@
-import { React, useState, useRef, useEffect, createContext, useContext } from 'react';
+import { React, useState, useRef, useEffect, useContext } from 'react';
 import { Form, RadioGroup, Radio, DatePicker, DateRangePicker, Stack, Divider } from 'rsuite';
 import { BsArrowDownUp } from "react-icons/bs";
 
@@ -10,35 +10,26 @@ import FetchService from "../../services/FetchService";
 import { RideFormContext } from './RideFormContextProvider';
 
 const RideFormInputs = () => {
-    const [afpaName, setAfpaName] = useState("");
     const [dataDays, setDataDays] = useState([]);
 
-    const departureInput = useRef();
-    const arrivalInput = useRef();
-
+    const departureInputRef = useRef();
+    const arrivalInputRef = useRef();
     const { arrival, departure, destination, isFromAfpa, rideType, isRoundTrip, departureDay, recurringDates } = useContext(RideFormContext);
 
     useEffect(() => {
         FetchService.get("/centre").then((data) => {
-            setAfpaName(data.name);
             arrival.setValue(data.name);
         })
     }, [])
 
-    useEffect(() => {
-        console.log(isRoundTrip.value);
-    }, [RideFormContext]);
-
     const updateCoordinates = () => {
-        console.log("UPDATING COORDINATES");
-        let inputValue = departureInput.current.firstChild.value;
+        let inputValue = departure.value;
 
         if (isFromAfpa.value) {
-            inputValue = arrivalInput.current.firstChild.value;
+            inputValue = arrival.value;
         }
 
         fetchLocation(inputValue).then((res) => {
-            console.log("RESULTAT WESH");
             if (res) {
                 destination.setValue({
                     lat: res[0].lat,
@@ -54,14 +45,14 @@ const RideFormInputs = () => {
     }
 
     const invertDestinationsInputs = () => {
-        const departure = departureInput.current;
-        const arrival = arrivalInput.current;
-        [departure.name, arrival.name] = [arrival.name, departure.name];
+        const departureInput = departureInputRef.current;
+        const arrivalInput = arrivalInputRef.current;
+        [departureInput.name, arrivalInput.name] = [arrivalInput.name, departureInput.name];
 
         const prevArrivalValue = arrival.value;
         arrival.setValue(departure.value);
         departure.setValue(prevArrivalValue);
-        isFromAfpa.setValue(!isFromAfpa.value);  
+        isFromAfpa.setValue(!isFromAfpa.value);
     }
 
     return (
@@ -87,7 +78,7 @@ const RideFormInputs = () => {
 
             <Form.Group className='pt-2' controlId='inputDeparture'>
                 <Form.ControlLabel>Départ</Form.ControlLabel>
-                <Form.Control name="departure" ref={departureInput} value={departure.value} 
+                <Form.Control name="departure" ref={departureInputRef} value={departure.value} 
                               onChange={departure.setValue}
                               onBlur={updateCoordinates} readOnly={isFromAfpa.value} />
             </Form.Group>
@@ -96,7 +87,7 @@ const RideFormInputs = () => {
             </button>
             <Form.Group controlId='inputArrival'>
                 <Form.ControlLabel>Arrivée</Form.ControlLabel>
-                <Form.Control name="arrival" ref={arrivalInput} value={arrival.value} 
+                <Form.Control name="arrival" ref={arrivalInputRef} value={arrival.value} 
                               onChange={arrival.setValue}
                               onBlur={updateCoordinates} readOnly={!isFromAfpa.value} />
             </Form.Group>

@@ -11,6 +11,7 @@ const RideFormContextProvider = ({ children }) => {
     const [isFromAfpa, setIsFromAfpa] = useState(false);
     const [isRoundTrip, setIsRoundTrip] = useState(true);
     const [destination, setDestination] = useState({ lat: null, lon: null });
+    const [rides, setRides] = useState([]);
 
     const formStates = {
         "isFromAfpa": {
@@ -44,6 +45,10 @@ const RideFormContextProvider = ({ children }) => {
         "destination": {
             value: destination,
             setValue: setDestination
+        },
+        "rides": {
+            value: rides,
+            setValue: setRides
         }
     };
     return (

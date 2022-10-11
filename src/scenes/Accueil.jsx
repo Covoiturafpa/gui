@@ -60,7 +60,7 @@ const Accueil = () => {
                     </Col>
                     
                     <Col xs={24} sm={12} md={12} lg={customLg} className='flex justify-center mt-6 lg:mt-8'>
-                        <Panel shaded bordered bodyFill className='inline-block w-40 md:w-60 text-center cursor-pointer bg-white' onClick={() => navigate("/notification")}>
+                        <Panel shaded bordered bodyFill className='inline-block w-40 md:w-60 text-center cursor-pointer bg-white' onClick={() => navigate("/notifications")}>
                             <Bell className='w-16 h-20 md:w-36 md:h-40' />
                             <h3 className='m-2 text-sm md:text-base lg:text-lg'>Notifications</h3>
                         </Panel>
