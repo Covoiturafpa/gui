@@ -14,7 +14,7 @@ import {RideFormContext } from '../RideForms/RideFormContextProvider';
 
 const MapLeaflet = () => {
 
-    const { arrival, departure, destination, isFromAfpa, rideType, isRoundTrip, departureDay, recurringDates } = useContext(RideFormContext);
+    const { destination } = useContext(RideFormContext);
     const [waypoints, setWaypoints] = useState({
         destination,
         "arrival": {

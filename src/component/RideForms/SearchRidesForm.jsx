@@ -6,8 +6,8 @@ import FetchService from '../../services/FetchService';
 import { RideFormContext } from './RideFormContextProvider';
 
 const SearchRidesForm = () => {
-    const [rideType, isFromAfpa, arrival, departure, departureDay, recurringDates, destination] = useContext(RideFormContext);
-    
+    const { rideType, isFromAfpa, arrival, departure, departureDay, recurringDates, destination } = useContext(RideFormContext);
+
     function createRideSearchParameters() {
         let jsonRequest = {
             rideType: rideType,
@@ -22,10 +22,10 @@ const SearchRidesForm = () => {
         };
 
         if (departureDay !== undefined) {
-            jsonRequest.departureDay = departureDay.toISOString().substring(0,10);
+            jsonRequest.departureDay = departureDay.toISOString().substring(0, 10);
         } else {
-            jsonRequest.beginning = recurringDates[0].toISOString().substring(0,10);
-            jsonRequest.ending = recurringDates[1].toISOString().substring(0,10);
+            jsonRequest.beginning = recurringDates[0].toISOString().substring(0, 10);
+            jsonRequest.ending = recurringDates[1].toISOString().substring(0, 10);
         }
         jsonRequest = JSON.stringify(jsonRequest);
         return encodeURI(jsonRequest);
