@@ -3,7 +3,7 @@ import { useState, createContext, useContext, useEffect } from 'react';
 import { Input, Form, Button, DatePicker, SelectPicker, InputNumber, Stack } from 'rsuite';
 import FetchService from '../../services/FetchService';
 import authService from "../../services/AuthService";
-import { RideFormInputs } from './RideFormInputs';
+import RideFormInputs from './RideFormInputs';
 import { DestinationContext } from '../../scenes/Booking';
 import { FiPlusCircle } from "react-icons/fi";
 import { RideFormContext } from './RideFormContextProvider';
@@ -11,17 +11,15 @@ import { RideFormContext } from './RideFormContextProvider';
 const Textarea = React.forwardRef((props, ref) => <Input {...props} as="textarea" ref={ref} />);
 
 const AddRideForm = (props) => {
-    const { destination } = useContext(DestinationContext);
     const [dataDays, setDataDays] = useState([]);
     const [carsUser, setCarsUser] = useState([]);
     const [userId, setUserId] = useState(authService.getCurrentUserId());
     const [isLoaded, setIsLoaded] = useState(false);
     const [error, setError] = useState(null);
     const [placeholderCars, setPlaceholderCars] = useState("");
-    const formStates = useContext(RideFormContext);
+    const { arrival, departure, destination, isFromAfpa, rideType, isRoundTrip, departureDay, recurringDates } = useContext(RideFormContext);
 
     useEffect(() => {
-        console.log(formStates);
         const fetch = FetchService.get("/users/" + userId);
         fetch.then(
             (result) => {
@@ -43,7 +41,6 @@ const AddRideForm = (props) => {
     }, []);
 
     const submitForm = () => {
-
     }
 
     if (error) {

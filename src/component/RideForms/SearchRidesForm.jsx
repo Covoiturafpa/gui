@@ -12,9 +12,9 @@ const SearchRidesForm = () => {
     // dans "RideFormContext"
     const { arrival, departure, departureDay, recurringDates, rideType, isFromAfpa, destination } = useContext(RideFormContext);
 
-    useEffect(() => {
+    /* useEffect(() => {
         console.log("USE EFFECT DESTINATION !!"); 
-    }, [destination.value]);
+    }, [destination.value]); */
 
     function createRideSearchParameters() {
         // construction de la requête JSON 

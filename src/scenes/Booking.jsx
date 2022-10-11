@@ -43,18 +43,18 @@ const Booking = () => {
     return (
         <Content className='h-full w-full flex justify-center align-middle'>
             <FlexboxGrid align='middle' justify='space-around' className='h-full w-full'>
-                <DestinationContext.Provider value={{ destination, setDestination }}>
+                { /*<DestinationContext.Provider value={{ destination, setDestination }}> */}
+                <RideFormContextProvider>
                     <FlexboxGrid.Item as={Col} colspan={22} md={11} className='h-fit flex justify-end'>
-                        <RideFormContextProvider>
                             <SearchRidesForm />
-                        </RideFormContextProvider>
                     </FlexboxGrid.Item>
                     { window.innerWidth >= 768 &&
                         <FlexboxGrid.Item as={Col} colspan={22} md={11} className='h-full w-full'>
                             <MapLeaflet />
                         </FlexboxGrid.Item>
                     }
-                </DestinationContext.Provider>
+                </RideFormContextProvider>
+                { /* </DestinationContext.Provider>*/}
                 <FlexboxGrid.Item colspan={24} md={22} className='h-full w-full'>
                     {<></>}
                 </FlexboxGrid.Item>

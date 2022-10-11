@@ -131,4 +131,4 @@ const RideFormInputs = () => {
     )
 }
 
-export { RideFormInputs }
+export default RideFormInputs;

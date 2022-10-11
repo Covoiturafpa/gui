@@ -42,7 +42,7 @@ const SuggestRide = () => {
 
     return (<Content className='h-full w-full flex justify-center align-middle'>
         <FlexboxGrid align='middle' justify='space-around' className='h-full w-full'>
-            <DestinationContext.Provider value={{ destination, setDestination }}>
+            <RideFormContextProvider>
                 <FlexboxGrid.Item as={Col} colspan={22} md={11} className='h-fit flex justify-end'>
                     <AddRideForm />
                 </FlexboxGrid.Item>
@@ -51,7 +51,7 @@ const SuggestRide = () => {
                         <MapLeaflet />
                     </FlexboxGrid.Item>
                 }
-            </DestinationContext.Provider>
+            </RideFormContextProvider>
         </FlexboxGrid>
     </Content>);
 }
