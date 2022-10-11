@@ -2,7 +2,8 @@ import React, { useState, useEffect, createContext } from 'react';
 import { RideFormInputs } from '../component/RideForms/RideFormInputs';
 
 import { Content, FlexboxGrid, Col } from 'rsuite';
-import { RideFormContextProvider, SearchRidesForm } from '../component/RideForms/SearchRidesForm';
+import  SearchRidesForm  from '../component/RideForms/SearchRidesForm';
+import  {RideFormContextProvider}  from '../component/RideForms/RideFormContextProvider';
 import { MapLeaflet } from '../component/Map/MapLeaflet';
 import { AddRideForm } from '../component/RideForms/AddRideForm';
 import { CheckBoxDays } from '../component/CheckBoxDays/CheckBoxDays';

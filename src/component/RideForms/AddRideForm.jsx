@@ -56,7 +56,7 @@ const AddRideForm = (props) => {
                         <Form.ControlLabel>Heure de départ</Form.ControlLabel>
                         <DatePicker format="HH:mm" />
                     </Form.Group>
-                    {formStates.isRoundTrip.value && formStates.isRoundTrip.value[0] == 'checked' ?
+                    {isRoundTrip.value ?
                         <Form.Group controlId='inputArrivalTimeReturn'>
                             <Form.ControlLabel>Heure de départ retour</Form.ControlLabel>
                             <DatePicker format="HH:mm" />
@@ -85,7 +85,7 @@ const AddRideForm = (props) => {
                     <Form.Control rows={5} name="textarea" accepter={Textarea} />
                 </Form.Group>
                 <Form.Group className='flex justify-end my-4'>
-                    <Button appearance="primary" onClick={submitForm}>Rechercher</Button>
+                    <Button appearance="primary" onClick={submitForm}>Envoyer</Button>
                 </Form.Group>
             </Form>
         );

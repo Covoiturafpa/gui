@@ -26,6 +26,10 @@ const RideFormInputs = () => {
         })
     }, [])
 
+    useEffect(() => {
+        console.log(isRoundTrip.value);
+    }, [RideFormContext]);
+
     const updateCoordinates = () => {
         console.log("UPDATING COORDINATES");
         let inputValue = departureInput.current.firstChild.value;

@@ -8,14 +8,13 @@ import { Message } from 'rsuite';
 import L from 'leaflet';
 import { MapContainer, TileLayer, Marker, Popup, useMap } from 'react-leaflet';
 import "leaflet-routing-machine";
-
-import { DestinationContext } from "../../scenes/Booking";
+import { RideFormContext } from '../RideForms/RideFormContextProvider';
 import FetchService from "../../services/FetchService";
 import { AfpaIconSvg } from "../AfpaIconSvg";
 
 const MapLeaflet = () => {
 
-    const { destination } = useContext(DestinationContext);
+    const { arrival, departure, destination, isFromAfpa, rideType, isRoundTrip, departureDay, recurringDates } = useContext(RideFormContext);
     const [waypoints, setWaypoints] = useState({
         destination,
         "arrival": {

@@ -2,7 +2,7 @@ import { useContext, useEffect } from 'react';
 
 import { Form, Button } from 'rsuite';
 
-import { RideFormInputs } from './RideFormInputs';
+import RideFormInputs from './RideFormInputs';
 import FetchService from '../../services/FetchService';
 import { RideFormContext } from './RideFormContextProvider';
 
