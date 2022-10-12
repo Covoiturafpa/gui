@@ -12,21 +12,12 @@ const LayoutFooter = () => {
     const [partners, setPartners] = useState([]);
 
         return (<Footer className="bg-header_footer bg-bottom h-min-content">
-            {/*<div className='flex justify-around'>
-                <FooterAfpaInformations centre={centre} />
-                <FooterAfpaLocation centre={centre} />
+            <div className="flex flex-col sm:flex-row flex-wrap justify-center items-center sm:justify-around w-full lg:w-[800px] m-auto">
+                <a className="text-black visited:text-black" href="#">Plan du site</a>
+                <a className="text-black visited:text-black" href="#">Conditions générales d'utilisation</a>
+                <a className="text-black visited:text-black" href="#">Mentions légales</a>
             </div>
-
-            <div >
-                <SlidePartner partners={partners}/>
-            </div>*/}
-                <div className="flex flex-col sm:flex-row flex-wrap justify-center items-center sm:justify-around w-full lg:w-[800px] m-auto">
-                    <a className="text-black visited:text-black" href="#">Plan du site</a>
-                    <a className="text-black visited:text-black" href="#">Conditions générales d'utilisation</a>
-                    <a className="text-black visited:text-black" href="#">Mentions légales</a>
-                </div>
-
-            <div className="bg-green-700 relative">
+            <div className=" relative">
                 <p className='text-center text-black p-1'>© Copyright Centre Afpa de Rochefort. Tous les droits sont réservés.</p>
             </div>
         </Footer>);
