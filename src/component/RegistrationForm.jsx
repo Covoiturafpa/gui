@@ -1,10 +1,16 @@
 import React from 'react';
-import { Form, ButtonToolbar, Button, Grid, Col, Row, Checkbox, CheckboxGroup, Placeholder } from 'rsuite';
-import { AvatarUploader } from './AvatarUploader';
+import { Form, ButtonToolbar, Button, Grid, Col, Row, Checkbox, CheckboxGroup, DateRangePicker, RadioGroup, Radio } from 'rsuite';
+import HCaptcha from '@hcaptcha/react-hcaptcha';
+import FormControlLabel from 'rsuite/esm/FormControlLabel';
+import FormControl from 'rsuite/esm/FormControl';
 
 
 
 const RegistrationForm = () => {
+
+    function onVerifyCaptcha (token) {
+        console.log("Verified: " + token);
+    }
 
     return (
         <Form fluid className='w-full'>
@@ -36,6 +42,28 @@ const RegistrationForm = () => {
                             </Form.Group>
                         </Col>
                         <Col xs={24} className="mb-2">
+                            <Form.Group controlId="personType">
+                                <RadioGroup name="personType" inline>
+                                    <Radio value="T" checked={true} defaultChecked={true}>Stagiaire</Radio>
+                                    <Radio value="E">Employé.e</Radio>
+                                </RadioGroup>
+                            </Form.Group>
+                        </Col>
+                        <Col xs={24} className="mb-2">
+                            <Form.Group controlId="service">
+                            </Form.Group>
+                        </Col>
+                        <Col xs={24} className="mb-2">
+                            <Form.Group controlId="periodActivity">
+                                <FormControlLabel>Période d'activité</FormControlLabel>
+                                <FormControl name="dateRangePicker" accepter={DateRangePicker}/>
+                            </Form.Group>
+                        </Col>
+                    </Row>
+                </Col>
+                <Col xs={24} md={12}>
+                    <Row>
+                        <Col xs={24} className="mb-2">
                             <Form.Group controlId="password">
                                 <Form.ControlLabel>Mot de passe</Form.ControlLabel>
                                 <Form.Control name="password" type="password" autoComplete="off" />
@@ -47,28 +75,23 @@ const RegistrationForm = () => {
                                 <Form.Control name="passwordConfirm" type="password" autoComplete="off" />
                             </Form.Group>
                         </Col>
-                    </Row>
-                </Col>
-                <Col xs={24} md={12}>
-                    <Row>
-                        <Col xs={24}>
-                            <Form.Group controlId="avatar">
-                                <Form.ControlLabel>Image de profil</Form.ControlLabel>
-                                <AvatarUploader />
-                            </Form.Group>
-                        </Col>
                         <Col xs={24}>
                             <Form.Group>
                                 <CheckboxGroup name="checkboxList"> 
-                                    <p>Préférences de contact</p>
+                                    <p>Préférences de contact :</p>
                                     <Checkbox value="contactBySMS" defaultChecked>Autoriser l'envoi de SMS</Checkbox>
                                     <Checkbox value="contactByMail" defaultChecked>Autoriser l'envoi d'email</Checkbox>
                                 </CheckboxGroup>
                             </Form.Group>
                         </Col>
+                        <Col xs={24} className="mb-2">
+                            <Form.Group controlId="GCUAgreement">
+                                <Checkbox value="gcuAgreement">J'ai pris connaissance et j'accepte les Conditions Générales d'Utilisation de Covoitur'AFPA.</Checkbox>
+                            </Form.Group>
+                        </Col>
                         <Col xs={24}>
                             <Form.Group controlId="captcha">
-                                <Placeholder.Paragraph style={{ marginTop: 30 }} graph="circle" className='border-2 border-black-800' />
+                                <HCaptcha sitekey="aea49a3b-1ae7-4709-996d-b4bc374a903c" onVerify={onVerifyCaptcha}/>
                             </Form.Group>
                         </Col>
                     </Row>
