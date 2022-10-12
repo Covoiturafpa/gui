@@ -6,13 +6,15 @@ import FetchService from '../../services/FetchService';
 import { RideFormContext } from './RideFormContextProvider';
 
 const SearchRidesForm = () => {
-    const { rideType, isFromAfpa, arrival, departure, departureDay, recurringDates, destination, rides } = useContext(RideFormContext);
+    const { rideType, isFromAfpa, isRoundTrip, arrival, departure, departureDay, days, recurringDates, destination, rides } = useContext(RideFormContext);
+    const data = useContext(RideFormContext);
 
     function createRideSearchParameters() {
+        console.log(data)
         let jsonRequest = {
             rideType: rideType.value,
             destination: {
-                isFromAfpa: isFromAfpa.value,
+                isFromAfpa: (isRoundTrip.value ? !isFromAfpa.value : isFromAfpa.value),
                 latitude: destination.value.lat,
                 longitude: destination.value.lon,
                 city: {
@@ -20,22 +22,33 @@ const SearchRidesForm = () => {
                 }
             }
         };
-
-        if (departureDay !== undefined) {
+        if (rideType.value === "R") {
+            jsonRequest.daysWeek = days.value;
+        }
+        if (departureDay.value !== undefined) {
             jsonRequest.departureDay = departureDay.value.toISOString().substring(0, 10);
         } else {
             jsonRequest.beginning = recurringDates.value[0].toISOString().substring(0, 10);
             jsonRequest.ending = recurringDates.value[1].toISOString().substring(0, 10);
+            
         }
+        console.log(jsonRequest);
         jsonRequest = JSON.stringify(jsonRequest);
         return encodeURI(jsonRequest);
     }
 
-    const submitForm = () => {
-        const searchParameters = createRideSearchParameters();
+    const submitForm = () => { 
+        let searchParameters = createRideSearchParameters(false);
         FetchService.get("/rides?searchParams=" + searchParameters).then((results) => {
             rides.setValue(results);
         });
+        if (isRoundTrip.value) {
+            searchParameters = createRideSearchParameters(true);
+            FetchService.get("/rides?searchParams=" + searchParameters).then((results) => {
+                rides.setValue(...rides.value, results);
+                console.log(rides.value)
+            });
+        }
     }
 
     return (

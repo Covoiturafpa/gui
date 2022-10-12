@@ -3,13 +3,13 @@ import { React, useState, useEffect, useContext } from 'react';
 import styles from './checkboxdays.module.css';
 
 import { DaysTranslate } from '../DaysTranslate';
-import CheckboxDaysContext from './CheckBoxDaysContext';
+import { RideFormContext } from '../RideForms/RideFormContextProvider';
+
 
 const CheckBoxDays = (props) => {
-    const [days, setDays] = useState(props.days);
+
     const [checkboxes, setCheckboxes] = useState([]);
-    const [dataCheckboxes, setDataCheckboxes] = useState([]);
-    const {dataDays, setDataDays} = useContext(CheckboxDaysContext);
+    const {days} = useContext(RideFormContext);
 
       useEffect(() => {
         setCheckboxes([]);
@@ -27,15 +27,13 @@ const CheckBoxDays = (props) => {
       }, []);
 
       useEffect(() => {
-        setDataCheckboxes([]);
         let newData = [];
         checkboxes.map((checkbox) => {
             if(checkbox.checked == true) {
                 newData.push({name: checkbox.name});
-                setDataCheckboxes(newData);
             }
         });
-        setDataDays(newData);
+        days.setValue(newData);
       }, [checkboxes]);
 
       const toggleCheckbox = (id, index) => {

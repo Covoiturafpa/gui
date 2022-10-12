@@ -14,10 +14,10 @@ const Booking = () => {
     const { rides } = useContext(RideFormContext);
 
     useEffect(() => {
-        if (rides.value.length != 0) {
+        if (rides.value.length !== 0) {
             searchResultRef.current.scrollIntoView({ behavior: 'smooth', block: 'start' })
         }
-    }, [rides])
+    }, [rides.value])
 
     const [dimensions, setDimensions] = useState({
         height: window.innerHeight,
@@ -43,10 +43,12 @@ const Booking = () => {
 
     const debouncedHandleResize = debounce(
         function handleResize() {
-            setDimensions({
-                height: window.innerHeight,
-                width: window.innerWidth
-            })
+            if (dimensions) {
+                setDimensions({
+                    height: window.innerHeight,
+                    width: window.innerWidth
+                })
+            }
         }, 1000
     );
 
@@ -55,9 +57,9 @@ const Booking = () => {
     });
 
     return (
-        <Content className='h-full w-full flex justify-center align-middle'>
+        <Content className='h-full w-full flex justify-center align-middle' ref={searchForm}>
             <FlexboxGrid align='middle' justify='space-around' className='h-full w-full'>
-                <FlexboxGrid.Item as={Col} colspan={22} md={11} className='h-fit flex justify-end' ref={searchForm}>
+                <FlexboxGrid.Item as={Col} colspan={22} md={11} className='h-fit flex justify-end'>
                     <SearchRidesForm />
                 </FlexboxGrid.Item>
                 {window.innerWidth >= 768 &&

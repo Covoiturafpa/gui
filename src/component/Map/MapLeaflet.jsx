@@ -3,7 +3,7 @@ import { useEffect, useContext, useState } from "react";
 import "/node_modules/leaflet/dist/leaflet.css"; // ../.. Faut-il remonter de 2 dossiers ? WORKING ?!
 import styles from './mapleaflet.module.css';
 
-import { Message } from 'rsuite';
+import { Loader } from 'rsuite';
 
 import L from 'leaflet';
 import { MapContainer, TileLayer, Marker, Popup, useMap } from 'react-leaflet';
@@ -79,9 +79,7 @@ const MapLeaflet = () => {
                 {waypoints.arrival !== undefined ? <Routing waypoints={waypoints} /> : null}
             </MapContainer>
             : <div className="flex flex-col justify-center items-center h-full">
-                <Message className="!relative justify-center" showIcon type="error" header="Erreur" full>
-                    Récupération des données du centre impossible
-                </Message>
+                <Loader content="Chargement..." vertical />
             </div>
     )
 }

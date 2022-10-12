@@ -11,6 +11,7 @@ const RideFormContextProvider = ({ children }) => {
     const [isFromAfpa, setIsFromAfpa] = useState(false);
     const [isRoundTrip, setIsRoundTrip] = useState(true);
     const [destination, setDestination] = useState({ lat: null, lon: null });
+    const [days, setDays] = useState([]);
     const [rides, setRides] = useState([]);
 
     const formStates = {
@@ -37,6 +38,10 @@ const RideFormContextProvider = ({ children }) => {
         "departureDay": {
             value: departureDay,
             setValue: setDepartureDay
+        },
+        "days": {
+            value: days,
+            setValue: setDays
         },
         "recurringDates": {
             value: recurringDates,

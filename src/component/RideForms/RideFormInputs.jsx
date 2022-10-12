@@ -1,6 +1,7 @@
 import { React, useState, useRef, useEffect, useContext } from 'react';
 import { Form, RadioGroup, Radio, DatePicker, DateRangePicker, Stack, Divider } from 'rsuite';
 import { BsArrowDownUp } from "react-icons/bs";
+import { addDays } from 'date-fns';
 
 import CheckBoxDays from '../CheckBoxDays/CheckBoxDays';
 import CheckBoxDaysContext from '../CheckBoxDays/CheckBoxDaysContext';
@@ -55,72 +56,88 @@ const RideFormInputs = () => {
         isFromAfpa.setValue(!isFromAfpa.value);
     }
 
+    const OneDateRanges = [
+        {
+            label: "aujourd'hui",
+            value: new Date(),
+            closeOverlay: true
+        },
+        {
+            label: 'demain',
+            value: addDays(new Date(), +1),
+            closeOverlay: true
+        }
+    ];
+
+    const MultipleDatesRanges = [
+    ];
+
     return (
         <>
             <Stack wrap alignItems='baseline' justifyContent='space-around'>
                 <Form.Group className='flex justify-center items-center' controlId='radioRideType'>
-                    <Form.Control style={{width: 220}} accepter={RadioGroup} name="rideType" inline appearance="picker" 
-                                value={rideType.value} onChange={rideType.setValue} className='my-2 justify-center'>
+                    <Form.Control style={{ width: 220 }} accepter={RadioGroup} name="rideType" inline appearance="picker"
+                        value={rideType.value} onChange={rideType.setValue} className='my-2 justify-center'>
                         <Radio value="R">Régulier</Radio>
-                        <Divider className="self-center" vertical/>
+                        <Divider className="self-center" vertical />
                         <Radio value="O">Ponctuel</Radio>
                     </Form.Control>
                 </Form.Group>
                 <Form.Group className='flex justify-center items-center' controlId='checkBoxRoundTrip'>
-                    <Form.Control style={{width: 220}} accepter={RadioGroup} inline appearance="picker" name="isRoundTrip" value={isRoundTrip.value} 
-                                    onChange={isRoundTrip.setValue} className='my-2 justify-center'>
-                            <Radio value={true} >Aller&nbsp;retour</Radio>
-                            <Divider className="self-center" vertical/>
-                            <Radio value={false}>Aller&nbsp;simple</Radio>
+                    <Form.Control style={{ width: 220 }} accepter={RadioGroup} inline appearance="picker" name="isRoundTrip" value={isRoundTrip.value}
+                        onChange={isRoundTrip.setValue} className='my-2 justify-center'>
+                        <Radio value={true} >Aller&nbsp;retour</Radio>
+                        <Divider className="self-center" vertical />
+                        <Radio value={false}>Aller&nbsp;simple</Radio>
                     </Form.Control>
                 </Form.Group>
             </Stack>
 
             <Form.Group className='pt-2' controlId='inputDeparture'>
                 <Form.ControlLabel>Départ</Form.ControlLabel>
-                <Form.Control name="departure" ref={departureInputRef} value={departure.value} 
-                              onChange={departure.setValue}
-                              onBlur={updateCoordinates} readOnly={isFromAfpa.value} />
+                <Form.Control name="departure" ref={departureInputRef} value={departure.value}
+                    onChange={departure.setValue}
+                    onBlur={updateCoordinates} readOnly={isFromAfpa.value} />
             </Form.Group>
             <button className="text-xl w-full flex justify-center">
                 <BsArrowDownUp onClick={invertDestinationsInputs} />
             </button>
             <Form.Group controlId='inputArrival'>
                 <Form.ControlLabel>Arrivée</Form.ControlLabel>
-                <Form.Control name="arrival" ref={arrivalInputRef} value={arrival.value} 
-                              onChange={arrival.setValue}
-                              onBlur={updateCoordinates} readOnly={!isFromAfpa.value} />
+                <Form.Control name="arrival" ref={arrivalInputRef} value={arrival.value}
+                    onChange={arrival.setValue}
+                    onBlur={updateCoordinates} readOnly={!isFromAfpa.value} />
             </Form.Group>
-                {rideType.value === "O" &&
-                    <Form.Group className='pt-3'>
-                        <Form.ControlLabel>Date de départ</Form.ControlLabel>
-                        <Form.Control name="date" accepter={DatePicker} className='w-full' format="yyyy-MM-dd" 
-                                      placeholder={"aaaa-mm-jj"} value={departureDay.value} 
-                                      onChange={departureDay.setValue}>
-                            <DatePicker />
+            {rideType.value === "O" &&
+                <Form.Group className='pt-3'>
+                    <Form.ControlLabel>Date de départ</Form.ControlLabel>
+                    <Form.Control name="date" accepter={DatePicker} className='w-full' format="dd-MM-yyyy"
+                        placeholder={"jj-mm-aaaa"} value={departureDay.value} oneTap ranges={OneDateRanges}
+                        onChange={departureDay.setValue} placement="autoVerticalStart">
+                        <DatePicker />
+                    </Form.Control>
+                </Form.Group>
+            }
+            {rideType.value === "R" &&
+                <>
+                    <Form.Group className='pl-1 pt-3' >
+                        <Form.ControlLabel>Jours</Form.ControlLabel>
+                        <RadioGroup>
+                            <CheckBoxDaysContext.Provider value={{ dataDays, setDataDays }}>
+                                <CheckBoxDays disabled={false} days={0} />
+                            </CheckBoxDaysContext.Provider>
+                        </RadioGroup>
+                    </Form.Group>
+                    <Form.Group className='pt-0'>
+                        <Form.ControlLabel>Dates de début -&rsaquo; fin</Form.ControlLabel>
+                        <Form.Control name="dates" accepter={DateRangePicker} className='w-full' format="dd-MM-yyyy" character={" -> "}
+                            placeholder={"jj-mm-aaaa -> jj-mm-aaaa"} showOneCalendar placement='autoVerticalStart'
+                            value={recurringDates.value} onChange={recurringDates.setValue} ranges={MultipleDatesRanges}>
+                            <DateRangePicker />
                         </Form.Control>
                     </Form.Group>
-                }
-                {rideType.value === "R" &&
-                    <>
-                        <Form.Group className='pl-1 pt-3' >
-                            <Form.ControlLabel>Jours</Form.ControlLabel>
-                            <RadioGroup>
-                                <CheckBoxDaysContext.Provider value={{ dataDays, setDataDays}}>
-                                    <CheckBoxDays disabled={false} days={0} />
-                                </CheckBoxDaysContext.Provider>
-                            </RadioGroup>
-                        </Form.Group>
-                        <Form.Group className='pt-0'>
-                            <Form.ControlLabel>Dates de début -&rsaquo; fin</Form.ControlLabel>
-                            <Form.Control name="dates" accepter={DateRangePicker} className='w-full' format="yyyy-MM-dd" character={" -> "}
-                                placeholder={"aaaa-mm-jj -> aaaa-mm-jj"} showOneCalendar placement='topStart'
-                                value={recurringDates.value} onChange={recurringDates.setValue}>
-                            <DateRangePicker />
-                            </Form.Control>
-                        </Form.Group>
-                    </>
-                }
+                </>
+            }
         </>
     )
 }
