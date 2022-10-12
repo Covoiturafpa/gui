@@ -35,7 +35,6 @@ const AddRideForm = (props) => {
         fetch.then(
             (result) => {
                 setDataUser(result);
-                console.log(result);
                 const dataResult = result.cars.map(
                     car => ({ label: car.model, value: car.model, key: car.id, seats: car.seats, avgFuelConsumption : car.avgFuelConsumption, idCarType : car.idCarType, idPerson: car.idPerson})
                 );
@@ -57,40 +56,38 @@ const AddRideForm = (props) => {
     }, []);
 
     const submitForm = () => {
+        console.log(destination.value);
         const dataNewRide = {
             "rideType" : rideType.value,
-            "departure" : departure.value,
             "destination" : {
-                "latitude" : 0,
-                "longitude" : 0,
+                "latitude" : destination.value.lat,
+                "longitude" : destination.value.lon,
                 "isFromAfpa" : isFromAfpa.value,
                 "city" : {
-                    "id" : 0,
-                    "name" : 0
+                    "name" : departure.value
                 }
             },
-            "departureDay" : departureDay.value,
-            "recurringDates" : recurringDates.value,
-            "departureTime" : arrivalTime,
+            "departureDay" : departureDay.value.toISOString().substring(0, 10),
+            "departureTime" : arrivalTime.toISOString().substring(11, 19),
             "car" : {
                 "id" : car.key,
-                "model" : car.label,
-                "seats" : car.seats,
-                "avgFuelConsumption" : car.avgFuelConsumption,
-                "idCarType" : car.idCarType,
-                "idPerson" : car.idPerson
+                "person" : {
+                    "id" : dataUser.id,
+                    "personType" : dataUser.personType
+                }
             },
             "price" : price,
             "comment" : comment
         };
-        if(isRoundTrip) {
+        console.log(dataNewRide);
+        if(isRoundTrip.value) {
             const dataRoundTrip = {...dataNewRide, "departure" : arrival.value, "isFromAfpa" : !isFromAfpa.value, "departureTime" : arrivalTimeReturn.value};
             const fetchPost = FetchService.post("/rides", dataRoundTrip);
             fetchPost.then((result) => {
                 console.log(result);
             })
         }
-        const fetchPost = FetchService.post("/rides", dataNewRide)
+        const fetchPost = FetchService.post("/rides", JSON.stringify(dataNewRide))
         fetchPost.then((result) => {
             console.log(result);
         });
