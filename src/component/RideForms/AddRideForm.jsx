@@ -75,13 +75,13 @@ const AddRideForm = (props) => {
                 }
             },
             "price" : price,
-            "comment" : comment
+            "comment" : comment,
+            "isActive" : true
         };
 
         if (rideType.value === "O") {
             dataNewRide = {...dataNewRide, "departureDay" : departureDay.value.toISOString().substring(0, 10)}
         }else if (rideType.value === "R") {
-            console.log(days.value)
             dataNewRide = {...dataNewRide, "beginning" : recurringDates.value[0].toISOString().substring(0, 10), "ending" : recurringDates.value[1].toISOString().substring(0, 10), "daysWeek" : days.value}
         }
 
@@ -91,8 +91,18 @@ const AddRideForm = (props) => {
         });
 
         if(isRoundTrip.value) {
-            const dataRoundTrip = {...dataNewRide, "isFromAfpa" : !isFromAfpa.value, "departureTime" : arrivalTimeReturn.value.toISOString().substring(11, 19)};
-            const fetchPost = FetchService.post("/rides", dataRoundTrip);
+            const dataRoundTrip = {...dataNewRide,
+                                    "destination" : {
+                                        "latitude" : destination.value.lat,
+                                        "longitude" : destination.value.lon,
+                                        "isFromAfpa" : !isFromAfpa.value,
+                                        "city" : {
+                                            "name" : departure.value
+                                        }
+                                    },
+                                    "departureTime" : arrivalTimeReturn.toISOString().substring(11, 19)};
+            console.log(dataRoundTrip);
+            const fetchPost = FetchService.post("/rides", JSON.stringify(dataRoundTrip));
             fetchPost.then((result) => {
                 console.log(result);
             })

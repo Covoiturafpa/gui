@@ -38,14 +38,16 @@ function rowDate(data) {
         return (Moment(data.departureDay).format("DD/MM/YYYY"))
     }
     if (data.beginning) {
-        return (<p className="mr-2">Du {Moment(data.beginning).format("DD/MM/YYYY")} au {Moment(data.ending).format("DD/MM/YYYY")} les </p>)
+        return (<span>Du {Moment(data.beginning).format("DD/MM/YYYY")} au {Moment(data.ending).format("DD/MM/YYYY")}</span>)
     }
 }
 function rowDestination(data) {
+    console.log(data.destination.isFromAfpa);
     if (data.destination.isFromAfpa) {
-        return (<p className='flex '>AFPA <FiArrowRight className='mx-2' /> {data.destination.city.name}</p>);
-    } else if (!data.destination.isFromAfpa) {
-        return (<p className='flex '>{data.destination.city.name} <FiArrowRight className='mx-2' /> AFPA</p>);
+        return (<span className='flex '> AFPA <FiArrowRight className='mx-2' /> {data.destination.city.name}</span>);
+    }
+    if (!data.destination.isFromAfpa) {
+        return (<span className='flex '> {data.destination.city.name} <FiArrowRight className='mx-2' /> AFPA</span>);
     }
 }
 
@@ -57,13 +59,12 @@ const TableProposedRides = (props) => {
     const renderRowExpanded = rowData => {
         console.log(rowData);
         return (<div>
-            <p className='flex'>Destination : </p>
-            <p>{rowDestination(rowData)}</p>
-            <p className='flex'>Date : </p>
-            <p>{rowDate(rowData)}</p>
+            <p className='flex break-words'>Destination :  {rowDestination(rowData)}</p>
+            <p className='flex'>Date : {rowDate(rowData)}</p>
             {rowData.beginning ? <CheckBoxDays disabled={true} days={rowData.daysWeek} /> : ""}
-            <p>Heure : </p>
-            <p>{rowData.departureTime}</p>
+            <p>Heure : {rowData.departureTime.substring(0, 5)}</p>
+            <p>Prix : {rowData.price} €</p>
+            <p className="break-words">Commentaire : {rowData.comment}</p>
         </div>);
     };
 
@@ -114,7 +115,7 @@ const TableProposedRides = (props) => {
                         rowKey={rowKey}
                         expandedRowKeys={expandedRowKeys}
                         renderRowExpanded={renderRowExpanded}
-                        rowExpandedHeight={200}
+                        rowExpandedHeight={160}
                     >
                         <Column width={70} align="center">
                             <HeaderCell>#</HeaderCell>
@@ -139,7 +140,11 @@ const TableProposedRides = (props) => {
 
                         <Column flexGrow={1}>
                             <HeaderCell>heure</HeaderCell>
-                            <Cell dataKey="departureTime" />
+                            <Cell>
+                                {rowData => (
+                                    rowData.departureTime.substring(0, 5)
+                                )}
+                            </Cell>
                         </Column>
 
 

@@ -33,17 +33,17 @@ const ExpandCell = ({ rowData, dataKey, expandedRowKeys, onChange, ...props }) =
 
 function rowDate(data) {
     if (data.departureDay) {
-        return <p>{Moment(data.departureDay).format("DD/MM/YYYY")}</p>
+        return <span>{Moment(data.departureDay).format("DD/MM/YYYY")}</span>
     }
     if (data.beginning) {
-        return (<p className="mr-2">Du {Moment(data.beginning).format("DD/MM/YYYY")} au {Moment(data.ending).format("DD/MM/YYYY")}</p>)
+        return (<span className="mr-2">Du {Moment(data.beginning).format("DD/MM/YYYY")} au {Moment(data.ending).format("DD/MM/YYYY")}</span>)
     }
 }
 function rowDestination(data) {
     if (data.destination.isFromAfpa) {
-        return (<p className='flex '>AFPA <FiArrowRight className='mx-2' /> {data.destination.city.name}</p>);
+        return (<span className='flex '>AFPA <FiArrowRight className='mx-2' /> {data.destination.city.name}</span>);
     } else if (!data.destination.isFromAfpa) {
-        return (<p className='flex '>{data.destination.city.name} <FiArrowRight className='mx-2' /> AFPA</p>);
+        return (<span className='flex '>{data.destination.city.name} <FiArrowRight className='mx-2' /> AFPA</span>);
     }
 }
 
@@ -54,20 +54,19 @@ const TableRequestedRides = (props) => {
 
     const renderRowExpanded = rowData => {
         return (<div>
-            <p className='flex'>Destination : </p>
-            {rowDestination(rowData)}
-            <p className='flex'>Date : </p>
-            {rowDate(rowData)}
+            <p className='flex'>Destination : {rowDestination(rowData)}</p>
+            <p className='flex'>Date : {rowDate(rowData)}</p>
             {rowData.beginning ? <CheckBoxDays disabled={true} days={rowData.daysWeek} /> : ""}
-            <p>Heure : </p>
-            <p>{rowData.departureTime}</p>
-            <p>Conducteur : </p>
+            <p>Heure : {rowData.departureTime.substring(0, 5)}</p>
+            <p>Conducteur : 
             {rowData.requestedPassengers.map(passenger => {
                     if (passenger.isDriver) {
                         console.log(passenger);
-                       return <p>{passenger.person.surname} {passenger.person.firstName.charAt(0)}.</p>
+                       return <span>{passenger.person.surname} {passenger.person.firstName.charAt(0)}.</span>
                     }
-            })}
+            })}</p>
+            <p>Prix : {rowData.price} €</p>
+            <p className='break-words'>Commentaire : {rowData.comment}</p>
         </div>);
     };
 
@@ -107,7 +106,7 @@ const TableRequestedRides = (props) => {
                     rowKey={rowKey}
                     expandedRowKeys={expandedRowKeys}
                     renderRowExpanded={renderRowExpanded}
-                    rowExpandedHeight={250}
+                    rowExpandedHeight={200}
                     data={props.rides}
                     onRowClick={rowData => {
                         console.log(rowData);
@@ -135,7 +134,11 @@ const TableRequestedRides = (props) => {
 
                     <Column className="bg-gray-background" flexGrow={1}>
                         <HeaderCell>heure</HeaderCell>
-                        <Cell dataKey="departureTime" />
+                        <Cell>
+                                {rowData => (
+                                    rowData.departureTime.substring(0, 5)
+                                )}
+                            </Cell>
                     </Column>
                     <Column flexGrow={1}>
                         <HeaderCell>prix</HeaderCell>
