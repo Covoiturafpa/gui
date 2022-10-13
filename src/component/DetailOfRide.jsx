@@ -11,7 +11,7 @@ const DetailOfRide = (props) => {
     const [isLoaded, setIsLoaded] = useState(false);
     const [error, setError] = useState(null);
     const [labelCheckbox, setLabelCheckbox] = useState();
-    const [isChecked, setIsChecked] = useState(props.isActive);
+    const [isChecked, setIsChecked] = useState(props.ride.isActive);
 
     useEffect(() => {
         if (isChecked) {
@@ -60,7 +60,7 @@ const DetailOfRide = (props) => {
                                                                 <DatePicker defaultValue={new Date(props.ending)}/>
                                                                 <DatePicker format="HH:mm:ss"/>
                                                             </div>
-                                                            : <label>Du {Moment(props.ride.beginning).format("DD/MM/YYYY")} au {Moment(props.ride.ending).format("DD/MM/YYYY")} à {props.Ride.departureTime}</label>
+                                                            : <label>Du {Moment(props.ride.beginning).format("DD/MM/YYYY")} au {Moment(props.ride.ending).format("DD/MM/YYYY")} à {props.ride.departureTime}</label>
                                             }
                                         </div>}
                 </ListRow>
