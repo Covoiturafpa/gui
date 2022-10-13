@@ -57,8 +57,7 @@ function rowPrice(data) {
 const RidesResultTable = (props) => {
 
     const [expandedRowKeys, setExpandedRowKeys] = useState([]);
-    const { rides, isFromAfpa } = useContext(RideFormContext);
-
+    const { rides } = useContext(RideFormContext);
     const renderRowExpanded = rowData => {
         return (<div>
             <p className='flex'>Destination : </p>
@@ -88,10 +87,12 @@ const RidesResultTable = (props) => {
         setExpandedRowKeys(nextExpandedRowKeys);
     }
 
+    const tableData = props.returns === false ? rides.value[0] : rides.value[1];
+    console.log(tableData[0].destination.isFromAfpa);
     return (
         <Table className='rounded-b-md bg-green-100'
             autoHeight={true}
-            data={rides.value}
+            data={tableData}
             rowKey={rowKey}
             expandedRowKeys={expandedRowKeys}
             renderRowExpanded={renderRowExpanded}
@@ -102,7 +103,7 @@ const RidesResultTable = (props) => {
                 <ExpandCell dataKey="id" expandedRowKeys={expandedRowKeys} onChange={handleExpanded} />
             </Column>
             <Column flexGrow={1.4}>
-                <HeaderCell>{rides.value[0].destination.isFromAfpa === true ? "Arrivée" : "Départ"}</HeaderCell>
+                <HeaderCell>{tableData[0].destination.isFromAfpa === true ? "Arrivée" : "Départ"}</HeaderCell>
                 <Cell dataKey='destination.city.name' />
             </Column>
             <Column flexGrow={1}>

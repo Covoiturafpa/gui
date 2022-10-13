@@ -7,14 +7,12 @@ import { RideFormContext } from './RideFormContextProvider';
 
 const SearchRidesForm = () => {
     const { rideType, isFromAfpa, isRoundTrip, arrival, departure, departureDay, days, recurringDates, destination, rides } = useContext(RideFormContext);
-    const data = useContext(RideFormContext);
 
-    function createRideSearchParameters() {
-        console.log(data)
+    function createRideSearchParameters(invertDestination) {
         let jsonRequest = {
             rideType: rideType.value,
             destination: {
-                isFromAfpa: (isRoundTrip.value ? !isFromAfpa.value : isFromAfpa.value),
+                isFromAfpa: (invertDestination ? !isFromAfpa.value : isFromAfpa.value),
                 latitude: destination.value.lat,
                 longitude: destination.value.lon,
                 city: {
@@ -25,28 +23,28 @@ const SearchRidesForm = () => {
         if (rideType.value === "R") {
             jsonRequest.daysWeek = days.value;
         }
-        if (departureDay.value !== undefined) {
+        if (rideType.value === "O") {
             jsonRequest.departureDay = departureDay.value.toISOString().substring(0, 10);
         } else {
             jsonRequest.beginning = recurringDates.value[0].toISOString().substring(0, 10);
             jsonRequest.ending = recurringDates.value[1].toISOString().substring(0, 10);
             
         }
-        console.log(jsonRequest);
         jsonRequest = JSON.stringify(jsonRequest);
         return encodeURI(jsonRequest);
     }
 
-    const submitForm = () => { 
+    const submitForm = () => {
         let searchParameters = createRideSearchParameters(false);
-        FetchService.get("/rides?searchParams=" + searchParameters).then((results) => {
-            rides.setValue(results);
+        FetchService.get("/rides?searchParams=" + searchParameters).then((searchResults) => {
+            let resultArray = [searchResults];
+            rides.setValue(resultArray);
         });
         if (isRoundTrip.value) {
             searchParameters = createRideSearchParameters(true);
-            FetchService.get("/rides?searchParams=" + searchParameters).then((results) => {
-                rides.setValue(...rides.value, results);
-                console.log(rides.value)
+            FetchService.get("/rides?searchParams=" + searchParameters).then((searchResults) => {
+                let resultArray = [rides.value, searchResults];
+                rides.setValue(resultArray);
             });
         }
     }
