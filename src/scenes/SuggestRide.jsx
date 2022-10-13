@@ -41,10 +41,10 @@ const SuggestRide = () => {
         window.addEventListener('resize', debouncedHandleResize);
     }, []);
 
-    return (<Content className='h-full w-full flex justify-center align-middle'>
-        <FlexboxGrid align='middle' justify='space-around' className='h-full w-full'>
+    return (<Content className='h-full w-full flex'>
+        <FlexboxGrid align='start' justify='space-around' className='h-full w-full'>
             <RideFormContextProvider>
-                <FlexboxGrid.Item as={Col} colspan={22} md={11} className='h-fit flex justify-end'>
+                <FlexboxGrid.Item as={Col} colspan={22} md={11} className='h-fit flex'>
                     <AddRideForm />
                 </FlexboxGrid.Item>
                 {window.innerWidth >= 768 &&

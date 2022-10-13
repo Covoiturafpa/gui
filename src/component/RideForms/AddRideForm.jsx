@@ -8,18 +8,18 @@ import RideFormInputs from './RideFormInputs';
 import { DestinationContext } from '../../scenes/Booking';
 import { FiPlusCircle } from "react-icons/fi";
 import { RideFormContext } from './RideFormContextProvider';
+import { DaysTranslate } from '../DaysTranslate';
 
 const Textarea = React.forwardRef((props, ref) => <Input {...props} as="textarea" ref={ref} />);
 
 const AddRideForm = (props) => {
-    const [dataDays, setDataDays] = useState([]);
     const [carsUser, setCarsUser] = useState([]);
     const [dataUser, setDataUser] = useState([]);
     const [userId, setUserId] = useState(authService.getCurrentUserId());
     const [isLoaded, setIsLoaded] = useState(false);
     const [error, setError] = useState(null);
     const [placeholderCars, setPlaceholderCars] = useState("");
-    const { arrival, departure, destination, isFromAfpa, rideType, isRoundTrip, departureDay, recurringDates } = useContext(RideFormContext);
+    const { arrival, departure, destination, isFromAfpa, rideType, isRoundTrip, departureDay, recurringDates, beginning, ending, days } = useContext(RideFormContext);
     const [arrivalTime, setArrivalTime] = useState();
     const [arrivalTimeReturn, setArrivalTimeReturn] = useState();
     const [car, setCar] = useState({});
@@ -56,8 +56,7 @@ const AddRideForm = (props) => {
     }, []);
 
     const submitForm = () => {
-        console.log(destination.value);
-        const dataNewRide = {
+        let dataNewRide = {
             "rideType" : rideType.value,
             "destination" : {
                 "latitude" : destination.value.lat,
@@ -67,7 +66,6 @@ const AddRideForm = (props) => {
                     "name" : departure.value
                 }
             },
-            "departureDay" : departureDay.value.toISOString().substring(0, 10),
             "departureTime" : arrivalTime.toISOString().substring(11, 19),
             "car" : {
                 "id" : car.key,
@@ -79,18 +77,26 @@ const AddRideForm = (props) => {
             "price" : price,
             "comment" : comment
         };
-        console.log(dataNewRide);
+
+        if (rideType.value === "O") {
+            dataNewRide = {...dataNewRide, "departureDay" : departureDay.value.toISOString().substring(0, 10)}
+        }else if (rideType.value === "R") {
+            console.log(days.value)
+            dataNewRide = {...dataNewRide, "beginning" : recurringDates.value[0].toISOString().substring(0, 10), "ending" : recurringDates.value[1].toISOString().substring(0, 10), "daysWeek" : days.value}
+        }
+
+        const fetchPost = FetchService.post("/rides", JSON.stringify(dataNewRide))
+        fetchPost.then((result) => {
+            console.log(result);
+        });
+
         if(isRoundTrip.value) {
-            const dataRoundTrip = {...dataNewRide, "departure" : arrival.value, "isFromAfpa" : !isFromAfpa.value, "departureTime" : arrivalTimeReturn.value};
+            const dataRoundTrip = {...dataNewRide, "isFromAfpa" : !isFromAfpa.value, "departureTime" : arrivalTimeReturn.value.toISOString().substring(11, 19)};
             const fetchPost = FetchService.post("/rides", dataRoundTrip);
             fetchPost.then((result) => {
                 console.log(result);
             })
         }
-        const fetchPost = FetchService.post("/rides", JSON.stringify(dataNewRide))
-        fetchPost.then((result) => {
-            console.log(result);
-        });
     }
 
     if (error) {
@@ -143,7 +149,7 @@ const AddRideForm = (props) => {
                     <Form.Control name="commentInput" rows={5} accepter={Textarea} onChange={setComment}/>
                 </Form.Group>
                 <Form.Group className='flex justify-end my-4'>
-                    <Button appearance="primary" onClick={submitForm}>Envoyer</Button>
+                    <Button appearance="primary" onClick={submitForm}>Enregistrer</Button>
                 </Form.Group>
             </Form>
         );

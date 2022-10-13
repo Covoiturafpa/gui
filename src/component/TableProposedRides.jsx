@@ -55,6 +55,7 @@ const TableProposedRides = (props) => {
     const [detailRide, setDetailRide] = useState(null);
 
     const renderRowExpanded = rowData => {
+        console.log(rowData);
         return (<div>
             <p className='flex'>Destination : </p>
             <p>{rowDestination(rowData)}</p>

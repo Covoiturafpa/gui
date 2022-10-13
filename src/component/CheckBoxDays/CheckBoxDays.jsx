@@ -30,7 +30,7 @@ const CheckBoxDays = (props) => {
         let newData = [];
         checkboxes.map((checkbox) => {
             if(checkbox.checked == true) {
-                newData.push({name: checkbox.name});
+                newData.push({idDayWeek: checkbox.id});
             }
         });
         days.setValue(newData);
