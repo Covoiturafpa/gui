@@ -50,8 +50,9 @@ function rowDestination(data) {
 }
 
 const TableProposedRides = (props) => {
-    const [onEdit, setOnEdit] = useState(null);
+    const [isEditable, setIsEditable] = useState(false);
     const [expandedRowKeys, setExpandedRowKeys] = useState([]);
+    const [detailRide, setDetailRide] = useState(null);
 
     const renderRowExpanded = rowData => {
         return (<div>
@@ -83,75 +84,78 @@ const TableProposedRides = (props) => {
     }
 
     function showDetail(ride) {
-        setOnEdit(ride);
+        setDetailRide(ride);
+        setIsEditable(true);
     }
 
 
-    if (onEdit) {
-        return (<DetailOfRide isOwner={true} userId={props.id} {...onEdit} />);
-    } else if (props.rides == 0) {
-        return (
-            <div>
-                <div className="bg-gray-background rounded-t-md py-1">
-                    <h5 className="text-center">Mes trajets proposés</h5>
-                    <p className='text-center'>Vous proposez aucun trajet</p>
+    if (isEditable) {
+        return (<DetailOfRide isOwner={true} userId={props.id} ride={detailRide} setEditable={setIsEditable}/>);
+    }else {
+        if (props.rides === 0) {
+            return (
+                <div>
+                    <div className="bg-gray-background rounded-t-md py-1">
+                        <h5 className="text-center">Mes trajets proposés</h5>
+                        <p className='text-center'>Vous proposez aucun trajet</p>
+                    </div>
                 </div>
-            </div>
-        );
-    } else {
-        return (
-            <div>
-                <div className="bg-gray-background rounded-t-md py-1">
-                    <h5 className="text-center">Mes trajets proposés</h5>
+            );
+        } else {
+            return (
+                <div>
+                    <div className="bg-gray-background rounded-t-md py-1">
+                        <h5 className="text-center">Mes trajets proposés</h5>
+                    </div>
+                    <Table className='rounded-b-md'
+                        autoHeight={true}
+                        data={props.rides}
+                        rowKey={rowKey}
+                        expandedRowKeys={expandedRowKeys}
+                        renderRowExpanded={renderRowExpanded}
+                        rowExpandedHeight={200}
+                    >
+                        <Column width={70} align="center">
+                            <HeaderCell>#</HeaderCell>
+                            <ExpandCell dataKey="id" expandedRowKeys={expandedRowKeys} onChange={handleExpanded} />
+                        </Column>
+                        <Column flexGrow={2}>
+                            <HeaderCell>Destinations</HeaderCell>
+                            <Cell>
+                                {rowData => (
+                                    rowDestination(rowData)
+                                )}
+                            </Cell>
+                        </Column>
+                        <Column flexGrow={2}>
+                            <HeaderCell>Date</HeaderCell>
+                            <Cell>
+                                {rowData => (
+                                    rowDate(rowData)
+                                )}
+                            </Cell>
+                        </Column>
+
+                        <Column flexGrow={1}>
+                            <HeaderCell>heure</HeaderCell>
+                            <Cell dataKey="departureTime" />
+                        </Column>
+
+
+                        <Column flexGrow={0.5} >
+                            <HeaderCell>Modif.</HeaderCell>
+                            <Cell>
+                                {rowData => (
+                                    <span>
+                                        <a className="text-xl" onClick={() => showDetail(rowData)}> <FiEdit2 /> </a>
+                                    </span>
+                                )}
+                            </Cell>
+                        </Column>
+                    </Table>
                 </div>
-                <Table className='rounded-b-md'
-                    autoHeight={true}
-                    data={props.rides}
-                    rowKey={rowKey}
-                    expandedRowKeys={expandedRowKeys}
-                    renderRowExpanded={renderRowExpanded}
-                    rowExpandedHeight={200}
-                >
-                    <Column width={70} align="center">
-                        <HeaderCell>#</HeaderCell>
-                        <ExpandCell dataKey="id" expandedRowKeys={expandedRowKeys} onChange={handleExpanded} />
-                    </Column>
-                    <Column flexGrow={2}>
-                        <HeaderCell>Destinations</HeaderCell>
-                        <Cell>
-                            {rowData => (
-                                rowDestination(rowData)
-                            )}
-                        </Cell>
-                    </Column>
-                    <Column flexGrow={2}>
-                        <HeaderCell>Date</HeaderCell>
-                        <Cell>
-                            {rowData => (
-                                rowDate(rowData)
-                            )}
-                        </Cell>
-                    </Column>
-
-                    <Column flexGrow={1}>
-                        <HeaderCell>heure</HeaderCell>
-                        <Cell dataKey="departureTime" />
-                    </Column>
-
-
-                    <Column flexGrow={0.5} >
-                        <HeaderCell>Modif.</HeaderCell>
-                        <Cell>
-                            {rowData => (
-                                <span>
-                                    <a className="text-xl" onClick={() => showDetail(rowData)}> <FiEdit2 /> </a>
-                                </span>
-                            )}
-                        </Cell>
-                    </Column>
-                </Table>
-            </div>
-        );
+            );
+        }
     }
 
 }

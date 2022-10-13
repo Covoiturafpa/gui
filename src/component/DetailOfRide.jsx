@@ -1,74 +1,46 @@
 import { React, useState, useEffect } from 'react';
-
+import { useNavigate } from 'react-router-dom';
 import { FiArrowRight   } from "react-icons/fi";
-
 import { List, DatePicker, Button, ButtonToolbar,Input, Checkbox } from 'rsuite';
-
 import Moment from 'moment';
-
 import CheckBoxDays from './CheckBoxDays/CheckBoxDays';
 import { ListRow } from './ListRow';
 import { ListPassengers } from './ListPassengers';
-import  FetchService  from "../services/FetchService";
-import  authService  from "../services/AuthService";
 
 const DetailOfRide = (props) => {
-    const [dataCar, setDataCar] = useState();
-    const [carSelect, setCarSelect] = useState();
     const [isLoaded, setIsLoaded] = useState(false);
     const [error, setError] = useState(null);
+    const [labelCheckbox, setLabelCheckbox] = useState();
+    const [isChecked, setIsChecked] = useState(props.isActive);
 
     useEffect(() => {
-        const fetch = FetchService.get("/users/"+ authService.getCurrentUserId());
-        fetch.then(
-            (result) => {
-                console.log(props)
-                console.log(result);
-                const dataResult = result.cars.map(
-                    car => ({ label: car.model, value: car.model, key: car.id })
-                  );
-                setDataCar(dataResult); 
-                console.log(dataResult);
-                dataResult.map(item => {
-                    if(item.value == props.car.model) {
-                        setCarSelect(item.label);
-                        setIsLoaded(true);
-                    }
-                });
+        if (isChecked) {
+            setLabelCheckbox("trajet disponible");
+        }else if (!isChecked) {
+            setLabelCheckbox("trajet indisponible");
+        }
+    },[isChecked]);
 
-            },
-            (error) => {
-                setIsLoaded(true);
-                setError(error);
-            }
-        )
-    }, []);
-    if (error) {
-        return <div>Erreur : {error.message}</div>;
-    } else if (!isLoaded) {
-        return <div>Chargement...</div>;
-    }else {
+
         return(<div className='bg-white p-5'>
             <h5>Détail du trajet</h5>
             <h6>
-                { props.destination.isFromAfpa ? 
+                { props.ride.destination.isFromAfpa ? 
                                     <span className='flex flex-row'>
-                                        AFPA <FiArrowRight className='mx-2' /> {props.destination.city.name}
+                                        AFPA <FiArrowRight className='mx-2' /> {props.ride.destination.city.name}
                                     </span>
                                 :   
                                     <span className='flex flex-row'>
-                                        {props.destination.city.name} <FiArrowRight className='mx-2' /> AFPA
+                                        {props.ride.destination.city.name} <FiArrowRight className='mx-2' /> AFPA
                                     </span> }
             </h6>
             <List>
                 <ListRow label="Disponibilité">
-                    {props.isActive ?
-                        <Checkbox checked>Trajet disponible</Checkbox>
-                    :
-                        <Checkbox>Trajet indisponible</Checkbox> }
+                    <Checkbox checked={isChecked} onClick={()=> { setIsChecked(!isChecked)}}><span>{labelCheckbox}</span></Checkbox>
+                
                 </ListRow>
                 <ListRow label="Conducteur">
-                    {props.requestedPassengers.map(passenger => {
+                    {props.ride.requestedPassengers.map(passenger => {
                         if(passenger.isDriver) {
                             return(<label>{ passenger.person.surname } {passenger.person.firstName.charAt(0)}.</label>);
                         }
@@ -76,59 +48,59 @@ const DetailOfRide = (props) => {
                     
                 </ListRow>
                 <ListRow label="Type">
-                    { props.departureDay ? <label>Ponctuel</label> : <label>Régulier</label>}
+                    { props.ride.departureDay ? <label>Ponctuel</label> : <label>Régulier</label>}
                 </ListRow>
                 <ListRow label="Date et Heure">
-                    { props.departureDay ? <div>
-                                            <label>{Moment(props.departureDay).format("DD/MM/YYYY")} à {props.departureTime}</label>
+                    { props.ride.departureDay ? <div>
+                                            <label>{Moment(props.ride.departureDay).format("DD/MM/YYYY")} à {props.ride.departureTime}</label>
                                         </div>
                                        : <div>
-                                            { props.isOwner ? <div>
+                                            { props.ride.isOwner ? <div>
                                                                 <DatePicker defaultValue={new Date(props.beginning)}/>
                                                                 <DatePicker defaultValue={new Date(props.ending)}/>
                                                                 <DatePicker format="HH:mm:ss"/>
                                                             </div>
-                                                            : <label>Du {Moment(props.beginning).format("DD/MM/YYYY")} au {Moment(props.ending).format("DD/MM/YYYY")} à {props.departureTime}</label>
+                                                            : <label>Du {Moment(props.ride.beginning).format("DD/MM/YYYY")} au {Moment(props.ride.ending).format("DD/MM/YYYY")} à {props.Ride.departureTime}</label>
                                             }
                                         </div>}
                 </ListRow>
-                { props.daysWeek ? 
+                { props.ride.daysWeek ? 
                     <ListRow label="Jours">
                         <div>
-                            <CheckBoxDays disabled={props.isOwner ? false : true} days={props.daysWeek}/>
+                            <CheckBoxDays disabled={props.ride.isOwner ? false : true} days={props.ride.daysWeek}/>
                         </div>
                     </ListRow>
                 : "" }
-                {props.isOwner ? 
+                {props.ride.isOwner ? 
                     <ListRow label="Véhicule">
-                        <label>{props.car.model}</label> 
+                        <label>{props.ride.car.model}</label> 
                     </ListRow>
                 : "" }
                 <ListRow label="Nombre de place">
-                    <label>{props.freeSeats}</label>
+                    <label>{props.ride.freeSeats}</label>
                 </ListRow>
                 <ListRow label="Prix">
-                    <label>{props.price} €</label> 
+                    <label>{props.ride.price} €</label> 
                 </ListRow>
                 <ListRow label="Commentaire">
-                    { props.isOwner ? <Input as="textarea" rows={3} placeholder={props.comment} />
-                                    : <label>{props.comment}</label> }
+                    { props.ride.isOwner ? <Input as="textarea" rows={3} placeholder={props.ride.comment} />
+                                    : <label>{props.ride.comment}</label> }
                 </ListRow>
-                {props.isOwner ? 
+                {props.ride.isOwner ? 
                     <ListRow label="Passagers">
-                        <ListPassengers passengers={props.requestedPassengers}/>
+                        <ListPassengers passengers={props.ride.requestedPassengers}/>
                     </ListRow>
                                 : "" }
             </List>
             <ButtonToolbar className='flex justify-end'>
                 <Button color="red" appearance="primary">
                     Supprimer</Button>
-                <Button appearance='ghost' color="blue" >Retour</Button>
+                <Button appearance='ghost' color="blue" onClick={() => {props.setEditable(false)}}>Retour</Button>
                 <Button appearance="primary">Enregistrer</Button>
 
             </ButtonToolbar>
         </div>);
-    }
+    
 }
 
 export{ DetailOfRide };
