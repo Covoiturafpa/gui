@@ -4,14 +4,12 @@ import { BsArrowDownUp } from "react-icons/bs";
 import { addDays } from 'date-fns';
 
 import CheckBoxDays from '../CheckBoxDays/CheckBoxDays';
-import CheckBoxDaysContext from '../CheckBoxDays/CheckBoxDaysContext';
 
 import { fetchLocation } from '../../services/GeoCodingAPI';
 import FetchService from "../../services/FetchService";
 import { RideFormContext } from './RideFormContextProvider';
 
 const RideFormInputs = () => {
-    const [dataDays, setDataDays] = useState([]);
 
     const departureInputRef = useRef();
     const arrivalInputRef = useRef();
@@ -123,9 +121,7 @@ const RideFormInputs = () => {
                     <Form.Group className='pl-1 pt-3' >
                         <Form.ControlLabel>Jours</Form.ControlLabel>
                         <RadioGroup>
-                            <CheckBoxDaysContext.Provider value={{ dataDays, setDataDays }}>
-                                <CheckBoxDays disabled={false} days={0} />
-                            </CheckBoxDaysContext.Provider>
+                            <CheckBoxDays disabled={false} days={0} />
                         </RadioGroup>
                     </Form.Group>
                     <Form.Group className='pt-0'>

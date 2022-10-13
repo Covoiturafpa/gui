@@ -15,7 +15,7 @@ import { RideFormContext } from './RideFormContextProvider';
 
 const SearchResults = (props) => {
 
-    const { rides, isFromAfpa } = useContext(RideFormContext);
+    const { rides } = useContext(RideFormContext);
 
     if (rides.value.length === 0) {
         return (
@@ -27,17 +27,18 @@ const SearchResults = (props) => {
         );
     } 
     else {
-        console.log(isFromAfpa.value)
-        if (isFromAfpa.value) {
+        if (rides.value.length === 1) {
             return (<>
-                <h5 className='text-center'>Trajets retour</h5>
-                <RidesResultTable />
+                <h5 className='text-center my-2'>Trajets disponible</h5>
+                <RidesResultTable returns={false} />
             </>)
         }
-        else if (!isFromAfpa.value) {
+        else if (rides.value.length === 2) {
             return (<>
-                <h5 className='text-center'>Trajets aller</h5>
-                <RidesResultTable />
+                <h5 className='text-center my-2'>Trajets aller</h5>
+                <RidesResultTable returns={true} />
+                <h5 className='text-center my-2'>Trajets retour</h5>
+                <RidesResultTable returns={true} />
             </>)
         }
     }
