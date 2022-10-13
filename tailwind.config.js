@@ -16,7 +16,8 @@ module.exports = {
         lg: '380px',
       },
       backgroundImage : {
-        'header_footer' : "url('/src/assets/background_img3.jpg')"
+        'header_footer' : "url('/src/assets/background_img3.jpg')",
+        'footer_wave' : "url('/src/assets/footer_wave.svg')"
       },
       keyframes: {
         scroll: {
@@ -28,7 +29,7 @@ module.exports = {
         scroll : 'scroll 10s linear infinite',
       },
       colors : {
-        'green-background' : '#58a03a', 
+        'green-afpa' : '#58a03a', 
         'gray-background' : '#fcfcfc'
       }
 
