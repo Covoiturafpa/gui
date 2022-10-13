@@ -1,12 +1,45 @@
-import React from 'react';
-import { Form, ButtonToolbar, Button, Grid, Col, Row, Checkbox, CheckboxGroup, DateRangePicker, RadioGroup, Radio } from 'rsuite';
+import React, { useEffect, useState } from 'react';
+import { Form, ButtonToolbar, Button, Grid, Col, Row, Checkbox, CheckboxGroup, DateRangePicker, RadioGroup, Radio, SelectPicker } from 'rsuite';
 import HCaptcha from '@hcaptcha/react-hcaptcha';
-import FormControlLabel from 'rsuite/esm/FormControlLabel';
-import FormControl from 'rsuite/esm/FormControl';
+import FetchService from '../services/FetchService';
 
+const Service = (props) => {
 
+    const [formations, setFormations] = useState([]);
+    const [isLoaded, setIsLoaded] = useState(false);
+
+    useEffect(() => {
+        if (!isLoaded) {
+            FetchService.get("/centre/formations").then(data => {
+                setFormations(data.map(formation => ({label: formation.name, value: formation.id})));
+            setIsLoaded(true);});
+        }
+    },[isLoaded])
+
+    if (props.personType === "E") {
+        return (
+            <>
+                <Form.ControlLabel>Service</Form.ControlLabel>
+                <Form.Control name="service" />
+            </>)
+    }
+
+    else if (!isLoaded) {
+        return(<div>Chargement...</div>);
+    }
+    else {
+        return (
+            <>
+                <Form.ControlLabel>Formation</Form.ControlLabel>
+                <SelectPicker className='w-full' data={formations} />
+            </>
+        )
+    }
+}
 
 const RegistrationForm = () => {
+
+    const [personType, setPersonType] = useState("T");
 
     function onVerifyCaptcha (token) {
         console.log("Verified: " + token);
@@ -30,12 +63,6 @@ const RegistrationForm = () => {
                             </Form.Group>
                         </Col>
                         <Col xs={24} className="mb-2">
-                            <Form.Group controlId="email">
-                                <Form.ControlLabel>E-mail</Form.ControlLabel>
-                                <Form.Control name="email" type="email" />
-                            </Form.Group>
-                        </Col>
-                        <Col xs={24} className="mb-2">
                             <Form.Group controlId="phoneNumber">
                                 <Form.ControlLabel>Tél.</Form.ControlLabel>
                                 <Form.Control name="phoneNumber" type="phone" />
@@ -43,26 +70,35 @@ const RegistrationForm = () => {
                         </Col>
                         <Col xs={24} className="mb-2">
                             <Form.Group controlId="personType">
-                                <RadioGroup name="personType" inline>
-                                    <Radio value="T" checked={true} defaultChecked={true}>Stagiaire</Radio>
+                                <RadioGroup name="personType" value={personType} inline onChange={setPersonType}>
+                                    <Radio value="T">Stagiaire</Radio>
                                     <Radio value="E">Employé.e</Radio>
                                 </RadioGroup>
                             </Form.Group>
                         </Col>
                         <Col xs={24} className="mb-2">
                             <Form.Group controlId="service">
+                                <Service personType={personType}/>
                             </Form.Group>
                         </Col>
                         <Col xs={24} className="mb-2">
                             <Form.Group controlId="periodActivity">
-                                <FormControlLabel>Période d'activité</FormControlLabel>
-                                <FormControl name="dateRangePicker" accepter={DateRangePicker}/>
+                                <Form.ControlLabel>Dates de début & de fin</Form.ControlLabel>
+                                <Form.Control name="dates" accepter={DateRangePicker} className='w-full' format="yyyy-MM-dd" character={" -> "} placeholder={"aaaa-mm-jj -> aaaa-mm-jj"} showOneCalendar placement='topStart'>
+                                <DateRangePicker />
+                                </Form.Control>
                             </Form.Group>
                         </Col>
                     </Row>
                 </Col>
                 <Col xs={24} md={12}>
                     <Row>
+                        <Col xs={24} className="mb-2">
+                            <Form.Group controlId="email">
+                                <Form.ControlLabel>E-mail</Form.ControlLabel>
+                                <Form.Control name="email" type="email" />
+                            </Form.Group>
+                        </Col>
                         <Col xs={24} className="mb-2">
                             <Form.Group controlId="password">
                                 <Form.ControlLabel>Mot de passe</Form.ControlLabel>
@@ -79,14 +115,17 @@ const RegistrationForm = () => {
                             <Form.Group>
                                 <CheckboxGroup name="checkboxList"> 
                                     <p>Préférences de contact :</p>
-                                    <Checkbox value="contactBySMS" defaultChecked>Autoriser l'envoi de SMS</Checkbox>
-                                    <Checkbox value="contactByMail" defaultChecked>Autoriser l'envoi d'email</Checkbox>
+                                    <Checkbox value="contactBySMS">Autoriser l'envoi de SMS</Checkbox>
+                                    <Checkbox value="contactByMail">Autoriser l'envoi d'email</Checkbox>
                                 </CheckboxGroup>
                             </Form.Group>
                         </Col>
+                        <Col xs={24}>
+                            <hr/>
+                        </Col>
                         <Col xs={24} className="mb-2">
                             <Form.Group controlId="GCUAgreement">
-                                <Checkbox value="gcuAgreement">J'ai pris connaissance et j'accepte les Conditions Générales d'Utilisation de Covoitur'AFPA.</Checkbox>
+                                <Checkbox value="gcuAgreement">Je reconnais avoir pris connaissance et j'accepte les Conditions Générales d'Utilisation de Covoitur'AFPA.</Checkbox>
                             </Form.Group>
                         </Col>
                         <Col xs={24}>
