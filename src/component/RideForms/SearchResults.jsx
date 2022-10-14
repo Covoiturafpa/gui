@@ -36,7 +36,7 @@ const SearchResults = (props) => {
         else if (rides.value.length === 2) {
             return (<>
                 <h5 className='text-center my-2'>Trajets aller</h5>
-                <RidesResultTable returns={true} />
+                <RidesResultTable returns={false} />
                 <h5 className='text-center my-2'>Trajets retour</h5>
                 <RidesResultTable returns={true} />
             </>)

@@ -11,6 +11,7 @@ import CheckBoxDays from '../CheckBoxDays/CheckBoxDays';
 
 import Moment from 'moment';
 import { RideFormContext } from './RideFormContextProvider';
+import { useEffect } from 'react';
 
 const { Column, HeaderCell, Cell } = Table;
 const rowKey = 'id';
@@ -58,6 +59,27 @@ const RidesResultTable = (props) => {
 
     const [expandedRowKeys, setExpandedRowKeys] = useState([]);
     const { rides } = useContext(RideFormContext);
+    const [tableData, setTableData] = useState([]);
+    const [destinationText, setDestinationText] = useState("Destination");
+
+    useEffect(() => {
+        if (rides.value.length > 0) {
+            if (props.returns) {
+                console.log(rides.value)
+                setTableData(rides.value[1]);
+                console.log(tableData);
+            } else {
+                setTableData(rides.value[0]);
+            }
+        }
+    }, [rides])
+
+    useEffect(() => {
+        if (tableData.length > 0) {
+            tableData[0].destination.isFromAfpa ? setDestinationText("Arrivée") : setDestinationText("Départ");
+        }
+    }, [tableData])
+
     const renderRowExpanded = rowData => {
         return (<div>
             <p className='flex'>Destination : </p>
@@ -87,8 +109,6 @@ const RidesResultTable = (props) => {
         setExpandedRowKeys(nextExpandedRowKeys);
     }
 
-    const tableData = props.returns === false ? rides.value[0] : rides.value[1];
-    console.log(tableData[0].destination.isFromAfpa);
     return (
         <Table className='rounded-b-md bg-green-100'
             autoHeight={true}
@@ -103,7 +123,7 @@ const RidesResultTable = (props) => {
                 <ExpandCell dataKey="id" expandedRowKeys={expandedRowKeys} onChange={handleExpanded} />
             </Column>
             <Column flexGrow={1.4}>
-                <HeaderCell>{tableData[0].destination.isFromAfpa === true ? "Arrivée" : "Départ"}</HeaderCell>
+                <HeaderCell>{destinationText}</HeaderCell>
                 <Cell dataKey='destination.city.name' />
             </Column>
             <Column flexGrow={1}>
