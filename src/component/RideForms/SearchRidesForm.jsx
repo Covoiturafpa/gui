@@ -37,16 +37,18 @@ const SearchRidesForm = () => {
     const submitForm = () => {
         let searchParameters = createRideSearchParameters(false);
         FetchService.get("/rides?searchParams=" + searchParameters).then((searchResults) => {
-            let resultArray = [searchResults];
-            rides.setValue(resultArray);
+            let results = [];
+            results.push(searchResults);
+            if (isRoundTrip.value) {
+                searchParameters = createRideSearchParameters(true);
+                FetchService.get("/rides?searchParams=" + searchParameters).then((searchResults) => {
+                    results.push(searchResults);
+                    rides.setValue(results);
+                });
+            } else {
+                rides.setValue(results);
+            }
         });
-        if (isRoundTrip.value) {
-            searchParameters = createRideSearchParameters(true);
-            FetchService.get("/rides?searchParams=" + searchParameters).then((searchResults) => {
-                let resultArray = [rides.value, searchResults];
-                rides.setValue(resultArray);
-            });
-        }
     }
 
     return (
