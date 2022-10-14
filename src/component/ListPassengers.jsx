@@ -8,15 +8,15 @@ const ListPassengers = (props) => {
     const [data, setData] = useState(props.passengers);
     console.log(props.passengers)
     function statusIcon(status) {
-        if (status == "PENDING") {
+        if (status === "PENDING") {
             return(<div className="text-yellow-500 text-xl">
                         < FiAlertCircle/>
                     </div>)
-        }else if (status == "ACCEPTED") {
+        }else if (status === "ACCEPTED") {
             return(<div className="text-green-600 text-xl">
                         <AiOutlineCheckCircle/>
                     </div>)
-        }else if (status == "FINISHED") {
+        }else if (status === "FINISHED") {
             return(<div className="text-blue-900 text-xl">
                         <BsCalendarCheck/>
                     </div>)
@@ -29,26 +29,30 @@ const ListPassengers = (props) => {
     return(
         <List>
             {data.map((item) => {
-                return(
-                <List.Item key={item.person.id} >
-                    <FlexboxGrid>
-                        <FlexboxGrid.Item colspan={2}>
-                            <Avatar size="xs" circle src={item.person.photo_path} alt={item.person.surname} />
-                        </FlexboxGrid.Item>
-                        <FlexboxGrid.Item colspan={18}>
-                            <label>{item.person.surname} {item.person.firstName}</label>
-                        </FlexboxGrid.Item>
-                        <FlexboxGrid.Item colspan={1}>
-                            <a className="text-xl">
-                                <AiOutlineMessage/>
-                            </a>
-                        </FlexboxGrid.Item>
-                        <Divider vertical />
-                        <FlexboxGrid.Item colspan={1}>
-                            {statusIcon(item.statusType)}
-                        </FlexboxGrid.Item>
-                    </FlexboxGrid>
-                </List.Item>);
+                if (!item.isDriver) {
+                    return(
+                        <List.Item key={item.person.id} >
+                            <FlexboxGrid>
+                                <FlexboxGrid.Item colspan={2}>
+                                    <Avatar size="xs" circle src={item.person.photo_path} alt={item.person.surname} />
+                                </FlexboxGrid.Item>
+                                <FlexboxGrid.Item colspan={18}>
+                                    <label>{item.person.surname} {item.person.firstName}</label>
+                                </FlexboxGrid.Item>
+                                <FlexboxGrid.Item colspan={1}>
+                                    <a className="text-xl">
+                                        <AiOutlineMessage/>
+                                    </a>
+                                </FlexboxGrid.Item>
+                                <Divider vertical />
+                                <FlexboxGrid.Item colspan={1}>
+                                    {statusIcon(item.status)}
+                                </FlexboxGrid.Item>
+                            </FlexboxGrid>
+                        </List.Item>
+                    );
+                }
+                
             })}
         </List>
     );

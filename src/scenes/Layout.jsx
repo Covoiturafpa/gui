@@ -15,10 +15,10 @@ const Layout = (props) => {
   const [showBackground, setShowBackground] = useState("transparent");
 
   useEffect(() => {
-    if(sessionStorage.getItem('user') || localStorage.getItem('user')) {
+    if (sessionStorage.getItem('user') || localStorage.getItem('user')) {
       setShowSidebar(true);
       setShowBackground("#fcfcfc");
-    }else {
+    } else {
       setShowSidebar(false);
       setShowBackground("transparent");
     }
@@ -27,15 +27,15 @@ const Layout = (props) => {
   return (<>
     <Container className='h-screen w-full bg-header_footer bg-no-repeat bg-cover bg-top ' content={props}>
       <LayoutHeader />
-      <Container style={{background : `${showBackground}`}} className='h-full overflow-auto'>
-        {showSidebar ? 
+      <Container style={{ background: `${showBackground}` }} className='h-full overflow-auto'>
+        {showSidebar ?
           <Sidebar className='min-h-full max-w-fit'>
-            <SidebarNavigation className=""/>
+            <SidebarNavigation className="" />
           </Sidebar>
-        : "" }
+          : ""}
         {props.content}
       </Container>
-    <LayoutFooter />
+      <LayoutFooter />
 
     </Container>
 

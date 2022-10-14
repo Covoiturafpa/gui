@@ -1,15 +1,15 @@
-import { useEffect } from 'react';
-import { useContext } from 'react';
-import {React, useState} from 'react';
-import styles from './css/checkboxdays.module.css';
-import { DaysTranslate } from './DaysTranslate';
-import { CheckboxDaysContext } from './RideFormInputs';
+import { React, useState, useEffect, useContext } from 'react';
+
+import styles from './checkboxdays.module.css';
+
+import { DaysTranslate } from '../DaysTranslate';
+import { RideFormContext } from '../RideForms/RideFormContextProvider';
+
 
 const CheckBoxDays = (props) => {
-    const [days, setDays] = useState(props.days);
+
     const [checkboxes, setCheckboxes] = useState([]);
-    const [dataCheckboxes, setDataCheckboxes] = useState([]);
-    const {dataDays, setDataDays} = useContext(CheckboxDaysContext);
+    const {days} = useContext(RideFormContext);
 
       useEffect(() => {
         setCheckboxes([]);
@@ -27,15 +27,13 @@ const CheckBoxDays = (props) => {
       }, []);
 
       useEffect(() => {
-        setDataCheckboxes([]);
         let newData = [];
         checkboxes.map((checkbox) => {
             if(checkbox.checked == true) {
-                newData.push({name: checkbox.name});
-                setDataCheckboxes(newData);
+                newData.push({idDayWeek: checkbox.id});
             }
         });
-        setDataDays(newData);
+        days.setValue(newData);
       }, [checkboxes]);
 
       const toggleCheckbox = (id, index) => {
@@ -58,4 +56,4 @@ const CheckBoxDays = (props) => {
       );
 };
 
-export  { CheckBoxDays };
+export default CheckBoxDays;

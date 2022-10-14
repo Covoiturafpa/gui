@@ -1,17 +1,20 @@
 import { useEffect, useContext, useState } from "react";
-import "../../node_modules/leaflet/dist/leaflet.css";
-import styles from './css/mapleaflet.module.css';
-import { Message } from 'rsuite';
+
+import "/node_modules/leaflet/dist/leaflet.css"; // ../.. Faut-il remonter de 2 dossiers ? WORKING ?!
+import styles from './mapleaflet.module.css';
+
+import { Loader } from 'rsuite';
+
 import L from 'leaflet';
 import { MapContainer, TileLayer, Marker, Popup, useMap } from 'react-leaflet';
 import "leaflet-routing-machine";
-import { DestinationContext } from "../scenes/Booking";
-import FetchService from "../services/FetchService";
-import { AfpaIconSvg } from "./AfpaIconSvg";
+import FetchService from "../../services/FetchService";
+import { AfpaIconSvg } from "../AfpaIconSvg";
+import {RideFormContext } from '../RideForms/RideFormContextProvider';
 
 const MapLeaflet = () => {
 
-    const { destination } = useContext(DestinationContext);
+    const { destination } = useContext(RideFormContext);
     const [waypoints, setWaypoints] = useState({
         destination,
         "arrival": {
@@ -40,11 +43,11 @@ const MapLeaflet = () => {
             {
                 ...waypoints,
                 "destination": {
-                    "lat": destination.lat,
-                    "lon": destination.lon
+                    "lat": destination.value.lat,
+                    "lon": destination.value.lon
                 }
             })
-    }, [destination])
+    }, [destination.value])
 
     const afpaSvgIcon = L.divIcon({
         html: AfpaIconSvg,
@@ -76,9 +79,7 @@ const MapLeaflet = () => {
                 {waypoints.arrival !== undefined ? <Routing waypoints={waypoints} /> : null}
             </MapContainer>
             : <div className="flex flex-col justify-center items-center h-full">
-                <Message className="relative" showIcon type="error" header="Erreur" full>
-                    Récupération des données du centre impossible
-                </Message>
+                <Loader content="Chargement..." vertical />
             </div>
     )
 }
@@ -88,7 +89,6 @@ const Routing = ({ waypoints }) => {
     const map = useMap();
 
     useEffect(() => {
-        console.log(waypoints)
         if (!map
             || Object.keys(waypoints).length === 0
             || (waypoints.destination.lat === null || waypoints.destination.lon === null)) {

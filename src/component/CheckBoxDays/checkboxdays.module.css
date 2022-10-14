@@ -12,7 +12,7 @@
     left: 0;
     justify-content: center;
     align-items: center;
-    border: 1px solid black;
+    border: 1px solid #58a03a;
     border-radius: 100%;
     width: 20px;
     height: 20px;
@@ -20,8 +20,8 @@
 
 [type="checkbox"]:checked + .motherdiv {
     font-size: 1.1rem;
-    background: black;
-    color: white;
+    background: #58a03a;
+    color: white!important;
     text-align: center;
     cursor: pointer;
     vertical-align: 15px;
@@ -34,6 +34,7 @@
     font-weight: 400;
     user-select: none;
     cursor: pointer;
+    color: #58a03a;
     text-align : center;
 }
 .checkbox {

@@ -1,4 +1,4 @@
-import React from 'react';
+import { React, useState, useEffect} from 'react';
 import { Route, Routes, Navigate } from 'react-router-dom';
 
 import { Content } from 'rsuite';
@@ -12,8 +12,9 @@ import { SuggestRide } from './SuggestRide';
 import { Notification } from './Notification';
 import { Profil } from './Profil';
 import { useTrackedLogin } from '../services/UserLogin';
-import { useState } from 'react';
-import { useEffect } from 'react';
+
+import { RideFormContextProvider } from '../component/RideForms/RideFormContextProvider';
+
 
 
 const ContentLayout = () => {
@@ -34,7 +35,7 @@ const ContentLayout = () => {
                     <Route path="login" element={<FormLayout title={""} form={<LoginForm/>} />} /> 
                     <Route path="inscription" element={<FormLayout title={"Inscription"} form={<RegistrationForm/>} />} />
                     {pathAccess ? <>                    
-                        <Route path="rechercher" element={<Booking />} />
+                        <Route path="rechercher" element={<RideFormContextProvider><Booking /></RideFormContextProvider>} />
                         <Route path="mes_trajets" element={<MesTrajets className='h-100' />} />
                         <Route path="proposer" element={<SuggestRide />} />
                         <Route path="gestion_utilisateurs" element={<h1 className="text-center">Gestion utilisateur</h1>} />
@@ -42,7 +43,6 @@ const ContentLayout = () => {
                         <Route path="profil" element={<FormLayout title={"Profil"} form={<Profil/>} />} />
                         <Route path="notifications" element={<Notification />} />
                         <Route path="accueil" element={<Accueil />} />
-                        {/*<Route path="*" element={<Accueil/>} />*/}  
                     </> : "" }
                 </Routes>
             </Content>

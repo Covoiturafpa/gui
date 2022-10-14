@@ -1,4 +1,5 @@
 import React, { useState, useEffect } from 'react';
+import { RideFormContextProvider } from '../component/RideForms/RideFormContextProvider';
 import { TableProposedRides } from '../component/TableProposedRides';
 import { TableRequestedRides } from '../component/TableRequestedRides';
 import  authService  from "../services/AuthService";
@@ -59,12 +60,14 @@ const MesTrajets = () => {
         return (
             <div className='container mx-auto px-4'>
                 <h1 className="text-center">Mes trajets</h1>
-                <div className='my-3'>
-                    <TableProposedRides id={userId} rides={rideOwned} />
-                </div>
-                <div className='my-3'>
-                   <TableRequestedRides id={userId} rides={rideRequested} />
-                </div>
+                <RideFormContextProvider>
+                    <div className='my-3'>
+                        <TableProposedRides id={userId} rides={rideOwned} />
+                    </div>
+                    <div className='my-3'>
+                        <TableRequestedRides id={userId} rides={rideRequested} />
+                    </div>
+                </RideFormContextProvider>
             </div>
         );
     }
