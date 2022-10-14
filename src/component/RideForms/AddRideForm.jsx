@@ -63,7 +63,7 @@ const AddRideForm = (props) => {
                 "longitude" : destination.value.lon,
                 "isFromAfpa" : isFromAfpa.value,
                 "city" : {
-                    "name" : departure.value
+                    "name" : (isFromAfpa ? arrival : departure)
                 }
             },
             "departureTime" : arrivalTime.toISOString().substring(11, 19),
@@ -97,7 +97,7 @@ const AddRideForm = (props) => {
                                         "longitude" : destination.value.lon,
                                         "isFromAfpa" : !isFromAfpa.value,
                                         "city" : {
-                                            "name" : departure.value
+                                            "name" : (isFromAfpa ? arrival : departure)
                                         }
                                     },
                                     "departureTime" : arrivalTimeReturn.toISOString().substring(11, 19)};
