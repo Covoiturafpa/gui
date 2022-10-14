@@ -42,7 +42,6 @@ function rowDate(data) {
     }
 }
 function rowDestination(data) {
-    console.log(data.destination.isFromAfpa);
     if (data.destination.isFromAfpa) {
         return (<span className='flex '> AFPA <FiArrowRight className='mx-2' /> {data.destination.city.name}</span>);
     }
@@ -57,7 +56,6 @@ const TableProposedRides = (props) => {
     const [detailRide, setDetailRide] = useState(null);
 
     const renderRowExpanded = rowData => {
-        console.log(rowData);
         return (<div>
             <p className='flex break-words'>Destination :  {rowDestination(rowData)}</p>
             <p className='flex'>Date : {rowDate(rowData)}</p>
