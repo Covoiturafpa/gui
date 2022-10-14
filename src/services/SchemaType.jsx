@@ -1,4 +1,5 @@
-import { SchemaModel, StringType } from 'schema-typed';
+import { MixedType, SchemaModel, StringType } from 'schema-typed';
+import FetchService from './FetchService';
 
 const loginFormSchema = SchemaModel({
     email: StringType().isEmail('Email invalide').isRequired('Email requis'),
@@ -44,14 +45,19 @@ const passwordConfirmFormSchema = SchemaModel({
         }
         return true;
     }, 'Les mots de passe ne correspondent pas')
-})
+});
+
+const ServiceConfirmSchema = SchemaModel({
+    service: MixedType().isRequired
+});
 
 function asyncCheckIsEmailUnique(email) {
-    console.log("TODO: asyncCheckIsEmailUnique à implémenter")
-    return true;
+    return (FetchService.get("/users/email_validity"));
 }
 
 const profilFormSchema = SchemaModel.combine(newEmailFormSchema, frenchPhoneFormSchema, updatePasswordFormSchema, passwordConfirmFormSchema);
+
+const newUserFormSchema = SchemaModel.combine(frenchPhoneFormSchema, );
 
 export { loginFormSchema, profilFormSchema, newEmailFormSchema };
 
