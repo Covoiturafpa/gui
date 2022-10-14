@@ -1,15 +1,13 @@
-import React, {useEffect, useState}from 'react';
-import { Footer, Stack } from 'rsuite';
-import { SlidePartner } from '../component/SlidePartnaire';
-import { FooterAfpaInformations } from '../component/Footer/FooterAfpaInformations';
-import { FooterAfpaLocation } from '../component/Footer/FooterAfpaLocation';
+import React, {useState}from 'react';
+import { Footer } from 'rsuite';
+
 import  authService  from "../services/AuthService";
-import  FetchService  from "../services/FetchService";
+
 
 const LayoutFooter = () => {
-    const [userId, setUserId] = useState(authService.getCurrentUserId());
-    const [centre, setCentre] = useState({});
-    const [partners, setPartners] = useState([]);
+    // const [userId, setUserId] = useState(authService.getCurrentUserId());
+    // const [centre, setCentre] = useState({});
+    // const [partners, setPartners] = useState([]);
 
         return (<Footer className="rs-footer bg-white">
             <div className='bg-footer_wave bg-cover h-20 bg-no-repeat flex flex-col items-center justify-end'>
