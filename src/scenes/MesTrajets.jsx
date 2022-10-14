@@ -1,6 +1,4 @@
 import React, { useState, useEffect } from 'react';
-import { FormGroupContext } from 'rsuite/esm/FormGroup/FormGroup';
-import CheckBoxDaysContext from '../component/CheckBoxDays/CheckBoxDaysContext';
 import { RideFormContextProvider } from '../component/RideForms/RideFormContextProvider';
 import { TableProposedRides } from '../component/TableProposedRides';
 import { TableRequestedRides } from '../component/TableRequestedRides';
