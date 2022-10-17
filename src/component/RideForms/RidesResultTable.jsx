@@ -1,16 +1,16 @@
 import { React, useState, useContext } from 'react';
-
-import { Table, IconButton } from 'rsuite';
+import { Table, IconButton, Button } from 'rsuite';
+import Moment from 'moment';
+import CheckBoxDays from '../CheckBoxDays/CheckBoxDays';
+import { RideFormContext } from './RideFormContextProvider';
+import FetchService from "../../services/FetchService";
+import AuthService from "../../services/AuthService";
 
 import CollaspedOutlineIcon from '@rsuite/icons/CollaspedOutline';
 import ExpandOutlineIcon from '@rsuite/icons/ExpandOutline';
-
 import { FiArrowRight } from "react-icons/fi";
 
-import CheckBoxDays from '../CheckBoxDays/CheckBoxDays';
 
-import Moment from 'moment';
-import { RideFormContext } from './RideFormContextProvider';
 
 const { Column, HeaderCell, Cell } = Table;
 const rowKey = 'id';
@@ -38,15 +38,15 @@ function rowDate(data) {
         return (Moment(data.departureDay).format("DD/MM/YYYY"))
     }
     if (data.beginning) {
-        return (<p className="mr-2">Du {Moment(data.beginning).format("DD/MM/YYYY")} au {Moment(data.ending).format("DD/MM/YYYY")} les </p>)
+        return (`Du ${Moment(data.beginning).format("DD/MM/YYYY")} au ${Moment(data.ending).format("DD/MM/YYYY")} les`)
     }
 }
 
 function rowDestination(data) {
     if (data.destination.isFromAfpa) {
-        return (<p className='flex '>AFPA <FiArrowRight className='mx-2' /> {data.destination.city.name}</p>);
+        return (<>AFPA <FiArrowRight className='mx-2' /> {data.destination.city.name}</>);
     } else if (!data.destination.isFromAfpa) {
-        return (<p className='flex '>{data.destination.city.name} <FiArrowRight className='mx-2' /> AFPA</p>);
+        return (<>{data.destination.city.name} <FiArrowRight className='mx-2' /> AFPA</>);
     }
 }
 
@@ -54,19 +54,30 @@ function rowPrice(data) {
     return <p>{data.price}&euro;</p>
 }
 
+const booking = (ride) => {
+    const body = { idPassenger: AuthService.getCurrentUserId() }
+    FetchService.put(`/rides/${ride.id}`, body);
+}
+
 const RidesResultTable = (props) => {
 
     const [expandedRowKeys, setExpandedRowKeys] = useState([]);
     const { rides } = useContext(RideFormContext);
+
     const renderRowExpanded = rowData => {
         return (<div>
             <p className='flex'>Destination : </p>
-            <p>{rowDestination(rowData)}</p>
+            <p className='flex'>{rowDestination(rowData)}</p>
             <p className='flex'>Date : </p>
             <p>{rowDate(rowData)}</p>
             {rowData.beginning ? <CheckBoxDays disabled={true} days={rowData.daysWeek} /> : ""}
             <p>Heure : </p>
             <p>{rowData.departureTime}</p>
+            <div className='flex justify-end'>
+                {String(rowData.car.person.id) !== AuthService.getCurrentUserId() ?
+                <Button appearance="primary" className='mr-4' onClick={() => booking(rowData)} >Réserver ce trajet</Button>
+                : <Button appearance="primary" className='mr-4' >Vous êtes le chauffeur !</Button>}
+            </div>
         </div>);
     };
 
@@ -88,7 +99,7 @@ const RidesResultTable = (props) => {
     }
 
     const tableData = props.returns === false ? rides.value[0] : rides.value[1];
-    console.log(tableData[0].destination.isFromAfpa);
+
     return (
         <Table className='rounded-b-md bg-green-100'
             autoHeight={true}
@@ -96,7 +107,7 @@ const RidesResultTable = (props) => {
             rowKey={rowKey}
             expandedRowKeys={expandedRowKeys}
             renderRowExpanded={renderRowExpanded}
-            rowExpandedHeight={200}
+            rowExpandedHeight={250}
         >
             <Column width={40} align="center">
                 <HeaderCell></HeaderCell>
