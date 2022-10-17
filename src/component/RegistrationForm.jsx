@@ -3,7 +3,7 @@ import { Form, ButtonToolbar, Button, Grid, Col, Row, Checkbox, CheckboxGroup, D
 import HCaptcha from '@hcaptcha/react-hcaptcha';
 import FetchService from '../services/FetchService';
 
-const Service = (props) => {
+const Formation = (props) => {
 
     const [formations, setFormations] = useState([]);
     const [isLoaded, setIsLoaded] = useState(false);
@@ -17,11 +17,7 @@ const Service = (props) => {
     },[isLoaded])
 
     if (props.personType === "E") {
-        return (
-            <>
-                <Form.ControlLabel>Service</Form.ControlLabel>
-                <Form.Control name="service" />
-            </>)
+        return (<></>);
     }
 
     else if (!isLoaded) {
@@ -33,7 +29,7 @@ const Service = (props) => {
                 <Form.ControlLabel>Formation</Form.ControlLabel>
                 <SelectPicker className='w-full' data={formations} />
             </>
-        )
+        );
     }
 }
 
@@ -78,7 +74,7 @@ const RegistrationForm = () => {
                         </Col>
                         <Col xs={24} className="mb-2">
                             <Form.Group controlId="service">
-                                <Service personType={personType}/>
+                                <Formation personType={personType}/>
                             </Form.Group>
                         </Col>
                         <Col xs={24} className="mb-2">
@@ -89,16 +85,16 @@ const RegistrationForm = () => {
                                 </Form.Control>
                             </Form.Group>
                         </Col>
-                    </Row>
-                </Col>
-                <Col xs={24} md={12}>
-                    <Row>
                         <Col xs={24} className="mb-2">
                             <Form.Group controlId="email">
                                 <Form.ControlLabel>E-mail</Form.ControlLabel>
                                 <Form.Control name="email" type="email" />
                             </Form.Group>
                         </Col>
+                    </Row>
+                </Col>
+                <Col xs={24} md={12}>
+                    <Row>
                         <Col xs={24} className="mb-2">
                             <Form.Group controlId="password">
                                 <Form.ControlLabel>Mot de passe</Form.ControlLabel>
@@ -135,7 +131,7 @@ const RegistrationForm = () => {
                         </Col>
                     </Row>
                 </Col>
-                <Col xs={24}>
+                <Col xs={4} xsOffset={20}>
                     <Form.Group>
                         <ButtonToolbar>
                             <Button appearance="primary">S'inscrire</Button>

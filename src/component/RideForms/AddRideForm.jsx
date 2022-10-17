@@ -1,6 +1,6 @@
 import React from 'react';
 import { useState, createContext, useContext, useEffect, useRef } from 'react';
-import { Input, Form, Button, DatePicker, SelectPicker, InputNumber, Stack, InputGroup, Whisper, Tooltip } from 'rsuite';
+import { Input, Form, Button, DatePicker, SelectPicker, InputNumber, Stack, InputGroup, Whisper, Tooltip, Notification, useToaster, Placeholder, Uploader } from 'rsuite';
 import InfoIcon from '@rsuite/icons/legacy/Info';
 import FetchService from '../../services/FetchService';
 import authService from "../../services/AuthService";
@@ -29,8 +29,18 @@ const AddRideForm = (props) => {
     const [newRide, setNewRide] = useState({});
     const carInput = useRef();
 
-      
+    const [type, setType] = useState('success');
+    const [toastContent, setToastContent] = useState("");
+    const toaster = useToaster();
+
+    const message = (
+      <Notification className="z-[100000]" type={type} header={type} closable>
+        {toastContent}
+      </Notification>
+    );
+
     useEffect(() => {
+        
         const fetch = FetchService.get("/users/" + userId);
         fetch.then(
             (result) => {
@@ -63,7 +73,7 @@ const AddRideForm = (props) => {
                 "longitude" : destination.value.lon,
                 "isFromAfpa" : isFromAfpa.value,
                 "city" : {
-                    "name" : (isFromAfpa.value ? arrival.value : departure.value)
+                    "name" : ( isFromAfpa.value ? arrival.value : departure.value )
                 }
             },
             "departureTime" : arrivalTime.toISOString().substring(11, 19),
@@ -78,16 +88,21 @@ const AddRideForm = (props) => {
             "comment" : comment,
             "isActive" : true
         };
-
+        debugger;
         if (rideType.value === "O") {
             dataNewRide = {...dataNewRide, "departureDay" : departureDay.value.toISOString().substring(0, 10)}
         }else if (rideType.value === "R") {
             dataNewRide = {...dataNewRide, "beginning" : recurringDates.value[0].toISOString().substring(0, 10), "ending" : recurringDates.value[1].toISOString().substring(0, 10), "daysWeek" : days.value}
         }
-
-        const fetchPost = FetchService.post("/rides", JSON.stringify(dataNewRide))
+        toaster.clear();
+        const fetchPost = FetchService.post("/rides", JSON.stringify(dataNewRide));
         fetchPost.then((result) => {
-            console.log(result);
+            setToastContent("Le trajet est enregistré");
+            toaster.push(message, { value : 'bottomStart' });
+        },
+        (error) => {
+            setToastContent("Une erreur est survenue");
+            toaster.push(message, { value : 'bottomStart' });
         });
 
         if(isRoundTrip.value) {
@@ -97,7 +112,7 @@ const AddRideForm = (props) => {
                                         "longitude" : destination.value.lon,
                                         "isFromAfpa" : !isFromAfpa.value,
                                         "city" : {
-                                            "name" : (isFromAfpa.value ? arrival.value : departure.value)
+                                            "name" : ( isFromAfpa.value ? arrival.value : departure.value )
                                         }
                                     },
                                     "departureTime" : arrivalTimeReturn.toISOString().substring(11, 19)};
@@ -115,53 +130,55 @@ const AddRideForm = (props) => {
         return <div>Chargement...</div>;
     } else {
         return (
-            <Form fluid>
-                <RideFormInputs />
-                <div className='flex justify-between'>
-                    <Form.Group className="mb-[24px]" controlId='inputArrivalTime'>
-                        <Form.ControlLabel>Heure de départ</Form.ControlLabel>
-                        <DatePicker name="arrivalTimeInput" format="HH:mm" onChange={setArrivalTime}/>
-                    </Form.Group>
-                    {isRoundTrip.value ?
-                        <Form.Group controlId='inputArrivalTimeReturn'>
-                            <Form.ControlLabel>Heure de départ retour</Form.ControlLabel>
-                            <DatePicker name="arrivalTimeReturnInput" format="HH:mm" onChange={setArrivalTimeReturn}/>
+            <div>
+                <Form fluid>
+                    <RideFormInputs />
+                    <div className='flex justify-between'>
+                        <Form.Group className="mb-[24px]" controlId='inputArrivalTime'>
+                            <Form.ControlLabel>Heure de départ</Form.ControlLabel>
+                            <DatePicker name="arrivalTimeInput" format="HH:mm" onChange={setArrivalTime}/>
                         </Form.Group>
-                        : ""}
-                </div>
-                <div className="flex w-full">
-                    <Form.Group className='w-full' controlId='inputChoiceCar'>
-                        <Form.ControlLabel>Choix du véhicule :</Form.ControlLabel>
-                        <SelectPicker ref={carInput} name="carInput" data={carsUser} block placeholder={placeholderCars} onSelect={(value, item) => { setCar(item); setSeats(item.seats)}}/>
+                        {isRoundTrip.value ?
+                            <Form.Group controlId='inputArrivalTimeReturn'>
+                                <Form.ControlLabel>Heure de départ retour</Form.ControlLabel>
+                                <DatePicker name="arrivalTimeReturnInput" format="HH:mm" onChange={setArrivalTimeReturn}/>
+                            </Form.Group>
+                            : ""}
+                    </div>
+                    <div className="flex w-full">
+                        <Form.Group className='w-full' controlId='inputChoiceCar'>
+                            <Form.ControlLabel>Choix du véhicule :</Form.ControlLabel>
+                            <SelectPicker ref={carInput} name="carInput" data={carsUser} block placeholder={placeholderCars} onSelect={(value, item) => { setCar(item); setSeats(item.seats)}}/>
+                        </Form.Group>
+                        <Button className="h-[36px] self-center" color="green" appearance="subtle">
+                            <FiPlusCircle className="text-xl " />
+                        </Button>
+                    </div>
+                    <Form.Group controlId='inputSeats'>
+                        <Form.ControlLabel>Nombre de places</Form.ControlLabel>
+                        <InputNumber value={seats} name="seatsInput" onChange={setSeats}/>
                     </Form.Group>
-                    <Button className="h-[36px] self-center" color="green" appearance="subtle">
-                        <FiPlusCircle className="text-xl " />
-                    </Button>
-                </div>
-                <Form.Group controlId='inputSeats'>
-                    <Form.ControlLabel>Nombre de places</Form.ControlLabel>
-                    <InputNumber value={seats} name="seatsInput" onChange={setSeats}/>
-                </Form.Group>
-                <Form.Group controlId='inputPrice'>
-                    <Form.ControlLabel>Prix</Form.ControlLabel>
-                    <InputGroup inside>
-                        <Input name="priceInput" onChange={setPrice} type='integer'/>
-                        <InputGroup.Addon>
-                            <Whisper placement="top" speaker={<Tooltip> Prix indicatif calculé</Tooltip>}>
-                            <InfoIcon />
-                            </Whisper>
-                        </InputGroup.Addon>
-                    </InputGroup>
-                    
-                </Form.Group>
-                <Form.Group controlId='inputComment'>
-                    <Form.ControlLabel>Commentaire</Form.ControlLabel>
-                    <Form.Control name="commentInput" rows={5} accepter={Textarea} onChange={setComment}/>
-                </Form.Group>
-                <Form.Group className='flex justify-end my-4'>
-                    <Button appearance="primary" onClick={submitForm}>Enregistrer</Button>
-                </Form.Group>
-            </Form>
+                    <Form.Group controlId='inputPrice'>
+                        <Form.ControlLabel>Prix</Form.ControlLabel>
+                        <InputGroup inside>
+                            <Input name="priceInput" onChange={setPrice} type='integer'/>
+                            <InputGroup.Addon>
+                                <Whisper placement="top" speaker={<Tooltip> Help information</Tooltip>}>
+                                <InfoIcon />
+                                </Whisper>
+                            </InputGroup.Addon>
+                        </InputGroup>
+                        
+                    </Form.Group>
+                    <Form.Group controlId='inputComment'>
+                        <Form.ControlLabel>Commentaire</Form.ControlLabel>
+                        <Form.Control name="commentInput" rows={5} accepter={Textarea} onChange={setComment}/>
+                    </Form.Group>
+                    <Form.Group className='flex justify-end my-4'>
+                        <Button appearance="primary" onClick={submitForm}>Enregistrer</Button>
+                    </Form.Group>
+                </Form>
+            </div>
         );
     }
 }
