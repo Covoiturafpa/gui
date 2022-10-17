@@ -3,6 +3,7 @@ import { Member, InfoRound, CheckRound, BlockRound, Trash } from '@rsuite/icons'
 import FetchService from "../services/FetchService";
 import AuthService from '../services/AuthService';
 
+
 function returnByNotifType(type, ne_value, nt_value, nr_value, ar_value, rr_value) {
     switch (type) {
         case "NEW_EMPLOYEE":

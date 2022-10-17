@@ -1,10 +1,12 @@
 import { React, useState, useContext, useEffect } from 'react';
-import { Table, IconButton, Button } from 'rsuite';
+import { Table, IconButton, Button, useToaster } from 'rsuite';
+
 import Moment from 'moment';
 import CheckBoxDays from '../CheckBoxDays/CheckBoxDays';
 import { RideFormContext } from './RideFormContextProvider';
 import FetchService from "../../services/FetchService";
 import AuthService from "../../services/AuthService";
+import { ToastMessage } from '../ToastMessage';
 
 import CollaspedOutlineIcon from '@rsuite/icons/CollaspedOutline';
 import ExpandOutlineIcon from '@rsuite/icons/ExpandOutline';
@@ -52,16 +54,14 @@ function rowPrice(data) {
     return <p>{data.price}&euro;</p>
 }
 
-
-const booking = (ride) => {
-    FetchService.put(`/rides/${ride.id}?idPassenger=${AuthService.getCurrentUserId()}`);
-}
-
 const RidesResultTable = (props) => {
 
     const [expandedRowKeys, setExpandedRowKeys] = useState([]);
     const { rides } = useContext(RideFormContext);
     const [tableData, setTableData] = useState([]);
+    const [successMessage, setSuccessMessage] = useState("");
+    const [errorMessage, setErrorMessage] = useState("");
+    const toaster = useToaster();
 
     useEffect(() => {
         if (rides.value.length > 0) {
@@ -69,6 +69,16 @@ const RidesResultTable = (props) => {
             setTableData(data);
         }
     }, [rides])
+
+    useEffect(() => {
+        if (successMessage !== "") {
+            toaster.push(<ToastMessage type="success" header="succès" content={successMessage} />)
+        }
+        if (errorMessage !== "") {
+            console.log("ok")
+            toaster.push(<ToastMessage type="error" header="erreur" content={errorMessage} />)
+        }
+    }, [successMessage, errorMessage])
 
     const renderRowExpanded = rowData => {
         return (<div>
@@ -102,6 +112,17 @@ const RidesResultTable = (props) => {
             nextExpandedRowKeys.push(rowData[rowKey]);
         }
         setExpandedRowKeys(nextExpandedRowKeys);
+    }
+
+    const booking = (ride) => {
+        FetchService.put(`/rides/${ride.id}?idPassenger=${AuthService.getCurrentUserId()}`).then((res) => {
+            if (res.message === "Demande de réservation effectuée") {
+                setSuccessMessage(res.message);
+            }
+            if (res.message === "Réservation impossible, utilisateur déjà inscrit") {
+                setErrorMessage(res.message);
+            }
+        });
     }
 
     return (
