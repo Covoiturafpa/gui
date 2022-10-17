@@ -147,7 +147,7 @@ const AddRideForm = (props) => {
                     <InputGroup inside>
                         <Input name="priceInput" onChange={setPrice} type='integer'/>
                         <InputGroup.Addon>
-                            <Whisper placement="top" speaker={<Tooltip> Help information</Tooltip>}>
+                            <Whisper placement="top" speaker={<Tooltip> Prix indicatif calculé</Tooltip>}>
                             <InfoIcon />
                             </Whisper>
                         </InputGroup.Addon>
