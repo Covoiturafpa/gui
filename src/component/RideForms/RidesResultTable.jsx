@@ -114,7 +114,7 @@ const RidesResultTable = (props) => {
                 <ExpandCell dataKey="id" expandedRowKeys={expandedRowKeys} onChange={handleExpanded} />
             </Column>
             <Column flexGrow={1.4}>
-                <HeaderCell>{destinationText}</HeaderCell>
+                <HeaderCell>{tableData[0].destination.isFromAfpa === true ? "Arrivée" : "Départ"}</HeaderCell>
                 <Cell dataKey='destination.city.name' />
             </Column>
             <Column flexGrow={1}>
