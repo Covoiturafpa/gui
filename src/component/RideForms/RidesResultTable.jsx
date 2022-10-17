@@ -1,4 +1,4 @@
-import { React, useState, useContext } from 'react';
+import { React, useState, useContext, useEffect } from 'react';
 import { Table, IconButton, Button } from 'rsuite';
 import Moment from 'moment';
 import CheckBoxDays from '../CheckBoxDays/CheckBoxDays';
@@ -9,8 +9,6 @@ import AuthService from "../../services/AuthService";
 import CollaspedOutlineIcon from '@rsuite/icons/CollaspedOutline';
 import ExpandOutlineIcon from '@rsuite/icons/ExpandOutline';
 import { FiArrowRight } from "react-icons/fi";
-
-
 
 const { Column, HeaderCell, Cell } = Table;
 const rowKey = 'id';
@@ -54,15 +52,23 @@ function rowPrice(data) {
     return <p>{data.price}&euro;</p>
 }
 
+
 const booking = (ride) => {
-    const body = { idPassenger: AuthService.getCurrentUserId() }
-    FetchService.put(`/rides/${ride.id}`, body);
+    FetchService.put(`/rides/${ride.id}?idPassenger=${AuthService.getCurrentUserId()}`);
 }
 
 const RidesResultTable = (props) => {
 
     const [expandedRowKeys, setExpandedRowKeys] = useState([]);
     const { rides } = useContext(RideFormContext);
+    const [tableData, setTableData] = useState([]);
+
+    useEffect(() => {
+        if (rides.value.length > 0) {
+            const data = props.returns === false ? rides.value[0] : rides.value[1];
+            setTableData(data);
+        }
+    }, [rides])
 
     const renderRowExpanded = rowData => {
         return (<div>
@@ -98,8 +104,6 @@ const RidesResultTable = (props) => {
         setExpandedRowKeys(nextExpandedRowKeys);
     }
 
-    const tableData = props.returns === false ? rides.value[0] : rides.value[1];
-
     return (
         <Table className='rounded-b-md bg-green-100'
             autoHeight={true}
@@ -114,14 +118,14 @@ const RidesResultTable = (props) => {
                 <ExpandCell dataKey="id" expandedRowKeys={expandedRowKeys} onChange={handleExpanded} />
             </Column>
             <Column flexGrow={1.4}>
-                <HeaderCell>{tableData[0].destination.isFromAfpa === true ? "Arrivée" : "Départ"}</HeaderCell>
+                <HeaderCell>{tableData.length !== 0 ? tableData[0].destination.isFromAfpa === true ? "Arrivée" : "Départ" : null}</HeaderCell>
                 <Cell dataKey='destination.city.name' />
             </Column>
-            <Column flexGrow={1}>
+            <Column flexGrow={1} sortable>
                 <HeaderCell>Heure</HeaderCell>
                 <Cell dataKey="departureTime" />
             </Column>
-            <Column flexGrow={0.7}>
+            <Column flexGrow={0.7} sortable>
                 <HeaderCell>Prix</HeaderCell>
                 <Cell dataKey='price'>{rowData => rowPrice(rowData)}</Cell>
             </Column>

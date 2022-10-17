@@ -55,7 +55,7 @@ const Message = (props) => {
                     <div className="col-span-2 justify-self-start "><MessageIcon {...{"type" : props.notification.type}}/></div>
                     <div className="col-span-8 justify-self-center"><HeaderContent {...{"type" : props.notification.type}} className='text-center'/></div>
                     <Trash className="col-span-2 justify-self-end cursor-pointer" fontSize="1.3em" onClick={deleteMessage}/>
-                    <div className="col-span-12  justify-self-center">{props.notification.content}</div>
+                    <div className="col-span-12  justify-self-center" dangerouslySetInnerHTML={{__html: props.notification.content}}></div>
                 </div>
             </Panel>
     )
