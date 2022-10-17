@@ -1,15 +1,5 @@
-import { React, useState, useContext } from 'react';
+import { React, useContext } from 'react';
 
-import { Table, IconButton } from 'rsuite';
-
-import CollaspedOutlineIcon from '@rsuite/icons/CollaspedOutline';
-import ExpandOutlineIcon from '@rsuite/icons/ExpandOutline';
-
-import { FiArrowRight } from "react-icons/fi";
-
-import CheckBoxDays from '../CheckBoxDays/CheckBoxDays';
-
-import Moment from 'moment';
 import RidesResultTable from './RidesResultTable';
 import { RideFormContext } from './RideFormContextProvider';
 
