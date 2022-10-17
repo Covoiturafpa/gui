@@ -1,5 +1,6 @@
 import React, { useState, useEffect } from 'react';
 import { RideFormContextProvider } from '../component/RideForms/RideFormContextProvider';
+import { Loader } from 'rsuite';
 import { TableProposedRides } from '../component/TableProposedRides';
 import { TableRequestedRides } from '../component/TableRequestedRides';
 import  authService  from "../services/AuthService";
@@ -49,7 +50,7 @@ const MesTrajets = () => {
     if (error) {
         return <div>Erreur : {error.message}</div>;
     } else if (!isLoaded) {
-        return <div>Chargement...</div>;
+        return <div className=' h-full flex justify-center items-center'><Loader size="sm" content="Chargement..." /></div>;
     }else {
         if(rideOwned.length === 0) {
             setRideOwned(0);
