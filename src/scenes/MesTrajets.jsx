@@ -16,9 +16,7 @@ const MesTrajets = () => {
     const [userId, setUserId] = useState(authService.getCurrentUserId());
     const [autoReload, setAutoReload] = useState(false);
     useEffect(() => {
-        console.log(autoReload);
         setAutoReload(false);
-        console.log(autoReload);
         const fetch = FetchService.get("/users/"+ userId + "/rides");
         fetch.then(
             (result) => {

@@ -41,7 +41,7 @@ const AddRideForm = (props) => {
                     car => ({ label: car.model, value: car.model, key: car.id, seats: car.seats, avgFuelConsumption : car.avgFuelConsumption, idCarType : car.idCarType, idPerson: car.idPerson})
                 );
                 setCarsUser(dataResult);
-                if (dataResult.length == 0) {
+                if (dataResult.length === 0) {
                     setPlaceholderCars("Vous posséder aucune voiture");
                 }
                 if(result.endContract) {

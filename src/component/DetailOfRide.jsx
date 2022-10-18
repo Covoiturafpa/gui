@@ -15,39 +15,42 @@ const DetailOfRide = (props) => {
     const [error, setError] = useState(null);
     const [labelCheckbox, setLabelCheckbox] = useState();
     const [isChecked, setIsChecked] = useState(props.ride.isActive);
+    const [inputComment, setInputComment] = useState(props.ride.comment);
     const toaster = useToaster();
     const navigate = useNavigate();
-    toaster.clear();
 
     const deleteRide = (idRide) => {
         const fetchDelete = FetchService.delete("/rides/" + idRide);
         fetchDelete.then((result) => {
-            const toast = toaster.push(<ToastMessage type="success" header="Succès" content="Le trajet a bien était supprimé"/>, { value : 'bottomStart' });
-            setTimeout(() => {toaster.remove(toast)}, 3000);
+            const toastSuccess = toaster.push(<ToastMessage type="success" header="Succès" content="Le trajet a bien était supprimé"/>, { value : 'bottomStart' });
+            setTimeout(() => {toaster.remove(toastSuccess)}, 3000);
             props.setEditable(false);
             props.setReload(true);
         },
         (error) => {
-            const toast = toaster.push(<ToastMessage type="error" header="Erreur" content="Une erreur c'est produite lors de la suppression"/>, { value : 'bottomStart' });
-            setTimeout(() => {toaster.remove(toast)}, 3000);
+            const toastError = toaster.push(<ToastMessage type="error" header="Erreur" content="Une erreur c'est produite lors de la suppression"/>, { value : 'bottomStart' });
+            setTimeout(() => {toaster.remove(toastError)}, 3000);
         });
     }
 
     const updateRide = (idRide) => {
-        const fetchDelete = FetchService.delete("/rides/" + idRide);
-        fetchDelete.then((result) => {
-            const toast = toaster.push(<ToastMessage type="success" header="Succès" content="Le trajet a bien était supprimé"/>, { value : 'bottomStart' });
-            setTimeout(() => {toaster.remove(toast)}, 3000);
+        let newRide = {...props.ride, comment : inputComment, isActive : isChecked};
+        console.log(newRide);
+        const fetchPatch = FetchService.put("/update/rides/" + idRide, JSON.stringify({ride: newRide}));
+        fetchPatch.then((result) => {
+            const toastSuccessPatch = toaster.push(<ToastMessage type="success" header="Succès" content="Le trajet a bien était modifié"/>, { value : 'bottomStart' });
+            setTimeout(() => {toaster.remove(toastSuccessPatch)}, 3000);
             props.setEditable(false);
             props.setReload(true);
         },
         (error) => {
-            const toast = toaster.push(<ToastMessage type="error" header="Erreur" content="Une erreur c'est produite lors de la suppression"/>, { value : 'bottomStart' });
-            setTimeout(() => {toaster.remove(toast)}, 3000);
+            const toastErrorPatch = toaster.push(<ToastMessage type="error" header="Erreur" content="Une erreur c'est produite lors de la modification"/>, { value : 'bottomStart' });
+            setTimeout(() => {toaster.remove(toastErrorPatch)}, 3000);
         });
     }
 
     useEffect(() => {
+        console.log(props.ride);
         if (isChecked) {
             setLabelCheckbox("trajet disponible");
         }else if (!isChecked) {
@@ -89,23 +92,17 @@ const DetailOfRide = (props) => {
                                             <label>{Moment(props.ride.departureDay).format("DD/MM/YYYY")} à {props.ride.departureTime}</label>
                                         </div>
                                        : <div>
-                                            { props.ride.isOwner ? <div>
-                                                                <DatePicker defaultValue={new Date(props.beginning)}/>
-                                                                <DatePicker defaultValue={new Date(props.ending)}/>
-                                                                <DatePicker format="HH:mm:ss"/>
-                                                            </div>
-                                                            : <label>Du {Moment(props.ride.beginning).format("DD/MM/YYYY")} au {Moment(props.ride.ending).format("DD/MM/YYYY")} à {props.ride.departureTime}</label>
-                                            }
+                                            <label>Du {Moment(props.ride.beginning).format("DD/MM/YYYY")} au {Moment(props.ride.ending).format("DD/MM/YYYY")} à {props.ride.departureTime}</label>
                                         </div>}
                 </ListRow>
                 { props.ride.daysWeek ? 
                     <ListRow label="Jours">
                         <div>
-                            <CheckBoxDays disabled={props.ride.isOwner ? false : true} days={props.ride.daysWeek}/>
+                            <CheckBoxDays disabled={props.isOwner ? false : true} days={props.ride.daysWeek}/>
                         </div>
                     </ListRow>
                 : "" }
-                {props.ride.isOwner ? 
+                {props.isOwner ? 
                     <ListRow label="Véhicule">
                         <label>{props.ride.car.model}</label> 
                     </ListRow>
@@ -117,19 +114,26 @@ const DetailOfRide = (props) => {
                     <label>{props.ride.price} €</label> 
                 </ListRow>
                 <ListRow label="Commentaire">
-                    { props.ride.isOwner ? <Input as="textarea" rows={3} placeholder={props.ride.comment} />
+                    { props.isOwner ? <Input as="textarea" rows={3} value={inputComment} onChange={setInputComment}/>
                                     : <label>{props.ride.comment}</label> }
                 </ListRow>
-                {props.ride.isOwner ? 
+                {props.isOwner ? 
                     <ListRow label="Passagers">
-                        <ListPassengers passengers={props.ride.requestedPassengers}/>
+                        {(props.ride.requestedPassengers > 1) ? 
+                            <div>
+                                <ListPassengers passengers={props.ride.requestedPassengers}/>
+                            </div>
+                        : 
+                            <div>
+                                <label>Vous avez aucun passagers</label>
+                            </div>}
                     </ListRow>
                                 : "" }
             </List>
             <ButtonToolbar className='flex justify-end'>
                 <Button color="red" appearance="primary" onClick={() => {deleteRide(props.ride.id)}}>Supprimer</Button>
                 <Button appearance='ghost' color="blue" onClick={() => {props.setEditable(false)}}>Retour</Button>
-                <Button appearance="primary">Enregistrer</Button>
+                <Button appearance="primary" onClick={() => {updateRide(props.ride.id)}}>Enregistrer</Button>
 
             </ButtonToolbar>
         </div>);
