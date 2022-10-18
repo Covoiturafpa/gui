@@ -1,4 +1,4 @@
-import { React, useContext } from 'react';
+import { React, useContext, useEffect } from 'react';
 
 import RidesResultTable from './RidesResultTable';
 import { RideFormContext } from './RideFormContextProvider';
@@ -7,7 +7,11 @@ const SearchResults = (props) => {
 
     const { rides } = useContext(RideFormContext);
 
-    if (rides.value.length === 0) {
+    useEffect(() => {
+        console.log(rides.value)
+    }, [rides.value])
+
+    if (rides.value[0].length === 0) {
         return (
             <div>
                 <div className="bg-gray-background rounded-t-md py-1">
@@ -20,15 +24,15 @@ const SearchResults = (props) => {
         if (rides.value.length === 1) {
             return (<>
                 <h5 className='text-center my-2'>Trajets disponible</h5>
-                <RidesResultTable returns={false} />
+                <RidesResultTable return={false} />
             </>)
         }
         else if (rides.value.length === 2) {
             return (<>
                 <h5 className='text-center my-2'>Trajets aller</h5>
-                <RidesResultTable returns={false} />
+                <RidesResultTable return={false} />
                 <h5 className='text-center my-2'>Trajets retour</h5>
-                <RidesResultTable returns={true} />
+                <RidesResultTable return={true} />
             </>)
         }
     }

@@ -14,7 +14,7 @@ const Booking = () => {
     const { rides } = useContext(RideFormContext);
 
     useEffect(() => {
-        if (rides.value.length !== 0) {
+        if (rides.value[0].length !== 0) {
             searchResultRef.current.scrollIntoView({ behavior: 'smooth', block: 'start' })
         }
     }, [rides.value])

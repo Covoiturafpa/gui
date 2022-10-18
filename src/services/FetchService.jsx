@@ -9,7 +9,7 @@ class FetchService {
             let response = this.fetchAPI("GET", endpoint, body);
             return response;
         } catch (error) {
-            return { "errorMessage": error.message };
+            return { "error": error.message };
         }
     }
 
@@ -18,7 +18,7 @@ class FetchService {
             let response = this.fetchAPI("POST", endpoint, body);
             return response;
         } catch (error) {
-            return { "errorMessage": error.message };
+            return { "error": error.message };
         }
     }
 
@@ -27,7 +27,7 @@ class FetchService {
             let response = this.fetchAPI("PATCH", endpoint, body);
             return response;
         } catch (error) {
-            return { "errorMessage": error.message };
+            return { "error": error.message };
         }
     }
 
@@ -36,7 +36,7 @@ class FetchService {
             let response = this.fetchAPI("PUT", endpoint, body);
             return response;
         } catch (error) {
-            return { "errorMessage": error.message };
+            return new Promise({ "error": error.message });
         }
     }
 
@@ -45,7 +45,7 @@ class FetchService {
             let response = this.fetchAPI("DELETE", endpoint, body);
             return response;
         } catch (error) {
-            return { "errorMessage": error.message };
+            return new Promise({ "error": error.message });
         }
     }
 

@@ -59,26 +59,40 @@ const RidesResultTable = (props) => {
     const [expandedRowKeys, setExpandedRowKeys] = useState([]);
     const { rides } = useContext(RideFormContext);
     const [tableData, setTableData] = useState([]);
-    const [successMessage, setSuccessMessage] = useState("");
-    const [errorMessage, setErrorMessage] = useState("");
+    const [toastType, setToastType] = useState(null);
+    const [toastMessage, setToastMessage] = useState(null);
     const toaster = useToaster();
 
     useEffect(() => {
         if (rides.value.length > 0) {
-            const data = props.returns === false ? rides.value[0] : rides.value[1];
+            const data = props.return === false ? rides.value[0] : rides.value[1];
             setTableData(data);
         }
     }, [rides])
 
+
+
     useEffect(() => {
-        if (successMessage !== "") {
-            toaster.push(<ToastMessage type="success" header="succès" content={successMessage} />)
+        console.log("toast");
+        if (toastType !== null && toastMessage !== null) {
+            const toast = toaster.push(
+                <ToastMessage type={toastType} 
+                              header={toastType === "success" ? "Succès" : "Erreur"} 
+                              content={toastMessage}
+                />, { value : 'bottomStart' }
+            );
+            console.log("après toast")
+            setTimeout(() => {
+                toaster.remove(toast);
+                setToastType(null);
+                setToastMessage(null);
+            }, 3000);
         }
-        if (errorMessage !== "") {
-            console.log("ok")
-            toaster.push(<ToastMessage type="error" header="erreur" content={errorMessage} />)
-        }
-    }, [successMessage, errorMessage])
+    }, [toastMessage]);
+
+
+
+   
 
     const renderRowExpanded = rowData => {
         return (<div>
@@ -116,16 +130,19 @@ const RidesResultTable = (props) => {
 
     const booking = (ride) => {
         FetchService.put(`/rides/${ride.id}?idPassenger=${AuthService.getCurrentUserId()}`).then((res) => {
-            if (res.message === "Demande de réservation effectuée") {
-                setSuccessMessage(res.message);
+            if (res === undefined || res.error !== undefined) {
+                setToastType("error");
+                setToastMessage("Un problème est survenu");
             }
-            if (res.message === "Réservation impossible, utilisateur déjà inscrit") {
-                setErrorMessage(res.message);
+            console.log(res);
+            if (res.type !== undefined && res.message !== undefined) {
+                setToastType(res.type);
+                setToastMessage(res.message);
             }
-        });
+        })
     }
 
-    return (
+    return ( tableData.length !== 0 ?
         <Table className='rounded-b-md bg-green-100'
             autoHeight={true}
             data={tableData}
@@ -139,7 +156,7 @@ const RidesResultTable = (props) => {
                 <ExpandCell dataKey="id" expandedRowKeys={expandedRowKeys} onChange={handleExpanded} />
             </Column>
             <Column flexGrow={1.4}>
-                <HeaderCell>{tableData.length !== 0 ? tableData[0].destination.isFromAfpa === true ? "Arrivée" : "Départ" : null}</HeaderCell>
+                <HeaderCell>{tableData[0].destination.isFromAfpa === true ? "Arrivée" : "Départ"}</HeaderCell>
                 <Cell dataKey='destination.city.name' />
             </Column>
             <Column flexGrow={1} sortable>
@@ -150,7 +167,7 @@ const RidesResultTable = (props) => {
                 <HeaderCell>Prix</HeaderCell>
                 <Cell dataKey='price'>{rowData => rowPrice(rowData)}</Cell>
             </Column>
-        </Table>
+        </Table> : null
     )
 }
 
