@@ -72,7 +72,7 @@ const RidesResultTable = (props) => {
 
 
 
-    useEffect(() => {
+    /*useEffect(() => {
         console.log("toast");
         if (toastType !== null && toastMessage !== null) {
             const toast = toaster.push(
@@ -88,7 +88,7 @@ const RidesResultTable = (props) => {
                 setToastMessage(null);
             }, 3000);
         }
-    }, [toastMessage]);
+    }, [toastMessage]);*/
 
 
 
@@ -130,15 +130,33 @@ const RidesResultTable = (props) => {
 
     const booking = (ride) => {
         FetchService.put(`/rides/${ride.id}?idPassenger=${AuthService.getCurrentUserId()}`).then((res) => {
+            let typetoast = "";
+            let messagetoast = "";
             if (res === undefined || res.error !== undefined) {
-                setToastType("error");
-                setToastMessage("Un problème est survenu");
+                //setToastType("error");
+                //setToastMessage("Un problème est survenu");
+                typetoast = "error";
+                messagetoast = "Un problème est survenu";
             }
             console.log(res);
             if (res.type !== undefined && res.message !== undefined) {
-                setToastType(res.type);
-                setToastMessage(res.message);
+                //setToastType(res.type);
+                //setToastMessage(res.message);
+                typetoast = res.type;
+                messagetoast = res.message;
             }
+            const toast = toaster.push(
+                <ToastMessage type={typetoast} 
+                              header={typetoast === "success" ? "Succès" : "Erreur"} 
+                              content={messagetoast}
+                />, { value : 'bottomStart' }
+            );
+            console.log("après toast")
+            setTimeout(() => {
+                toaster.remove(toast);
+                setToastType(null);
+                setToastMessage(null);
+            }, 3000);
         })
     }
 
