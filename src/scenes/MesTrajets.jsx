@@ -10,26 +10,29 @@ import  FetchService  from "../services/FetchService";
 
 const MesTrajets = () => {
     const [isLoaded, setIsLoaded] = useState(false);
-    const [rideOwned, setRideOwned] = useState([]);
-    const [rideRequested, setRideRequested] = useState([]);
+    const [ridesOwned, setRidesOwned] = useState([]);
+    const [ridesRequested, setRidesRequested] = useState([]);
     const [error, setError] = useState(null);
     const [userId, setUserId] = useState(authService.getCurrentUserId());
-
+    const [autoReload, setAutoReload] = useState(false);
     useEffect(() => {
+        console.log(autoReload);
+        setAutoReload(false);
+        console.log(autoReload);
         const fetch = FetchService.get("/users/"+ userId + "/rides");
         fetch.then(
             (result) => {
-                setRideOwned([]);
-                setRideRequested([]);
+                setRidesOwned([]);
+                setRidesRequested([]);
                 result.map(item => {
                     const passengers = item.requestedPassengers;
                     passengers.map(userToRide => {
                         if(userToRide.person.id == userId) {
                             if(userToRide.isDriver) {
-                                setRideOwned(rideOwned => [ item,...rideOwned]);
+                                setRidesOwned(rideOwned => [ item,...rideOwned]);
                             }else if(!userToRide.isDriver) {
                                 if(item.isActive) {
-                                    setRideRequested(rideRequested => [ item,...rideRequested]);
+                                    setRidesRequested(rideRequested => [ item,...rideRequested]);
                                 }
                             }
                         }
@@ -45,28 +48,28 @@ const MesTrajets = () => {
                 setError(error);
             }
         )
-    }, []);
+    }, [autoReload]);
     
     if (error) {
         return <div>Erreur : {error.message}</div>;
     } else if (!isLoaded) {
         return <div className=' h-full flex justify-center items-center'><Loader size="sm" content="Chargement..." /></div>;
     }else {
-        if(rideOwned.length === 0) {
-            setRideOwned(0);
+        if(ridesOwned.length === 0) {
+            setRidesOwned(0);
         }
-        if(rideRequested.length === 0) {
-            setRideRequested(0);
+        if(ridesRequested.length === 0) {
+            setRidesRequested(0);
         }
         return (
             <div className='container mx-auto px-4'>
                 <h1 className="text-center">Mes trajets</h1>
                 <RideFormContextProvider>
                     <div className='my-3'>
-                        <TableProposedRides id={userId} rides={rideOwned} />
+                        <TableProposedRides setReload={setAutoReload} id={userId} rides={ridesOwned} />
                     </div>
                     <div className='my-3'>
-                        <TableRequestedRides id={userId} rides={rideRequested} />
+                        <TableRequestedRides id={userId} rides={ridesRequested} />
                     </div>
                 </RideFormContextProvider>
             </div>

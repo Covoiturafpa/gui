@@ -90,7 +90,7 @@ const TableProposedRides = (props) => {
 
 
     if (isEditable) {
-        return (<DetailOfRide isOwner={true} userId={props.id} ride={detailRide} setEditable={setIsEditable}/>);
+        return (<DetailOfRide isOwner={true} userId={props.id} ride={detailRide} setReload={props.setReload} setEditable={setIsEditable}/>);
     }else {
         if (props.rides === 0) {
             return (

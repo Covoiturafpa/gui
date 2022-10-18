@@ -1,14 +1,15 @@
 import React from 'react';
-import { useState, createContext, useContext, useEffect, useRef } from 'react';
-import { Input, Form, Button, DatePicker, SelectPicker, InputNumber, Stack, InputGroup, Whisper, Tooltip, Notification, useToaster, Loader } from 'rsuite';
+import { useState, useContext, useEffect, useRef } from 'react';
+import { Input, Form, Button, DatePicker, SelectPicker, InputNumber, Stack, InputGroup, Whisper, Tooltip, useToaster, Loader } from 'rsuite';
 import InfoIcon from '@rsuite/icons/legacy/Info';
 import FetchService from '../../services/FetchService';
 import authService from "../../services/AuthService";
 import RideFormInputs from './RideFormInputs';
-import { DestinationContext } from '../../scenes/Booking';
 import { FiPlusCircle } from "react-icons/fi";
 import { RideFormContext } from './RideFormContextProvider';
-import { DaysTranslate } from '../DaysTranslate';
+import { ToastMessage } from '../ToastMessage';
+import { useNavigate } from 'react-router-dom';
+
 
 const Textarea = React.forwardRef((props, ref) => <Input {...props} as="textarea" ref={ref} />);
 
@@ -26,21 +27,12 @@ const AddRideForm = (props) => {
     const [seats, setSeats] = useState();
     const [price, setPrice] = useState();
     const [comment, setComment] = useState();
-    const [newRide, setNewRide] = useState({});
     const carInput = useRef();
-
-    const [type, setType] = useState('info');
-    const [toastContent, setToastContent] = useState("");
     const toaster = useToaster();
+    const navigate = useNavigate();
 
-    const message = (
-      <Notification className="z-[100000]" type={type} header={type} duration="1800" closable>
-        {toastContent}
-      </Notification>
-    );
 
     useEffect(() => {
-        
         const fetch = FetchService.get("/users/" + userId);
         fetch.then(
             (result) => {
@@ -97,20 +89,17 @@ const AddRideForm = (props) => {
         fetchPost.then((result) => {
             console.log(result);
             if(result.errorMessage) {
-                setType("error");
-                setToastContent("Vous avez déjà créer un trajet similaire");
-                toaster.push(message, { value : 'bottomStart' });
+                const toastError = toaster.push(<ToastMessage type="error" header="Erreur" content="Vous avez déjà créer un trajet similaire"/>, { value : 'bottomStart' });
+                setTimeout(() => {toaster.remove(toastError)}, 3000);
             }else {
-                setType("success");
-                setToastContent("Le trajet est enregistré");
-                toaster.push(message, { value : 'bottomStart' });
+                const toastSuccess = toaster.push(<ToastMessage type="success" header="Succès" content="Le trajet est enregistré"/>, { value : 'bottomStart' });
+                setTimeout(() => {toaster.remove(toastSuccess)}, 3000);
             }
         },
         (error) => {
             console.log(error);
-            setType("error");
-            setToastContent("Une erreur est survenue");
-            toaster.push(message, { value : 'bottomStart' });
+            const toastFetchError = toaster.push(<ToastMessage type="error" header="Erreur" content="Une erreur est survenue"/>, { value : 'bottomStart' });
+            setTimeout(() => {toaster.remove(toastFetchError)}, 3000);
         });
 
         if(isRoundTrip.value) {
@@ -128,8 +117,9 @@ const AddRideForm = (props) => {
             const fetchPost = FetchService.post("/rides", JSON.stringify(dataRoundTrip));
             fetchPost.then((result) => {
                 console.log(result);
-            })
+            });
         }
+        navigate("/mes_trajets");
     }
 
     if (error) {

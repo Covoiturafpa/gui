@@ -1,17 +1,51 @@
 import { React, useState, useEffect } from 'react';
 import { useNavigate } from 'react-router-dom';
 import { FiArrowRight   } from "react-icons/fi";
-import { List, DatePicker, Button, ButtonToolbar,Input, Checkbox } from 'rsuite';
+import { List, DatePicker, Button, ButtonToolbar,Input, Checkbox, useToaster } from 'rsuite';
 import Moment from 'moment';
 import CheckBoxDays from './CheckBoxDays/CheckBoxDays';
 import { ListRow } from './ListRow';
 import { ListPassengers } from './ListPassengers';
+import { ToastMessage } from './ToastMessage';
+import FetchService from '../services/FetchService';
+
 
 const DetailOfRide = (props) => {
     const [isLoaded, setIsLoaded] = useState(false);
     const [error, setError] = useState(null);
     const [labelCheckbox, setLabelCheckbox] = useState();
     const [isChecked, setIsChecked] = useState(props.ride.isActive);
+    const toaster = useToaster();
+    const navigate = useNavigate();
+    toaster.clear();
+
+    const deleteRide = (idRide) => {
+        const fetchDelete = FetchService.delete("/rides/" + idRide);
+        fetchDelete.then((result) => {
+            const toast = toaster.push(<ToastMessage type="success" header="Succès" content="Le trajet a bien était supprimé"/>, { value : 'bottomStart' });
+            setTimeout(() => {toaster.remove(toast)}, 3000);
+            props.setEditable(false);
+            props.setReload(true);
+        },
+        (error) => {
+            const toast = toaster.push(<ToastMessage type="error" header="Erreur" content="Une erreur c'est produite lors de la suppression"/>, { value : 'bottomStart' });
+            setTimeout(() => {toaster.remove(toast)}, 3000);
+        });
+    }
+
+    const updateRide = (idRide) => {
+        const fetchDelete = FetchService.delete("/rides/" + idRide);
+        fetchDelete.then((result) => {
+            const toast = toaster.push(<ToastMessage type="success" header="Succès" content="Le trajet a bien était supprimé"/>, { value : 'bottomStart' });
+            setTimeout(() => {toaster.remove(toast)}, 3000);
+            props.setEditable(false);
+            props.setReload(true);
+        },
+        (error) => {
+            const toast = toaster.push(<ToastMessage type="error" header="Erreur" content="Une erreur c'est produite lors de la suppression"/>, { value : 'bottomStart' });
+            setTimeout(() => {toaster.remove(toast)}, 3000);
+        });
+    }
 
     useEffect(() => {
         if (isChecked) {
@@ -93,8 +127,7 @@ const DetailOfRide = (props) => {
                                 : "" }
             </List>
             <ButtonToolbar className='flex justify-end'>
-                <Button color="red" appearance="primary">
-                    Supprimer</Button>
+                <Button color="red" appearance="primary" onClick={() => {deleteRide(props.ride.id)}}>Supprimer</Button>
                 <Button appearance='ghost' color="blue" onClick={() => {props.setEditable(false)}}>Retour</Button>
                 <Button appearance="primary">Enregistrer</Button>
 
