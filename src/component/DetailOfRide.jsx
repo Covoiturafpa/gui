@@ -35,17 +35,18 @@ const DetailOfRide = (props) => {
 
     const updateRide = (idRide) => {
         let newRide = {...props.ride, comment : inputComment, isActive : isChecked};
-        console.log(newRide);
-        const fetchPatch = FetchService.put("/update/rides/" + idRide, JSON.stringify({ride: newRide}));
-        fetchPatch.then((result) => {
-            const toastSuccessPatch = toaster.push(<ToastMessage type="success" header="Succès" content="Le trajet a bien était modifié"/>, { value : 'bottomStart' });
-            setTimeout(() => {toaster.remove(toastSuccessPatch)}, 3000);
-            props.setEditable(false);
-            props.setReload(true);
-        },
-        (error) => {
-            const toastErrorPatch = toaster.push(<ToastMessage type="error" header="Erreur" content="Une erreur c'est produite lors de la modification"/>, { value : 'bottomStart' });
-            setTimeout(() => {toaster.remove(toastErrorPatch)}, 3000);
+        const fetchPut = FetchService.put("/update/rides/" + idRide, JSON.stringify(newRide));
+        fetchPut.then((result) => {
+            console.log(result);
+            if (result.type === "success") {
+                const toastSuccessPut = toaster.push(<ToastMessage type="success" header="Succès" content={result.message}/>, { value : 'bottomStart' });
+                setTimeout(() => {toaster.remove(toastSuccessPut)}, 3000);
+                props.setEditable(false);
+                props.setReload(true);
+            }else {
+                const toastErrorPut = toaster.push(<ToastMessage type="error" header="Erreur" content={result.message}/>, { value : 'bottomStart' });
+                setTimeout(() => {toaster.remove(toastErrorPut)}, 3000);
+            }
         });
     }
 
