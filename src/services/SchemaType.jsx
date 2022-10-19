@@ -1,5 +1,7 @@
-import { MixedType, SchemaModel, StringType } from 'schema-typed';
+import { MixedType, SchemaModel, StringType, BooleanType, DateType, ArrayType, ObjectType, NumberType } from 'schema-typed';
 import FetchService from './FetchService';
+import { isDate, isAfter, isFuture, startOfToday } from 'date-fns'
+
 
 const loginFormSchema = SchemaModel({
     email: StringType().isEmail('Email invalide').isRequired('Email requis'),
@@ -48,8 +50,35 @@ const passwordConfirmFormSchema = SchemaModel({
 });
 
 const ServiceConfirmSchema = SchemaModel({
-    service: MixedType().isRequired
+    service: MixedType().isRequired()
 });
+
+const rideForm = SchemaModel({
+    departure: StringType().isRequired("Vous devez choisir une destination"),
+    arrival: StringType().isRequired("Vous devez choisir une destination"),
+    rideType: StringType().isOneOf(['O', 'R']).isRequired("Vous devez sélectionner une option"),
+    isRoundTrip: BooleanType().isRequired("Vous devez sélectionner une option"),
+})
+
+const oneTime = SchemaModel({
+    date: DateType().min(new Date(), "Vous ne pouvez pas sélectionner une date passée")
+    .isRequired("Vous devez choisir une date")
+})
+
+const recurring = SchemaModel({
+    dates: MixedType().addRule((dates) => {
+        if (dates !== undefined && dates !== null && dates.length === 2) {
+            const beginning = dates[0];
+            const ending = dates[1];
+            if (isDate(beginning) && isDate(ending) && 
+                isAfter(beginning, startOfToday()) && isFuture(ending)) {
+                return true;
+            }
+        }
+        return false;
+    }, "Vous devez choisir une période valide", true),
+    days: ArrayType().rangeLength(1, 7, "Vous devez choisir entre 1 et 7 jours")
+})
 
 function asyncCheckIsEmailUnique(email) {
     return (FetchService.get("/users/email_validity"));
@@ -57,7 +86,13 @@ function asyncCheckIsEmailUnique(email) {
 
 const profilFormSchema = SchemaModel.combine(newEmailFormSchema, frenchPhoneFormSchema, updatePasswordFormSchema, passwordConfirmFormSchema);
 
-const newUserFormSchema = SchemaModel.combine(frenchPhoneFormSchema, );
+const newUserFormSchema = SchemaModel.combine(frenchPhoneFormSchema,);
 
-export { loginFormSchema, profilFormSchema, newEmailFormSchema };
+const oneTimeForm = SchemaModel.combine(rideForm, oneTime);
+
+const recurringForm = SchemaModel.combine(rideForm, recurring);
+
+const allRideForm = SchemaModel.combine(rideForm, recurring, oneTime);
+
+export { loginFormSchema, profilFormSchema, newEmailFormSchema, allRideForm, oneTimeForm, recurringForm };
 
