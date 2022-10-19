@@ -1,12 +1,65 @@
-import { useContext } from 'react';
+import { useContext, useState, useRef, useEffect } from 'react';
 import { Form, Button } from 'rsuite';
 
 import RideFormInputs from './RideFormInputs';
 import FetchService from '../../services/FetchService';
 import { RideFormContext } from './RideFormContextProvider';
+import { allRideForm, oneTimeForm, recurringForm } from '../../services/SchemaType';
 
 const SearchRidesForm = () => {
     const { rideType, isFromAfpa, isRoundTrip, arrival, departure, departureDay, days, recurringDates, destination, rides } = useContext(RideFormContext);
+    const [formValues, setFormValues] = useState({});
+    const formRef = useRef();
+
+    useEffect(() => {
+        formRef.current.cleanErrors();
+    }, [rideType.value])
+
+    useEffect(() => {
+        formRef.current.cleanErrorForField("isRoundTrip");
+    }, [isRoundTrip.value])
+
+    useEffect(() => {
+        formRef.current.cleanErrorForField("isFromAfpa");
+    }, [isFromAfpa.value])
+
+    useEffect(() => {
+        formRef.current.cleanErrorForField("departure");
+    }, [departure.value])
+
+    useEffect(() => {
+        formRef.current.cleanErrorForField("arrival");
+    }, [arrival.value])
+
+    useEffect(() => {
+        formRef.current.cleanErrorForField("date");
+    }, [departureDay.value])
+
+    useEffect(() => {
+        formRef.current.cleanErrorForField("dates");
+    }, [recurringDates.value])
+
+    useEffect(() => {
+        setFormValues({...formValues, "days" : days.value });
+        formRef.current.cleanErrorForField("days");
+    }, [days.value])
+
+    useEffect(() => {
+        if (Object.keys(formValues).length === 0) {
+            setFormValues(defaultFormValues);
+        }
+    }, [formValues])
+
+    const defaultFormValues = {
+        "rideType" : rideType.value,
+        "isRoundTrip" : isRoundTrip.value,
+        "isFromAfpa" : isFromAfpa.value,
+        "departure": departure.value,
+        "arrival": arrival.value,
+        "date" : departureDay.value,
+        "dates" : recurringDates.value,
+        "days" : days.value
+    }
 
     function createRideSearchParameters(invertDestination) {
         let jsonRequest = {
@@ -34,28 +87,48 @@ const SearchRidesForm = () => {
         return encodeURI(jsonRequest);
     }
 
-    const submitForm = () => {
-        let searchParameters = createRideSearchParameters(false);
-        FetchService.get("/rides?searchParams=" + searchParameters).then((searchResults) => {
-            let results = [];
-            results.push(searchResults);
-            if (isRoundTrip.value) {
-                searchParameters = createRideSearchParameters(true);
-                FetchService.get("/rides?searchParams=" + searchParameters).then((searchResults) => {
-                    results.push(searchResults);
-                    rides.setValue(results);
-                });
-            } else {
-                rides.setValue(results);
+    const checkFormErrors = () => {
+        let formErrors = null;
+        if (rideType.value === "O") {
+            formErrors = oneTimeForm.check(formValues); 
+        }
+        if (rideType.value === "R") {
+            formErrors = recurringForm.check(formValues);
+        }
+        let isErrorFound = false;
+        for (const [key, value] of Object.entries(formErrors)) {
+            if (value.hasError) {
+                isErrorFound = true;
             }
-        });
+        }
+        return isErrorFound;
     }
 
+    const submitForm = () => {
+        if (!checkFormErrors()) {
+            let searchParameters = createRideSearchParameters(false);
+            FetchService.get("/rides?searchParams=" + searchParameters).then((searchResults) => {
+                let results = [];
+                results.push(searchResults);
+                if (isRoundTrip.value) {
+                    searchParameters = createRideSearchParameters(true);
+                    FetchService.get("/rides?searchParams=" + searchParameters).then((searchResults) => {
+                        results.push(searchResults);
+                        rides.setValue(results);
+                    });
+                } else {
+                    rides.setValue(results);
+                }
+            });
+        }
+    }
+
+
     return (
-        <Form fluid>
+        <Form fluid model={allRideForm} checkTrigger='none' formValue={defaultFormValues} onChange={setFormValues} ref={formRef}>
             <RideFormInputs />
             <Form.Group className='flex justify-end my-4'>
-                <Button appearance="primary" onClick={submitForm}>Rechercher</Button>
+                <Button appearance="primary" type="submit" onClick={submitForm}>Rechercher</Button>
             </Form.Group>
         </Form>
     );
