@@ -26,15 +26,15 @@ const LoginForm = () => {
         }
     }, []);
 
-    function usernameChangeHundler(newUsername) {
+    function usernameChangeHandler(newUsername) {
         setUsername(newUsername);
     };
 
-    function passwordChangeHundler(newPassword) {
+    function passwordChangeHandler(newPassword) {
         setPassword(newPassword);
     };
 
-    function sendToInscription() {
+    function sendToRegistration() {
         navigate("/inscription");
     }
 
@@ -68,11 +68,11 @@ const LoginForm = () => {
                 <Form fluid checkTrigger='change' model={loginFormSchema}>
                     <Form.Group>
                         <Form.ControlLabel>Email</Form.ControlLabel>
-                        <Form.Control name="email" onChange={usernameChangeHundler} required/>
+                        <Form.Control name="email" onChange={usernameChangeHandler} required/>
                     </Form.Group>
                     <Form.Group>
                         <Form.ControlLabel>Mot de passe</Form.ControlLabel>
-                        <Form.Control name="password" onChange={passwordChangeHundler} type="password" autoComplete="off" required/>
+                        <Form.Control name="password" onChange={passwordChangeHandler} type="password" autoComplete="off" required/>
                     </Form.Group>
                     <Form.Group>
                         <Checkbox inputRef={rememberMeRef}>Se souvenir de moi</Checkbox>
@@ -83,7 +83,7 @@ const LoginForm = () => {
                         <ButtonToolbar>
                             <Button onClick={handleLogin} appearance="primary">Connexion</Button>
                             <Button appearance="link">Mot de passe oublié ?</Button>
-                            <Button onClick={sendToInscription} appearance="link">S'inscrire</Button>
+                            <Button onClick={sendToRegistration} appearance="link">S'inscrire</Button>
                         </ButtonToolbar>
                     </Form.Group>
                 </Form>

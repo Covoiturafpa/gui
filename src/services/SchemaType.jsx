@@ -1,4 +1,4 @@
-import { MixedType, SchemaModel, StringType } from 'schema-typed';
+import { BooleanType, MixedType, SchemaModel, StringType } from 'schema-typed';
 import FetchService from './FetchService';
 
 const loginFormSchema = SchemaModel({
@@ -47,8 +47,12 @@ const passwordConfirmFormSchema = SchemaModel({
     }, 'Les mots de passe ne correspondent pas')
 });
 
-const ServiceConfirmSchema = SchemaModel({
-    service: MixedType().isRequired
+const formationConfirmSchema = SchemaModel({
+    formation: MixedType().isRequired("Sélectionnez une formation")
+});
+
+const cguAgreement = SchemaModel({
+    cguAgreement: BooleanType().isRequired("Acceptez les CGU")
 });
 
 function asyncCheckIsEmailUnique(email) {
@@ -57,7 +61,7 @@ function asyncCheckIsEmailUnique(email) {
 
 const profilFormSchema = SchemaModel.combine(newEmailFormSchema, frenchPhoneFormSchema, updatePasswordFormSchema, passwordConfirmFormSchema);
 
-const newUserFormSchema = SchemaModel.combine(frenchPhoneFormSchema, );
+const newUserFormSchema = SchemaModel.combine(frenchPhoneFormSchema, formationConfirmSchema, newEmailFormSchema, newPasswordFormSchema, passwordConfirmFormSchema, cguAgreement);
 
-export { loginFormSchema, profilFormSchema, newEmailFormSchema };
+export { loginFormSchema, profilFormSchema, newEmailFormSchema, newUserFormSchema };
 

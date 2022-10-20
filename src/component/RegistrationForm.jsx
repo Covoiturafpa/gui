@@ -1,7 +1,8 @@
-import React, { useEffect, useState } from 'react';
+import React, { useEffect, useState, useRef } from 'react';
 import { Form, ButtonToolbar, Button, Grid, Col, Row, Checkbox, CheckboxGroup, DateRangePicker, RadioGroup, Radio, SelectPicker } from 'rsuite';
 import HCaptcha from '@hcaptcha/react-hcaptcha';
 import FetchService from '../services/FetchService';
+import { newUserFormSchema } from '../services/SchemaType';
 
 const Formation = (props) => {
 
@@ -36,13 +37,49 @@ const Formation = (props) => {
 const RegistrationForm = () => {
 
     const [personType, setPersonType] = useState("T");
+    const [user, setUser] = useState({});
+    const [captchaToken, setCaptchaToken] = useState({});
 
-    function onVerifyCaptcha (token) {
-        console.log("Verified: " + token);
+    const captchaRef = useRef();
+
+    const handleCaptchaVerification = (token) => {
+        setCaptchaToken({token: token});
+      }
+    
+    const handleCaptchaError = (error) => {
+        console.log("HCaptcha [onError]:", error);
+    };
+    
+    const handleCaptchaChallengeExpired = () => {
+        console.log("HCaptcha [onChalExpired]: The user display of a challenge times out with no answer.");
+    };
+
+    const handleRegistration = () => {
+        // setUser(getNewUser());
+        // let creationRequestBody = {Person: user, HCaptchaToken: captchaToken};
+        // console.log(creationRequestBody);
+        // FetchService.post("/users", creationRequestBody);
     }
 
+    // function getNewUser() {
+    //     return (
+    //         {
+    //             email: email.value,
+    //             password: password.value,
+    //             surname: surname.value,
+    //             firstName: firstName.value,
+    //             phoneNumber: phoneNumber.value,
+    //             contactBySms: contactBySms.value,
+    //             contactByMail: contactByMail.value,
+    //             startActivity:,
+    //             endActivity:,
+    //             personType; personType.value,
+    //         }
+    //     )
+    // }
+
     return (
-        <Form fluid className='w-full'>
+        <Form fluid className='w-full' model={newUserFormSchema}>
             <Grid fluid>
                 <Col xs={24} md={12}>
                     <Row>
@@ -73,7 +110,7 @@ const RegistrationForm = () => {
                             </Form.Group>
                         </Col>
                         <Col xs={24} className="mb-2">
-                            <Form.Group controlId="service">
+                            <Form.Group controlId="formation">
                                 <Formation personType={personType}/>
                             </Form.Group>
                         </Col>
@@ -126,7 +163,7 @@ const RegistrationForm = () => {
                         </Col>
                         <Col xs={24}>
                             <Form.Group controlId="captcha">
-                                <HCaptcha sitekey="aea49a3b-1ae7-4709-996d-b4bc374a903c" onVerify={onVerifyCaptcha}/>
+                                <HCaptcha ref={captchaRef} sitekey="10000000-ffff-ffff-ffff-000000000001" theme="light" onVerify={handleCaptchaVerification} onError={handleCaptchaError} onChalExpired={handleCaptchaChallengeExpired}/>
                             </Form.Group>
                         </Col>
                     </Row>
@@ -134,7 +171,7 @@ const RegistrationForm = () => {
                 <Col xs={4} xsOffset={20}>
                     <Form.Group>
                         <ButtonToolbar>
-                            <Button appearance="primary">S'inscrire</Button>
+                            <Button appearance="primary" onClick={handleRegistration}>S'inscrire</Button>
                         </ButtonToolbar>
                     </Form.Group>
                 </Col>
