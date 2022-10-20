@@ -1,4 +1,4 @@
-import { MixedType, SchemaModel, StringType, BooleanType, DateType, ArrayType, ObjectType, NumberType } from 'schema-typed';
+import { MixedType, SchemaModel, StringType, BooleanType, DateType, ArrayType, NumberType, ObjectType } from 'schema-typed';
 import FetchService from './FetchService';
 import { isDate, isAfter, isFuture, startOfToday } from 'date-fns'
 
@@ -80,8 +80,64 @@ const recurring = SchemaModel({
     days: ArrayType().rangeLength(1, 7, "Vous devez choisir entre 1 et 7 jours")
 })
 
+const arrivalTimeInput = SchemaModel({
+    arrivalTimeInput: DateType().isRequired("Vous devez choisir une heure")
+})
+
+const arrivalTimeReturnInput = SchemaModel({
+    arrivalTimeReturnInput: DateType().isRequired("Vous devez choisir une heure")
+})
+
+
+const carInput = SchemaModel({
+    carInput: ObjectType().shape({
+        key: NumberType().isRequired(),
+        seats: NumberType().isRequired(),
+        label: StringType().isRequired(),
+        value: StringType().isRequired(),
+        avgFuelConsumption: NumberType().isRequired(),
+        idCarType : MixedType().addRule((value) => {
+            if (value === undefined) {
+                return true;
+            }
+            return false;
+        }),
+        idPerson: MixedType().addRule((value) => {
+            if (value === undefined) {
+                return true;
+            }
+            return false;
+        })
+    }).isRequired("Vous devez choisir une voiture")
+})
+
+const seatsInput = SchemaModel({
+    seatsInput: NumberType().isRequired("Vous devez indiquer le nombre de place disponible").min(1, "Vous devez proposer au moins une place disponible")
+})
+
+const priceInput = SchemaModel({
+    priceInput: NumberType().isRequired("Vous devez indiquer un prix")
+})
+
+const commentInput = SchemaModel({
+    commentInput: StringType().isRequiredOrEmpty("Commentaire invalide")
+})
+
 function asyncCheckIsEmailUnique(email) {
     return (FetchService.get("/users/email_validity"));
+}
+
+function getCarsFromUser(userId) {
+    const fetch = FetchService.get("/users/" + userId);
+    const cars = null;
+    fetch.then(
+        (result) => {
+            cars = result.cars.map(
+                car => ({ label: car.model, value: car.model, key: car.id, seats: car.seats, avgFuelConsumption: car.avgFuelConsumption, idCarType: car.idCarType, idPerson: car.idPerson })
+            );
+        }
+    )
+    return cars;
 }
 
 const profilFormSchema = SchemaModel.combine(newEmailFormSchema, frenchPhoneFormSchema, updatePasswordFormSchema, passwordConfirmFormSchema);
@@ -92,7 +148,20 @@ const oneTimeForm = SchemaModel.combine(rideForm, oneTime);
 
 const recurringForm = SchemaModel.combine(rideForm, recurring);
 
-const allRideForm = SchemaModel.combine(rideForm, recurring, oneTime);
+const searchRideForm = SchemaModel.combine(rideForm, recurring, oneTime);
 
-export { loginFormSchema, profilFormSchema, newEmailFormSchema, allRideForm, oneTimeForm, recurringForm };
+const roundTripTimes = SchemaModel.combine(arrivalTimeInput, arrivalTimeReturnInput);
+
+const addRideForm = SchemaModel.combine(searchRideForm, carInput, seatsInput, priceInput, commentInput, roundTripTimes);
+
+const addOneTimeTrip = SchemaModel.combine(oneTimeForm, carInput, seatsInput, priceInput, commentInput, arrivalTimeInput)
+
+const addOneTimeRoundTrip = SchemaModel.combine(oneTimeForm, carInput, seatsInput, priceInput, commentInput, roundTripTimes);
+
+const addRecurringTrip = SchemaModel.combine(recurringForm, carInput, seatsInput, priceInput, commentInput, arrivalTimeInput)
+
+const addRecurringRoundTrip = SchemaModel.combine(recurringForm, carInput, seatsInput, priceInput, commentInput, roundTripTimes);
+
+
+export { loginFormSchema, profilFormSchema, newEmailFormSchema, searchRideForm, oneTimeForm, recurringForm, addRideForm, addOneTimeTrip, addOneTimeRoundTrip, addRecurringTrip, addRecurringRoundTrip };
 

@@ -4,7 +4,7 @@ import { Form, Button } from 'rsuite';
 import RideFormInputs from './RideFormInputs';
 import FetchService from '../../services/FetchService';
 import { RideFormContext } from './RideFormContextProvider';
-import { allRideForm, oneTimeForm, recurringForm } from '../../services/SchemaType';
+import { searchRideForm, oneTimeForm, recurringForm } from '../../services/SchemaType';
 
 const SearchRidesForm = () => {
     const { rideType, isFromAfpa, isRoundTrip, arrival, departure, departureDay, days, recurringDates, destination, rides } = useContext(RideFormContext);
@@ -125,7 +125,7 @@ const SearchRidesForm = () => {
 
 
     return (
-        <Form fluid model={allRideForm} checkTrigger='none' formValue={defaultFormValues} onChange={setFormValues} ref={formRef}>
+        <Form fluid model={searchRideForm} checkTrigger='none' formValue={defaultFormValues} onChange={setFormValues} ref={formRef}>
             <RideFormInputs />
             <Form.Group className='flex justify-end my-4'>
                 <Button appearance="primary" type="submit" onClick={submitForm}>Rechercher</Button>
