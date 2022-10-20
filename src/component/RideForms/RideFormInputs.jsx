@@ -1,5 +1,5 @@
 import { React, useState, useRef, useEffect, useContext } from 'react';
-import { Form, RadioGroup, Radio, DatePicker, DateRangePicker, Stack, Divider } from 'rsuite';
+import { Form, RadioGroup, Radio, DatePicker, DateRangePicker, Stack, Divider, CheckboxGroup } from 'rsuite';
 import { BsArrowDownUp } from "react-icons/bs";
 import { addDays } from 'date-fns';
 
@@ -13,7 +13,7 @@ const RideFormInputs = () => {
 
     const departureInputRef = useRef();
     const arrivalInputRef = useRef();
-    const { arrival, departure, destination, isFromAfpa, rideType, isRoundTrip, departureDay, recurringDates } = useContext(RideFormContext);
+    const { arrival, departure, destination, isFromAfpa, rideType, isRoundTrip, departureDay, recurringDates, days } = useContext(RideFormContext);
 
     useEffect(() => {
         FetchService.get("/centre").then((data) => {
@@ -120,9 +120,9 @@ const RideFormInputs = () => {
                 <>
                     <Form.Group className='pl-1 pt-3' >
                         <Form.ControlLabel>Jours</Form.ControlLabel>
-                        <RadioGroup>
-                            <CheckBoxDays disabled={false} days={0} />
-                        </RadioGroup>
+                        <Form.Control name="days" accepter={CheckBoxDays} disabled={false} days={0} value={days.value} onChange={days.setValue}>
+                            <CheckBoxDays />
+                        </Form.Control>
                     </Form.Group>
                     <Form.Group className='pt-0'>
                         <Form.ControlLabel>Dates de début -&rsaquo; fin</Form.ControlLabel>

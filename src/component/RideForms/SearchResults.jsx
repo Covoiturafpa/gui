@@ -7,10 +7,6 @@ const SearchResults = (props) => {
 
     const { rides } = useContext(RideFormContext);
 
-    useEffect(() => {
-        console.log(rides.value)
-    }, [rides.value])
-
     if (rides.value[0].length === 0) {
         return (
             <div>

@@ -59,8 +59,6 @@ const RidesResultTable = (props) => {
     const [expandedRowKeys, setExpandedRowKeys] = useState([]);
     const { rides } = useContext(RideFormContext);
     const [tableData, setTableData] = useState([]);
-    const [toastType, setToastType] = useState(null);
-    const [toastMessage, setToastMessage] = useState(null);
     const toaster = useToaster();
 
     useEffect(() => {
@@ -69,30 +67,6 @@ const RidesResultTable = (props) => {
             setTableData(data);
         }
     }, [rides])
-
-
-
-    useEffect(() => {
-        console.log("toast");
-        if (toastType !== null && toastMessage !== null) {
-            const toast = toaster.push(
-                <ToastMessage type={toastType} 
-                              header={toastType === "success" ? "Succès" : "Erreur"} 
-                              content={toastMessage}
-                />, { value : 'bottomStart' }
-            );
-            console.log("après toast")
-            setTimeout(() => {
-                toaster.remove(toast);
-                setToastType(null);
-                setToastMessage(null);
-            }, 3000);
-        }
-    }, [toastMessage]);
-
-
-
-   
 
     const renderRowExpanded = rowData => {
         return (<div>
@@ -130,15 +104,25 @@ const RidesResultTable = (props) => {
 
     const booking = (ride) => {
         FetchService.put(`/rides/${ride.id}?idPassenger=${AuthService.getCurrentUserId()}`).then((res) => {
+            let typetoast = "";
+            let messagetoast = "";
             if (res === undefined || res.error !== undefined) {
-                setToastType("error");
-                setToastMessage("Un problème est survenu");
+                typetoast = "error";
+                messagetoast = "Un problème est survenu";
             }
-            console.log(res);
             if (res.type !== undefined && res.message !== undefined) {
-                setToastType(res.type);
-                setToastMessage(res.message);
+                typetoast = res.type;
+                messagetoast = res.message;
             }
+            const toast = toaster.push(
+                <ToastMessage type={typetoast} 
+                              header={typetoast === "success" ? "Succès" : "Erreur"} 
+                              content={messagetoast}
+                />, { value : 'bottomStart' }
+            );
+            setTimeout(() => {
+                toaster.remove(toast);
+            }, 3000);
         })
     }
 
