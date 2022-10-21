@@ -1,5 +1,5 @@
-import { React, useState, useRef, useEffect, useContext } from 'react';
-import { Form, RadioGroup, Radio, DatePicker, DateRangePicker, Stack, Divider, CheckboxGroup } from 'rsuite';
+import { React, useRef, useEffect, useContext } from 'react';
+import { Form, RadioGroup, Radio, DatePicker, DateRangePicker, Stack, Divider } from 'rsuite';
 import { BsArrowDownUp } from "react-icons/bs";
 import { addDays } from 'date-fns';
 
@@ -75,13 +75,6 @@ const RideFormInputs = () => {
     const MultipleDatesRanges = [
     ];
 
-    const updateDestination = (event) => {
-        
-        console.log(event.target.value)
-        departure.setValue(event.target.value);
-        updateCoordinates();
-    }
-
     return (
         <>
             <Stack wrap alignItems='baseline' justifyContent='space-around'>
@@ -94,8 +87,8 @@ const RideFormInputs = () => {
                     </Form.Control>
                 </Form.Group>
                 <Form.Group className='flex justify-center items-center' controlId='checkBoxRoundTrip'>
-                    <Form.Control style={{ width: 220 }} accepter={RadioGroup} inline appearance="picker" name="isRoundTrip" value={isRoundTrip.value}
-                        onChange={isRoundTrip.setValue} className='my-2 justify-center'>
+                    <Form.Control style={{ width: 220 }} accepter={RadioGroup} inline appearance="picker" name="isRoundTrip" 
+                                  value={isRoundTrip.value} onChange={isRoundTrip.setValue} className='my-2 justify-center'>
                         <Radio value={true} >Aller&nbsp;retour</Radio>
                         <Divider className="self-center" vertical />
                         <Radio value={false}>Aller&nbsp;simple</Radio>
@@ -106,8 +99,7 @@ const RideFormInputs = () => {
             <Form.Group className='pt-2' controlId='inputDeparture'>
                 <Form.ControlLabel>Départ</Form.ControlLabel>
                 <Form.Control name="departure" ref={departureInputRef} value={departure.value}
-                    onChange={departure.setValue}
-                    onBlur={updateDestination} readOnly={isFromAfpa.value} />
+                    onChange={departure.setValue} onBlur={updateCoordinates} readOnly={isFromAfpa.value} />
             </Form.Group>
             <button className="text-xl w-full flex justify-center">
                 <BsArrowDownUp onClick={invertDestinationsInputs} />
@@ -115,8 +107,7 @@ const RideFormInputs = () => {
             <Form.Group controlId='inputArrival'>
                 <Form.ControlLabel>Arrivée</Form.ControlLabel>
                 <Form.Control name="arrival" ref={arrivalInputRef} value={arrival.value}
-                    onChange={arrival.setValue}
-                    onBlur={updateCoordinates} readOnly={!isFromAfpa.value} />
+                    onChange={arrival.setValue} onBlur={updateCoordinates} readOnly={!isFromAfpa.value} />
             </Form.Group>
             {rideType.value === "O" &&
                 <Form.Group className='pt-3'>
