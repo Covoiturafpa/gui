@@ -29,6 +29,13 @@ const newPasswordFormSchema = SchemaModel({
         .containsNumber("Doit contenir : nombre")
         .pattern(/\W+/, "Doit contenir : caractère spécial")
         .rangeLength(8, 30, "Minimum 8 caractères, maximum 30"),
+    passwordConfirm: StringType().addRule((value, data) => {
+        console.log(value, data);
+        if (value !== data.password) {
+            return false;
+        }
+        return true;
+    }, 'Les mots de passe ne correspondent pas')
 });
 
 const updatePasswordFormSchema = SchemaModel({
@@ -40,14 +47,15 @@ const updatePasswordFormSchema = SchemaModel({
         .rangeLength(8, 30, "Minimum 8 caractères, maximum 30"),
 });
 
-const passwordConfirmFormSchema = SchemaModel({
-    passwordConfirm: StringType().addRule((value, data) => {
-        if (value !== data.password) {
-            return false;
-        }
-        return true;
-    }, 'Les mots de passe ne correspondent pas')
-});
+// const passwordConfirmFormSchema = SchemaModel({
+//     passwordConfirm: StringType().addRule((value, data) => {
+//         console.log(value, data);
+//         if (value !== data.password) {
+//             return false;
+//         }
+//         return true;
+//     }, 'Les mots de passe ne correspondent pas')
+// });
 
 const formationConfirmSchema = SchemaModel({
     formation: MixedType().isRequired("Sélectionnez une formation")
@@ -128,7 +136,7 @@ const commentInput = SchemaModel({
 })
 
 function asyncCheckIsEmailUnique(email) {
-    return (FetchService.get("/users/email_validity"));
+    return (FetchService.get("/users/email_validity" + encodeURIComponent("?email=" + email)));
 }
 
 function getCarsFromUser(userId) {
@@ -144,9 +152,9 @@ function getCarsFromUser(userId) {
     return cars;
 }
 
-const profilFormSchema = SchemaModel.combine(newEmailFormSchema, frenchPhoneFormSchema, updatePasswordFormSchema, passwordConfirmFormSchema);
+const profilFormSchema = SchemaModel.combine(newEmailFormSchema, frenchPhoneFormSchema, updatePasswordFormSchema);
 
-const newUserFormSchema = SchemaModel.combine(frenchPhoneFormSchema, formationConfirmSchema, newEmailFormSchema, newPasswordFormSchema, passwordConfirmFormSchema, cguAgreement);
+const newUserFormSchema = SchemaModel.combine(frenchPhoneFormSchema, formationConfirmSchema, newEmailFormSchema, newPasswordFormSchema, cguAgreement);
 
 const oneTimeForm = SchemaModel.combine(rideForm, oneTime);
 
