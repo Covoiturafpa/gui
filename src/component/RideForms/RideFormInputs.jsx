@@ -1,5 +1,5 @@
-import { React, useState, useRef, useEffect, useContext } from 'react';
-import { Form, RadioGroup, Radio, DatePicker, DateRangePicker, Stack, Divider, CheckboxGroup } from 'rsuite';
+import { React, useRef, useEffect, useContext } from 'react';
+import { Form, RadioGroup, Radio, DatePicker, DateRangePicker, Stack, Divider } from 'rsuite';
 import { BsArrowDownUp } from "react-icons/bs";
 import { addDays } from 'date-fns';
 
@@ -22,25 +22,39 @@ const RideFormInputs = () => {
     }, [])
 
     const updateCoordinates = () => {
-        let inputValue = departure.value;
+        if (arrival.value !== departure.value) {
+            let inputValue = departure.value;
 
-        if (isFromAfpa.value) {
-            inputValue = arrival.value;
-        }
-
-        fetchLocation(inputValue).then((res) => {
-            if (res) {
-                destination.setValue({
-                    lat: res[0].lat,
-                    lon: res[0].lon
-                });
-            } else {
-                destination.setValue({
-                    lat: null,
-                    lon: null
-                });
+            if (isFromAfpa.value) {
+                inputValue = arrival.value;
             }
-        });
+
+            fetchLocation(inputValue).then((res) => {
+                if (res && Object.keys(res).length > 0) {
+                    let location = null;
+                    if (res[0].address.city) {
+                        location = res[0].address.city;
+                    }
+                    if (res[0].address.town) {
+                        location = res[0].address.town;
+                    }
+                    if (res[0].address.village) {
+                        location = res[0].address.village;
+                    }
+                    destination.setValue({
+                        lat: res[0].lat,
+                        lon: res[0].lon
+                    });
+                    isFromAfpa.value ? arrival.setValue(location) : departure.setValue(location);
+                } else {
+                    destination.setValue({
+                        lat: null,
+                        lon: null
+                    });
+                    isFromAfpa.value ? arrival.setValue("") : departure.setValue("");
+                }
+            });
+        }
     }
 
     const invertDestinationsInputs = () => {
@@ -82,8 +96,8 @@ const RideFormInputs = () => {
                     </Form.Control>
                 </Form.Group>
                 <Form.Group className='flex justify-center items-center' controlId='checkBoxRoundTrip'>
-                    <Form.Control style={{ width: 220 }} accepter={RadioGroup} inline appearance="picker" name="isRoundTrip" value={isRoundTrip.value}
-                        onChange={isRoundTrip.setValue} className='my-2 justify-center'>
+                    <Form.Control style={{ width: 220 }} accepter={RadioGroup} inline appearance="picker" name="isRoundTrip" 
+                                  value={isRoundTrip.value} onChange={isRoundTrip.setValue} className='my-2 justify-center'>
                         <Radio value={true} >Aller&nbsp;retour</Radio>
                         <Divider className="self-center" vertical />
                         <Radio value={false}>Aller&nbsp;simple</Radio>
@@ -94,8 +108,7 @@ const RideFormInputs = () => {
             <Form.Group className='pt-2' controlId='inputDeparture'>
                 <Form.ControlLabel>Départ</Form.ControlLabel>
                 <Form.Control name="departure" ref={departureInputRef} value={departure.value}
-                    onChange={departure.setValue}
-                    onBlur={updateCoordinates} readOnly={isFromAfpa.value} />
+                    onChange={departure.setValue} onBlur={updateCoordinates} readOnly={isFromAfpa.value} />
             </Form.Group>
             <button className="text-xl w-full flex justify-center">
                 <BsArrowDownUp onClick={invertDestinationsInputs} />
@@ -103,8 +116,7 @@ const RideFormInputs = () => {
             <Form.Group controlId='inputArrival'>
                 <Form.ControlLabel>Arrivée</Form.ControlLabel>
                 <Form.Control name="arrival" ref={arrivalInputRef} value={arrival.value}
-                    onChange={arrival.setValue}
-                    onBlur={updateCoordinates} readOnly={!isFromAfpa.value} />
+                    onChange={arrival.setValue} onBlur={updateCoordinates} readOnly={!isFromAfpa.value} />
             </Form.Group>
             {rideType.value === "O" &&
                 <Form.Group className='pt-3'>

@@ -101,7 +101,7 @@ const arrivalTimeReturnInput = SchemaModel({
 })
 
 
-const carInput = SchemaModel({
+const carInputModel = SchemaModel({
     carInput: ObjectType().shape({
         key: NumberType().isRequired(),
         seats: NumberType().isRequired(),
@@ -120,7 +120,7 @@ const carInput = SchemaModel({
             }
             return false;
         })
-    }).isRequired("Vous devez choisir une voiture")
+    }, "allo").isRequired("Vous devez choisir une voiture")
 })
 
 const seatsInput = SchemaModel({
@@ -164,16 +164,16 @@ const searchRideForm = SchemaModel.combine(rideForm, recurring, oneTime);
 
 const roundTripTimes = SchemaModel.combine(arrivalTimeInput, arrivalTimeReturnInput);
 
-const addRideForm = SchemaModel.combine(searchRideForm, carInput, seatsInput, priceInput, commentInput, roundTripTimes);
+const addRideForm = SchemaModel.combine(searchRideForm, carInputModel, seatsInput, priceInput, commentInput, roundTripTimes);
 
-const addOneTimeTrip = SchemaModel.combine(oneTimeForm, carInput, seatsInput, priceInput, commentInput, arrivalTimeInput)
+const addOneTimeTrip = SchemaModel.combine(oneTimeForm, carInputModel, seatsInput, priceInput, commentInput, arrivalTimeInput)
 
-const addOneTimeRoundTrip = SchemaModel.combine(oneTimeForm, carInput, seatsInput, priceInput, commentInput, roundTripTimes);
+const addOneTimeRoundTrip = SchemaModel.combine(oneTimeForm, carInputModel, seatsInput, priceInput, commentInput, roundTripTimes);
 
-const addRecurringTrip = SchemaModel.combine(recurringForm, carInput, seatsInput, priceInput, commentInput, arrivalTimeInput)
+const addRecurringTrip = SchemaModel.combine(recurringForm, carInputModel, seatsInput, priceInput, commentInput, arrivalTimeInput)
 
-const addRecurringRoundTrip = SchemaModel.combine(recurringForm, carInput, seatsInput, priceInput, commentInput, roundTripTimes);
+const addRecurringRoundTrip = SchemaModel.combine(recurringForm, carInputModel, seatsInput, priceInput, commentInput, roundTripTimes);
 
 
-export { loginFormSchema, profilFormSchema, newEmailFormSchema, searchRideForm, oneTimeForm, recurringForm, addRideForm, addOneTimeTrip, addOneTimeRoundTrip, addRecurringTrip, addRecurringRoundTrip, newUserFormSchema };
+export { loginFormSchema, profilFormSchema, newEmailFormSchema, searchRideForm, oneTimeForm, recurringForm, addRideForm, addOneTimeTrip, addOneTimeRoundTrip, addRecurringTrip, addRecurringRoundTrip, newUserFormSchema, carInputModel };
 
