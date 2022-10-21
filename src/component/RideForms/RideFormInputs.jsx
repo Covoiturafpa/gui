@@ -31,7 +31,15 @@ const RideFormInputs = () => {
 
             fetchLocation(inputValue).then((res) => {
                 if (res && Object.keys(res).length > 0) {
-                    const location = res[0].address.village ? res[0].address.village : res[0].address.city;
+                    if (res[0].address.city) {
+                        location = res[0].address.city;
+                    }
+                    if (res[0].address.town) {
+                        location = res[0].address.town;
+                    }
+                    if (res[0].address.village) {
+                        location = res[0].address.village;
+                    }
                     destination.setValue({
                         lat: res[0].lat,
                         lon: res[0].lon
