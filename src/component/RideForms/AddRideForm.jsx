@@ -1,6 +1,6 @@
 import React from 'react';
 import { useState, useContext, useEffect, useRef } from 'react';
-import { Input, Form, Button, DatePicker, SelectPicker, InputNumber, Stack, InputGroup, Whisper, Tooltip, useToaster, Loader } from 'rsuite';
+import { Input, Form, Button, DatePicker, SelectPicker, InputNumber, InputGroup, Whisper, Tooltip, useToaster, Loader } from 'rsuite';
 import InfoIcon from '@rsuite/icons/legacy/Info';
 import FetchService from '../../services/FetchService';
 import authService from "../../services/AuthService";
@@ -15,24 +15,24 @@ import { addRideForm, addOneTimeTrip, addOneTimeRoundTrip, addRecurringTrip, add
 
 
 const AddRideForm = (props) => {
+    const { arrival, departure, destination, isFromAfpa, rideType, isRoundTrip, departureDay, recurringDates, days } = useContext(RideFormContext);
+    const [userId] = useState(authService.getCurrentUserId());
+    const navigate = useNavigate();
+    const addRideFormRef = useRef();
+    const toaster = useToaster();
     const [carsUser, setCarsUser] = useState([]);
     const [dataUser, setDataUser] = useState([]);
-    const [userId, setUserId] = useState(authService.getCurrentUserId());
     const [isLoaded, setIsLoaded] = useState(false);
     const [error, setError] = useState(null);
     const [placeholderCars, setPlaceholderCars] = useState("");
-    const { arrival, departure, destination, isFromAfpa, rideType, isRoundTrip, departureDay, recurringDates, days } = useContext(RideFormContext);
     const [arrivalTime, setArrivalTime] = useState(null);
     const [arrivalTimeReturn, setArrivalTimeReturn] = useState(null);
-    const [car, setCar] = useState();
+    const [car, setCar] = useState(null);
     const [carName, setCarName] = useState();
     const [seats, setSeats] = useState(3);
     const [price, setPrice] = useState(0);
     const [comment, setComment] = useState("");
-    const toaster = useToaster();
-    const navigate = useNavigate();
     const [formValues, setFormValues] = useState({});
-    const addRideFormRef = useRef();
 
     useEffect(() => {
         if (isLoaded) {
@@ -96,11 +96,10 @@ const AddRideForm = (props) => {
     }, [arrivalTimeReturn])
 
     useEffect(() => {
-        if (isLoaded) {
+        if (isLoaded) {   
             setFormValues({...formValues, "carInput" : car});
-            addRideFormRef.current.cleanErrorForField("carInput");
         }
-    }, [car])
+    }, [carName])
 
     useEffect(() => {
         if (isLoaded) {
@@ -292,8 +291,10 @@ const AddRideForm = (props) => {
                     <div className="flex w-full">
                         <Form.Group className='w-full' controlId='inputChoiceCar'>
                             <Form.ControlLabel>Choix du véhicule :</Form.ControlLabel>
-                            <Form.Control accepter={SelectPicker} name="carInput" block data={carsUser} placeholder={placeholderCars} value={carName} labelKey="label" min={1} max={2}
-                                         onChange={setCarName} onSelect={(value, item) => { setCar(item); setSeats(item.seats) }} onClean={() => { setCarName(null); setCar({}); setSeats(0) }} >
+                            <Form.Control accepter={SelectPicker} name="carInput" block data={carsUser} placeholder={placeholderCars} value={carName} labelKey="label"
+                                          onSelect={(value, item) => { setCarName(value); setCar(item); setSeats(item.seats) }} 
+                                          onClean={() => { setCarName(null); setCar(null); setSeats(1) }}
+                                          onChange={() => addRideFormRef.current.cleanErrorForField("carInput")}   >
                                 <SelectPicker />
                             </Form.Control>
                         </Form.Group>
