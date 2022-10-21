@@ -22,25 +22,30 @@ const RideFormInputs = () => {
     }, [])
 
     const updateCoordinates = () => {
-        let inputValue = departure.value;
+        if (arrival.value !== departure.value) {
+            let inputValue = departure.value;
 
-        if (isFromAfpa.value) {
-            inputValue = arrival.value;
-        }
-
-        fetchLocation(inputValue).then((res) => {
-            if (res) {
-                destination.setValue({
-                    lat: res[0].lat,
-                    lon: res[0].lon
-                });
-            } else {
-                destination.setValue({
-                    lat: null,
-                    lon: null
-                });
+            if (isFromAfpa.value) {
+                inputValue = arrival.value;
             }
-        });
+
+            fetchLocation(inputValue).then((res) => {
+                if (res && Object.keys(res).length > 0) {
+                    const location = res[0].address.village ? res[0].address.village : res[0].address.city;
+                    destination.setValue({
+                        lat: res[0].lat,
+                        lon: res[0].lon
+                    });
+                    isFromAfpa.value ? arrival.setValue(location) : departure.setValue(location);
+                } else {
+                    destination.setValue({
+                        lat: null,
+                        lon: null
+                    });
+                    isFromAfpa.value ? arrival.setValue("") : departure.setValue("");
+                }
+            });
+        }
     }
 
     const invertDestinationsInputs = () => {
@@ -70,6 +75,13 @@ const RideFormInputs = () => {
     const MultipleDatesRanges = [
     ];
 
+    const updateDestination = (event) => {
+        
+        console.log(event.target.value)
+        departure.setValue(event.target.value);
+        updateCoordinates();
+    }
+
     return (
         <>
             <Stack wrap alignItems='baseline' justifyContent='space-around'>
@@ -95,7 +107,7 @@ const RideFormInputs = () => {
                 <Form.ControlLabel>Départ</Form.ControlLabel>
                 <Form.Control name="departure" ref={departureInputRef} value={departure.value}
                     onChange={departure.setValue}
-                    onBlur={updateCoordinates} readOnly={isFromAfpa.value} />
+                    onBlur={updateDestination} readOnly={isFromAfpa.value} />
             </Form.Group>
             <button className="text-xl w-full flex justify-center">
                 <BsArrowDownUp onClick={invertDestinationsInputs} />
