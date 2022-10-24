@@ -73,7 +73,7 @@ const Accueil = () => {
                     </Col>
                     {rolesUser.includes('ROLE_TEACHER') || rolesUser.includes('ROLE_ADMIN') ?
                         <Col xs={24} sm={12} md={12} lg={customLg} className='flex justify-center mt-6 lg:mt-8'>
-                            <Panel shaded bordered bodyFill className='inline-block w-40 md:w-60 md:h-18 text-center cursor-pointer bg-white' onClick={() => navigate("/mes_trajets")}>
+                            <Panel shaded bordered bodyFill className='inline-block w-40 md:w-60 md:h-18 text-center cursor-pointer bg-white' onClick={() => navigate("/gestion_utilisateurs")}>
                                 <Group className='w-16 h-20 md:w-36 md:h-40' />
                                 <h3 className='m-2 text-sm md:text-base lg:text-lg whitespace-nowrap'>Gestion des utilisateurs</h3>
                             </Panel>
@@ -81,7 +81,7 @@ const Accueil = () => {
                     : ""}
                     {rolesUser.includes('ROLE_ADMIN') ? 
                         <Col xs={24} sm={12} md={12} lg={customLg} className='flex justify-center mt-6 lg:mt-8'>
-                            <Panel shaded bordered bodyFill className='inline-block w-40 md:w-60 text-center cursor-pointer bg-white' onClick={() => navigate("/mes_trajets")}>
+                            <Panel shaded bordered bodyFill className='inline-block w-40 md:w-60 text-center cursor-pointer bg-white' onClick={() => navigate("/gestion_centre")}>
                                 <GearCircle className='w-16 h-20 md:w-36 md:h-40' />
                                 <h3 className='m-2 text-sm md:text-base lg:text-lg'>Gestion du centre</h3>
                             </Panel>
