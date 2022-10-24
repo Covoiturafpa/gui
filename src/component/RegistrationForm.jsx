@@ -17,11 +17,6 @@ const Formation = (props) => {
         }
     },[isLoaded])
 
-    function handleOnChange(value, event) {
-        console.log("value: " + value)
-        console.log("event: " + event)
-    }
-
     if (props.personType === "E") {
         return (<></>);
     }
@@ -33,7 +28,7 @@ const Formation = (props) => {
         return (
             <>
                 <Form.ControlLabel>Formation</Form.ControlLabel>
-                <SelectPicker className='w-full' data={formations} />
+                <SelectPicker className='w-full' data={formations} onChange={props.onChange}/>
             </>
         );
     }
@@ -53,12 +48,13 @@ const RegistrationForm = () => {
     const [idFormation, setIdFormation] = useState(0);
     const [personType, setPersonType] = useState("T");
     const [captchaToken, setCaptchaToken] = useState({});
+    const [submitNotActivated, setSubmitNotActivated] = useState(true);
 
     const captchaRef = useRef();
 
     const handleCaptchaVerification = (token) => {
         setCaptchaToken({token: token});
-        console.log(token);
+        setSubmitNotActivated(false);
       }
     
     const handleCaptchaError = (error) => {
@@ -72,6 +68,7 @@ const RegistrationForm = () => {
     const handleRegistration = () => {
         let creationRequestBody = {newPerson: getNewUser(), captchaToken: captchaToken};
         console.log(creationRequestBody);
+        setSubmitNotActivated(true);
         try {
             FetchService.post("/users", JSON.stringify(creationRequestBody)).then((data) => {console.log(data)});
         }
@@ -136,7 +133,7 @@ const RegistrationForm = () => {
                         </Col>
                         <Col xs={24} className="mb-2">
                             <Form.Group controlId="formation">
-                                <Formation personType={personType} props={setIdFormation}/>
+                                <Formation personType={personType} onChange={setIdFormation}/>
                             </Form.Group>
                         </Col>
                         <Col xs={24} className="mb-2">
@@ -171,11 +168,9 @@ const RegistrationForm = () => {
                         </Col>
                         <Col xs={24}>
                             <Form.Group>
-                                <CheckboxGroup name="checkboxList"> 
                                     <p>Préférences de contact :</p>
-                                    <Checkbox name="contactBySMS" onChange={setContactBySms}>Autoriser l'envoi de SMS</Checkbox>
-                                    <Checkbox name="contactByMail" onChange={setContactByMail}>Autoriser l'envoi d'email</Checkbox>
-                                </CheckboxGroup>
+                                    <Checkbox name="contactByMail" value={contactBySms} onChange={(value, checked) => {setContactByMail(checked)}}>Autoriser l'envoi d'emails</Checkbox>
+                                    <Checkbox name="contactBySms" value={contactByMail} onChange={(value, checked) => {setContactBySms(checked)}}>Autoriser l'envoi de SMS</Checkbox>
                             </Form.Group>
                         </Col>
                         <Col xs={24}>
@@ -196,7 +191,7 @@ const RegistrationForm = () => {
                 <Col xs={4} xsOffset={20}>
                     <Form.Group>
                         <ButtonToolbar>
-                            <Button appearance="primary" onClick={handleRegistration}>S'inscrire</Button>
+                            <Button appearance="primary" onClick={handleRegistration} disabled={submitNotActivated} id="submitButton">S'inscrire</Button>
                         </ButtonToolbar>
                     </Form.Group>
                 </Col>
