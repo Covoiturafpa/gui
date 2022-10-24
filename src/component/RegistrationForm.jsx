@@ -17,6 +17,11 @@ const Formation = (props) => {
         }
     },[isLoaded])
 
+    function handleOnChange(value, event) {
+        console.log("value: " + value)
+        console.log("event: " + event)
+    }
+
     if (props.personType === "E") {
         return (<></>);
     }
@@ -131,7 +136,7 @@ const RegistrationForm = () => {
                         </Col>
                         <Col xs={24} className="mb-2">
                             <Form.Group controlId="formation">
-                                <Formation personType={personType} onChange={setIdFormation}/>
+                                <Formation personType={personType} props={setIdFormation}/>
                             </Form.Group>
                         </Col>
                         <Col xs={24} className="mb-2">

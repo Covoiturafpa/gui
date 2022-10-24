@@ -136,7 +136,7 @@ const commentInput = SchemaModel({
 })
 
 function asyncCheckIsEmailUnique(email) {
-    return (FetchService.get("/users/email_validity" + encodeURIComponent("?email=" + email)));
+    return (FetchService.get("/users/email_validity" + "?email=" + email));
 }
 
 function getCarsFromUser(userId) {
