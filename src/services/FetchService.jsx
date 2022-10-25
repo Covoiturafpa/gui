@@ -51,11 +51,7 @@ class FetchService {
 
     async fetchAPI(method, endpoint, body = null) {
         let header = authHeader();
-        if (method === "PATCH") {
-            header.set('Content-Type', 'application/json-patch+json');
-        }else {
-            header.set('Content-Type', 'application/json');
-        }
+        header.set('Content-Type', 'application/json');
         let data = null;
         await fetch(this.#urlApi + endpoint, {
             method: method,
