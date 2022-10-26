@@ -50,7 +50,8 @@ class FetchService {
     }
 
     async fetchAPI(method, endpoint, body = null) {
-        const header = authHeader();
+        let header = authHeader();
+        header.set('Content-Type', 'application/json');
         let data = null;
         await fetch(this.#urlApi + endpoint, {
             method: method,

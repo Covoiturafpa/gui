@@ -1,5 +1,5 @@
 import React, { useEffect, useState, useRef } from 'react';
-import { Button, Checkbox, Col, FlexboxGrid, Form, List, Tag } from 'rsuite';
+import { Button, Checkbox, Col, FlexboxGrid, Form, List, Tag, CheckboxGroup } from 'rsuite';
 import { AvatarProfil } from '../component/AvatarProfil';
 import { DeleteAccountModal } from '../component/DeleteAccountModal';
 import { ListRow } from '../component/ListRow';
@@ -15,6 +15,7 @@ const Profil = () => {
     const [phoneNumber, setPhoneNumber] = useState("");
     const [password, setPassword] = useState("");
     const [passwordConfirm, setPasswordConfirm] = useState("");
+    const [notificationsPref, setNotificationsPref] = useState([]);
     const [pwConfirmError, setPwConfirmError] = useState("");
     const formRef = useRef();
 
@@ -38,7 +39,7 @@ const Profil = () => {
     }
 
     const isEmailNotTaken = (event) => {
-        newEmailFormSchema.checkAsync(event.target.value);
+        newEmailFormSchema.checkAsync(email);
     };
 
     const checkPasswordConfirm = () => {
@@ -59,7 +60,17 @@ const Profil = () => {
 
     const updateProfil = () => {
         if (!checkFormErrors()) {
-            console.log("update profil")
+            let updatedUser = user;
+            updatedUser.email = email;
+            updatedUser.phoneNumber = phoneNumber;
+            if (password.length >= 8) {
+                updatedUser.password = password;
+            } else {
+                updatedUser.password = null;
+            }
+            updateProfil.contactByMail = notificationsPref.prototype.includes("contactByMail") ? true : false;
+            updateProfil.contactBySms = notificationsPref.prototype.includes("contactBySms") ? true : false;
+            FetchService.patch(`/users/${user.id}`, JSON.stringify(updatedUser));
         }
     }
 
@@ -98,12 +109,14 @@ const Profil = () => {
                     </FlexboxGrid.Item>
                     <FlexboxGrid.Item as={Col} colspan={24} md={12} className='order-3'>
                         <h4 className='my-4'>Notifications</h4>
-                        <ListRow label="Email">
-                            {user.contactByMail ? <Checkbox defaultChecked name='contactByMail' key="contactByMail" /> : <Checkbox name='contactByMail' key="contactbyMail" />}
-                        </ListRow>
-                        <ListRow label="SMS">
-                            {user.contactBySms ? <Checkbox defaultChecked name='contactBySms' key="contactBySms" /> : <Checkbox name='contactBySms' key="contactbySms" />}
-                        </ListRow>
+                        <CheckboxGroup value={notificationsPref} onChange={value => setNotificationsPref(value)}>
+                            <ListRow label="Email">
+                                <Checkbox value="contactByMail"></Checkbox>
+                            </ListRow>
+                            <ListRow label="SMS">
+                                <Checkbox value="contactBySms"></Checkbox>
+                            </ListRow>
+                        </CheckboxGroup>
                     </FlexboxGrid.Item>
                     <FlexboxGrid.Item as={Col} colspan={24} md={12} className='order-4'>
                         <h4 className='my-4'>Nouveau mot de passe</h4>

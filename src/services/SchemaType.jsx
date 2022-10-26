@@ -45,7 +45,7 @@ const updatePasswordFormSchema = SchemaModel({
         .pattern(/\W+/, "Doit contenir : caractère spécial")
         .rangeLength(8, 30, "Minimum 8 caractères, maximum 30"),
     passwordConfirm: StringType().addRule((value, data) => {
-        if (data.password.length !== 0 && value !== data.password) {
+        if (data?.password && data.password.length !== 0 && value !== data.password) {
             return false;
         }
         return true;
