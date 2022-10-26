@@ -15,7 +15,7 @@ const LayoutFooter = () => {
                     <a className="text-neutral-100 visited:text-neutral-100" href="#">Mentions légales</a>
                 </div>
                 <div className=" relative">
-                    <p className='text-center text-neutral-100 p-1'>© Copyright Centre Afpa de Rochefort. Tous les droits sont réservés.</p>
+                    <p className='text-center text-neutral-100 p-1'>© Copyright Centre Afpa de Rochefort. Tous droits réservés.</p>
                 </div>
             </div>
         </Footer>);
