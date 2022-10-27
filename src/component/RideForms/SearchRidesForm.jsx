@@ -75,13 +75,11 @@ const SearchRidesForm = () => {
         };
         if (rideType.value === "R") {
             jsonRequest.daysWeek = days.value;
+            jsonRequest.beginning = recurringDates.value[0].toISOString().substring(0, 10);
+            jsonRequest.ending = recurringDates.value[1].toISOString().substring(0, 10);
         }
         if (rideType.value === "O") {
             jsonRequest.departureDay = departureDay.value.toISOString().substring(0, 10);
-        } else {
-            jsonRequest.beginning = recurringDates.value[0].toISOString().substring(0, 10);
-            jsonRequest.ending = recurringDates.value[1].toISOString().substring(0, 10);
-            
         }
         jsonRequest = JSON.stringify(jsonRequest);
         return encodeURI(jsonRequest);
