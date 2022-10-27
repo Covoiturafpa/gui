@@ -15,6 +15,7 @@ import { UserManagement } from './UserManagement';
 import { useTrackedLogin } from '../services/UserLogin';
 
 import { RideFormContextProvider } from '../component/RideForms/RideFormContextProvider';
+import { SuccessfulRegistration } from '../component/SuccessfulRegistration';
 
 
 
@@ -32,9 +33,10 @@ const ContentLayout = () => {
         return (<>
             <Content className='overflow-auto'>
                 <Routes>
-                    <Route path="*" element={<Navigate to="/login"/>} /> 
-                    <Route path="login" element={<FormLayout title={""} form={<LoginForm/>} />} /> 
+                    <Route path="*" element={<Navigate to="/connexion"/>} /> 
+                    <Route path="connexion" element={<FormLayout title={""} form={<LoginForm/>} />} /> 
                     <Route path="inscription" element={<FormLayout title={"Inscription"} form={<RegistrationForm/>} />} />
+                    <Route path="inscription_reussie" element={<SuccessfulRegistration/>} />
                     {pathAccess ? <>                    
                         <Route path="rechercher" element={<RideFormContextProvider><Booking /></RideFormContextProvider>} />
                         <Route path="mes_trajets" element={<MesTrajets className='h-100' />} />
