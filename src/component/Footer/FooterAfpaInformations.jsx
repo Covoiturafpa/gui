@@ -1,27 +1,52 @@
-import React, { useState } from 'react';
+import React, { useEffect, useState } from 'react';
 
 import { AfpaDaysTimetable } from '../AfpaDaysTimetable';
 
+/**
+ * Footer indiquant les informations du centre : jour d'ouverture + horaires
+ * 
+ * @param {*} props 
+ *  centre:
+ *      { dayTimetable: [
+                {
+                    "id": 2,
+                    "day": "TUESDAY",
+                    "startMorning": "08:00:00",
+                    "endMorning": "12:00:00",
+                    "startAfternoon": "13:00:00",
+                    "endAfternoon": "18:00:00"
+                },
+                ...
+            ]
+        }
+ */
 const FooterAfpaInformations = (props) => {
-    const [daysTimetable, setDaysTimetable] = useState(props.centre.daysTimetable);
+    const [daysTimetable, setDaysTimetable] = useState([]);
 
-    daysTimetable.sort((a,b) => a.id - b.id);
-    return (
+    console.log(props.centre.daysTimetable);
+
+    useEffect(() => {
+        let tmpDaysTimeTable = props.centre.daysTimetable;
+        console.log(props.centre.daysTimetable);
+        tmpDaysTimeTable.sort((a, b) => a.id - b.id);
+        setDaysTimetable(tmpDaysTimeTable);
+    }, []);
+
+    return (daysTimetable.length > 0 && 
         <div>
             <div>
                 <h4>Le {props.centre.name} est ouvert : </h4>
                 <ul>
-                    <AfpaDaysTimetable day={daysTimetable[0]}/>
-                    <AfpaDaysTimetable day={daysTimetable[1]}/>
-                    <AfpaDaysTimetable day={daysTimetable[2]}/>
-                    <AfpaDaysTimetable day={daysTimetable[3]}/>
-                    <AfpaDaysTimetable day={daysTimetable[4]}/>
-                    <AfpaDaysTimetable day={daysTimetable[5]}/>
-                    <AfpaDaysTimetable day={daysTimetable[6]}/>
+                    <AfpaDaysTimetable day={daysTimetable[0]} />
+                    <AfpaDaysTimetable day={daysTimetable[1]} />
+                    <AfpaDaysTimetable day={daysTimetable[2]} />
+                    <AfpaDaysTimetable day={daysTimetable[3]} />
+                    <AfpaDaysTimetable day={daysTimetable[4]} />
+                    <AfpaDaysTimetable day={daysTimetable[5]} />
+                    <AfpaDaysTimetable day={daysTimetable[6]} />
                 </ul>
             </div>
-        </div>
-    );
+        </div>);
 }
 
-export { FooterAfpaInformations };
+export default FooterAfpaInformations;
