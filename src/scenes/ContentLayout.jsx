@@ -1,10 +1,10 @@
-import { React, useState, useEffect} from 'react';
+import React, { useState, useEffect} from 'react';
 import { Route, Routes, Navigate } from 'react-router-dom';
 
 import { Content } from 'rsuite';
-import { LoginForm } from '../component/LoginForm';
+import LoginForm from '../component/LoginForm';
 import { RegistrationForm } from '../component/RegistrationForm';
-import { Accueil } from './Accueil';
+import Accueil from './Accueil';
 import { Booking } from './Booking';
 import { FormLayout } from './FormLayout';
 import { MesTrajets } from './MesTrajets';
@@ -17,11 +17,10 @@ import { useTrackedLogin } from '../services/UserLogin';
 import { RideFormContextProvider } from '../component/RideForms/RideFormContextProvider';
 import { SuccessfulRegistration } from '../component/SuccessfulRegistration';
 
-
-
 const ContentLayout = () => {
     const [pathAccess, setPathAccess] = useState(false);
     const stateLogin = useTrackedLogin();
+    
     useEffect(() => {
         if(sessionStorage.getItem('user') || localStorage.getItem('user')) {
             setPathAccess(true);

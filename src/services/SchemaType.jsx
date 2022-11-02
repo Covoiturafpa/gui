@@ -2,12 +2,10 @@ import { MixedType, SchemaModel, StringType, BooleanType, DateType, ArrayType, N
 import FetchService from './FetchService';
 import { isDate, isAfter, isFuture, startOfToday } from 'date-fns'
 
-
 const loginFormSchema = SchemaModel({
     email: StringType().isEmail('Email invalide').isRequired('Email requis'),
     password: StringType().isRequired('Mot de passe requis'),
 });
-
 
 const frenchPhoneFormSchema = SchemaModel({
     phoneNumber: StringType().pattern(/^(\+33|0|0033)[1-9]([. ]?[0-9]{2}){4}$/, 'Numéro de téléphone invalide')
@@ -168,7 +166,6 @@ const addOneTimeRoundTrip = SchemaModel.combine(oneTimeForm, carInputModel, seat
 const addRecurringTrip = SchemaModel.combine(recurringForm, carInputModel, seatsInput, priceInput, commentInput, arrivalTimeInput)
 
 const addRecurringRoundTrip = SchemaModel.combine(recurringForm, carInputModel, seatsInput, priceInput, commentInput, roundTripTimes);
-
 
 export { loginFormSchema, profilFormSchema, newEmailFormSchema, newPasswordFormSchema, searchRideForm, oneTimeForm, recurringForm, addRideForm, addOneTimeTrip, addOneTimeRoundTrip, addRecurringTrip, addRecurringRoundTrip, newUserFormSchema, carInputModel };
 

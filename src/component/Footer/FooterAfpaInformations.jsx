@@ -20,14 +20,12 @@ import { AfpaDaysTimetable } from '../AfpaDaysTimetable';
             ]
         }
  */
-const FooterAfpaInformations = (props) => {
+const FooterAfpaInformations = ({ centre }) => {
     const [daysTimetable, setDaysTimetable] = useState([]);
 
-    console.log(props.centre.daysTimetable);
-
     useEffect(() => {
-        let tmpDaysTimeTable = props.centre.daysTimetable;
-        console.log(props.centre.daysTimetable);
+        let tmpDaysTimeTable = centre.daysTimetable;
+        console.log(centre.daysTimetable);
         tmpDaysTimeTable.sort((a, b) => a.id - b.id);
         setDaysTimetable(tmpDaysTimeTable);
     }, []);
@@ -35,7 +33,7 @@ const FooterAfpaInformations = (props) => {
     return (daysTimetable.length > 0 && 
         <div>
             <div>
-                <h4>Le {props.centre.name} est ouvert : </h4>
+                <h4>Le {centre.name} est ouvert : </h4>
                 <ul>
                     <AfpaDaysTimetable day={daysTimetable[0]} />
                     <AfpaDaysTimetable day={daysTimetable[1]} />

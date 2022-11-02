@@ -1,4 +1,4 @@
-import { React, useState, useEffect } from 'react';
+import React, { useState, useEffect } from 'react';
 import { useFetcher, useNavigate } from 'react-router-dom';
 import { FiArrowRight   } from "react-icons/fi";
 import { List, DatePicker, Button, ButtonToolbar,Input, Checkbox, useToaster } from 'rsuite';

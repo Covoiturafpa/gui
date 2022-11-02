@@ -1,9 +1,9 @@
-import { React, useState, useRef } from 'react';
+import React, { useState, useRef } from 'react';
 import { Form, ButtonToolbar, Button, Checkbox } from 'rsuite';
 import AuthService from "../services/AuthService";
 import { loginFormSchema } from '../services/SchemaType';
 import { useNavigate } from 'react-router-dom';
-import { useSetLogin, useTrackedLogin } from '../services/UserLogin';
+import { useSetLogin } from '../services/UserLogin';
 import { useEffect } from 'react';
 
 const LoginForm = () => {
@@ -11,7 +11,6 @@ const LoginForm = () => {
     const [password, setPassword] = useState();
     const [errorMessage, setErrorMessage] = useState("");
     const setLogin = useSetLogin();
-    const stateLogin = useTrackedLogin();
     const navigate = useNavigate();
     const rememberMeRef = useRef();
 
@@ -40,7 +39,7 @@ const LoginForm = () => {
 
     const handleLogin = (e) => {
         const stringResult = AuthService.login(username, password);
-
+        
         stringResult.then((res) => {
             if (res.hasOwnProperty("errorMessage")) {
                 setErrorMessage("Une erreur est survenue");
@@ -90,4 +89,4 @@ const LoginForm = () => {
     )
 }
 
-export { LoginForm };
+export default LoginForm;
