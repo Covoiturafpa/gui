@@ -13,8 +13,6 @@ import { DetailOfRide } from './DetailOfRide';
 import Moment from 'moment';
 
 const { Column, HeaderCell, Cell } = Table;
-const rowKey = 'id';
-
 const ExpandCell = ({ rowData, dataKey, expandedRowKeys, onChange, ...props }) => (
     <Cell {...props} style={{ padding: 5 }}>
         <IconButton
@@ -23,7 +21,7 @@ const ExpandCell = ({ rowData, dataKey, expandedRowKeys, onChange, ...props }) =
                 onChange(rowData);
             }}
             icon={
-                expandedRowKeys.some(key => key === rowData[rowKey]) ? (
+                expandedRowKeys.some(key => key === rowData['id']) ? (
                     <CollaspedOutlineIcon />
                 ) : (
                     <ExpandOutlineIcon />
@@ -71,14 +69,14 @@ const TableProposedRides = (props) => {
         const nextExpandedRowKeys = [];
 
         expandedRowKeys.forEach(key => {
-            if (key === rowData[rowKey]) {
+            if (key === rowData['id']) {
                 open = true;
             } else {
                 nextExpandedRowKeys.push(key);
             }
         });
         if (!open) {
-            nextExpandedRowKeys.push(rowData[rowKey]);
+            nextExpandedRowKeys.push(rowData['id']);
         }
         setExpandedRowKeys(nextExpandedRowKeys);
     }
@@ -87,7 +85,6 @@ const TableProposedRides = (props) => {
         setDetailRide(ride);
         setIsEditable(true);
     }
-
 
     if (isEditable) {
         return (<DetailOfRide isOwner={true} userId={props.id} ride={detailRide} setReload={props.setReload} setEditable={setIsEditable}/>);
@@ -110,18 +107,18 @@ const TableProposedRides = (props) => {
                     <Table className='rounded-b-md'
                         autoHeight={true}
                         data={props.rides}
-                        rowKey={rowKey}
+                        rowKey='id'
                         expandedRowKeys={expandedRowKeys}
                         renderRowExpanded={renderRowExpanded}
                         rowExpandedHeight={160}
                     >
                         <Column width={70} align="center">
                             <HeaderCell>#</HeaderCell>
-                            <ExpandCell dataKey="id" expandedRowKeys={expandedRowKeys} onChange={handleExpanded} />
+                            <ExpandCell key="proutprout" dataKey="id" expandedRowKeys={expandedRowKeys} onChange={handleExpanded} />
                         </Column>
                         <Column flexGrow={2}>
                             <HeaderCell>Destinations</HeaderCell>
-                            <Cell>
+                            <Cell dataKey="destination" key={rowData => (`destination${rowData.id}`)}>
                                 {rowData => (
                                     rowDestination(rowData)
                                 )}
@@ -129,7 +126,7 @@ const TableProposedRides = (props) => {
                         </Column>
                         <Column flexGrow={2}>
                             <HeaderCell>Date</HeaderCell>
-                            <Cell>
+                            <Cell dataKey="date" key={rowData => (`date${rowData.id}`)}>
                                 {rowData => (
                                     rowDate(rowData)
                                 )}
@@ -138,17 +135,16 @@ const TableProposedRides = (props) => {
 
                         <Column flexGrow={1}>
                             <HeaderCell>heure</HeaderCell>
-                            <Cell>
+                            <Cell dataKey="time" key={rowData => (`time${rowData.id}`)} >
                                 {rowData => (
                                     rowData.departureTime.substring(0, 5)
                                 )}
                             </Cell>
                         </Column>
 
-
                         <Column flexGrow={0.5} >
                             <HeaderCell>Modif.</HeaderCell>
-                            <Cell>
+                            <Cell dataKey="update" key={rowData => (`update${rowData.id}`)}>
                                 {rowData => (
                                     <span>
                                         <a className="text-xl" onClick={() => showDetail(rowData)}> <FiEdit2 /> </a>

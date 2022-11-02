@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from 'react';
+import React, { useState } from 'react';
 
 import { Table, IconButton, Tooltip, Whisper } from 'rsuite';
 import CollaspedOutlineIcon from '@rsuite/icons/CollaspedOutline';
@@ -8,7 +8,6 @@ import { AiOutlineCheckCircle, AiFillCheckCircle } from "react-icons/ai";
 import Moment from 'moment';
 
 import CheckBoxDays from './CheckBoxDays/CheckBoxDays';
-import { BsCalendarCheck } from "react-icons/bs";
 
 const { Column, HeaderCell, Cell } = Table;
 const rowKey = 'id';
@@ -54,7 +53,7 @@ const TableRequestedRides = (props) => {
     const [expandedRowKeys, setExpandedRowKeys] = useState([]);
 
     const renderRowExpanded = rowData => {
-        return (<div>
+        return (<div key={`expanded${rowData.id}`}>
             <p className='flex'>Destination : {rowDestination(rowData)}</p>
             <p className='flex'>Date : {rowDate(rowData)}</p>
             {rowData.beginning ? <CheckBoxDays disabled={true} days={rowData.daysWeek} /> : ""}
@@ -62,12 +61,11 @@ const TableRequestedRides = (props) => {
             <p>Conducteur : 
             {rowData.requestedPassengers.map(passenger => {
                     if (passenger.isDriver) {
-                        console.log(passenger);
-                       return <span>{passenger.person.surname} {passenger.person.firstName.charAt(0)}.</span>
+                       return <span key={`passenger${passenger.person.id}`}>{passenger.person.surname} {passenger.person.firstName.charAt(0)}.</span>
                     }
             })}</p>
             <p>Prix : {rowData.price} €</p>
-            <p className='break-words'>Commentaire : {rowData.comment}</p>
+        <p className='break-words'>Commentaire : {rowData.comment}</p>
         </div>);
     };
 
@@ -104,21 +102,18 @@ const TableRequestedRides = (props) => {
                 </div>
                 <Table className='rounded-b-md bg-gray-background'
                     autoHeight={true}
-                    rowKey={rowKey}
                     expandedRowKeys={expandedRowKeys}
                     renderRowExpanded={renderRowExpanded}
                     rowExpandedHeight={200}
-                    data={props.rides}
-                    onRowClick={rowData => {
-                        console.log(rowData);
-                    }}>
+                    rowKey='id'
+                    data={props.rides}>
                     <Column className="bg-gray-background" width={70} align="center">
                         <HeaderCell>#</HeaderCell>
-                        <ExpandCell className="bg-gray-background" dataKey="id" expandedRowKeys={expandedRowKeys} onChange={handleExpanded} />
+                        <ExpandCell key={rowData => (`expendCell${rowData.id}`)} className="bg-gray-background" dataKey="id" expandedRowKeys={expandedRowKeys} onChange={handleExpanded} />
                     </Column>
                     <Column className="bg-gray-background" flexGrow={2} >
-                        <HeaderCell>Destinations</HeaderCell>
-                        <Cell className='bg-gray-background'>
+                        <HeaderCell dataKey="destination">Destination</HeaderCell>
+                        <Cell key={rowData => (`destinationRequested${rowData.id}`)} className='bg-gray-background'>
                             {rowData => (
                                 rowDestination(rowData)
                             )}
@@ -126,7 +121,7 @@ const TableRequestedRides = (props) => {
                     </Column>
                     <Column className="bg-gray-background" flexGrow={2}>
                         <HeaderCell>Date</HeaderCell>
-                        <Cell className="bg-gray-background">
+                        <Cell dataKey="date" key={rowData => (`dateRequested${rowData.id}`)} className="bg-gray-background">
                         {rowData => (
                                 rowDate(rowData)
                             )}
@@ -135,7 +130,7 @@ const TableRequestedRides = (props) => {
 
                     <Column className="bg-gray-background" flexGrow={1}>
                         <HeaderCell>heure</HeaderCell>
-                        <Cell>
+                        <Cell dataKey="time" key={rowData => (`timeRequested${rowData.id}`)}>
                                 {rowData => (
                                     rowData.departureTime.substring(0, 5)
                                 )}
@@ -143,7 +138,7 @@ const TableRequestedRides = (props) => {
                     </Column>
                     <Column flexGrow={1}>
                         <HeaderCell>prix</HeaderCell>
-                        <Cell>
+                        <Cell dataKey="price" key={rowData => (`price${rowData.id}`)}>
                             {rowData => {
                                 return (<p>{rowData.price} €</p>);
                             }}
@@ -151,32 +146,32 @@ const TableRequestedRides = (props) => {
                     </Column>
                     <Column flexGrow={0.5} >
                         <HeaderCell>État</HeaderCell>
-                        <Cell>
+                        <Cell dataKey="state" key={rowData => (`state${rowData.id}`)}>
                             {rowData => (
                                 rowData.requestedPassengers.map((passenger) => {
                                     if (passenger.person.id == idUser) {
                                         switch (passenger.status) {
                                             case "PENDING":
-                                                return <div className="text-yellow-500 text-xl"> <FiAlertCircle /> </div>
+                                                return <div key={passenger.person.id} className="text-yellow-500 text-xl"> <FiAlertCircle /> </div>
                                             case "ACCEPTED":
-                                                return <div className="text-green-600 text-xl"> <AiOutlineCheckCircle /> </div>
+                                                return <div key={passenger.person.id} className="text-green-600 text-xl"> <AiOutlineCheckCircle /> </div>
                                             case "FINISHED":
-                                                return   <Whisper
+                                                return   <Whisper key={passenger.person.id}
                                                         followCursor
                                                         trigger="hover"
                                                         speaker={<Tooltip arrow={true}>Le trajet est fini</Tooltip>}
                                                         >
-                                                            <div className="text-gray-500 text-xl"> <AiFillCheckCircle /> </div>
+                                                            <div  className="text-gray-500 text-xl"> <AiFillCheckCircle /> </div>
                                                         </Whisper>
                                             default:
-                                                return <div className="text-red-600 text-xl"> <FiXCircle /> </div>
+                                                return <div key={passenger.person.id} className="text-red-600 text-xl"> <FiXCircle /> </div>
                                         }
 
                                     }
                                 })
                             )}
                         </Cell>
-                    </Column>
+                            </Column>
                 </Table>
 
             </div>

@@ -37,9 +37,9 @@ const MesTrajets = () => {
                         if(result[result.length - 1] === item) {
                             setIsLoaded(true);
                         }
+
                     });
                 });
-
             },
             (error) => {
                 setIsLoaded(true);
@@ -64,7 +64,7 @@ const MesTrajets = () => {
                 <h1 className="text-center">Mes trajets</h1>
                 <RideFormContextProvider>
                     <div className='my-3'>
-                        <TableProposedRides setReload={setAutoReload} id={userId} rides={ridesOwned} />
+                        /<TableProposedRides setReload={setAutoReload} id={userId} rides={ridesOwned} />
                     </div>
                     <div className='my-3'>
                         <TableRequestedRides id={userId} rides={ridesRequested} />

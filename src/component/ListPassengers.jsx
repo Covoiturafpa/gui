@@ -1,7 +1,7 @@
 import React, { useState, useEffect } from 'react';
 import { List, FlexboxGrid, Divider, Avatar, Drawer, Button, ButtonToolbar, useToaster, Loader } from 'rsuite';
 import { AiOutlineMessage, AiOutlineCheckCircle } from "react-icons/ai";
-import { FiAlertCircle, FiXCircle, FiArrowRight} from "react-icons/fi";
+import { FiAlertCircle, FiXCircle} from "react-icons/fi";
 import { BsCalendarCheck } from "react-icons/bs";
 import { ToastMessage } from './ToastMessage';
 import FetchService from '../services/FetchService';
