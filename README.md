@@ -11,7 +11,9 @@ L'application Covoitur'Afpa est un projet conçu par les stagiaires de la sessio
 ## Détails 
 
 La bibliothèque de composants principale est [React Suite](https://rsuitejs.com/).
+
 L'interface intègre des composants venant de [Leaflet](https://leafletjs.com/) et [React Leaflet](https://react-leaflet.js.org/) pour les cartes, et [React hCaptcha](https://www.npmjs.com/package/@hcaptcha/react-hcaptcha) pour le captcha.
+
 Elle est stylisée principalement grâce à [Tailwind](https://tailwindcss.com/).
 
 ## Scripts Disponibles
