@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from 'react';
+import React, { useState } from 'react';
 import { Table, IconButton, Button, ButtonToolbar, Modal } from 'rsuite';
 import CollaspedOutlineIcon from '@rsuite/icons/CollaspedOutline';
 import ExpandOutlineIcon from '@rsuite/icons/ExpandOutline';
@@ -38,9 +38,6 @@ const UsersTable = (props) => {
     const [content, setContent] = useState("");
     const [userIdTarget, setUserIdTarget] = useState(null);
 
-    useEffect(() => {
-        console.log(props.users);
-    },[]);
     const contentModal = (action, title, content, userId) => {
         handleOpen();
         setAction(action);
