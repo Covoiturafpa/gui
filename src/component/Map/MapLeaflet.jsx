@@ -23,6 +23,9 @@ const MapLeaflet = () => {
         }
     });
 
+    /**
+     * TODO: Remplacer la requête du centre par un nouveau state dans RifeFormContext au niveau de RideFormInputs
+     * */ 
     useEffect(() => {
         FetchService.get("/centre").then((data) => {
             if (data.latitude !== undefined && data.longitude != undefined) {

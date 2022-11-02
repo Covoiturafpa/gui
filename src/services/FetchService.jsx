@@ -74,6 +74,7 @@ class FetchService {
     }
 
     set urlApi(newUrlApi) {
+        this.#urlApi = newUrlApi;
     }
 }
 

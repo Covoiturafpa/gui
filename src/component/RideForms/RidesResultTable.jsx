@@ -68,6 +68,9 @@ const RidesResultTable = (props) => {
         }
     }, [rides])
 
+    /**
+     * TODO : Revoir l'affichage des résultats qui n'est pas complet 
+     */
     const renderRowExpanded = rowData => {
         return (<div>
             <p className='flex'>Destination : </p>

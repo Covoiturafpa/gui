@@ -14,6 +14,12 @@ function previewFile(file, callback) {
   reader.readAsDataURL(file);
 }
 
+/**
+ * TODO: Pas encore implementé
+ * Objectif: Permettre l'upload d'un avatar et l'affichage de celui ci si déjà présent/ou à defaut un placeholder
+ * Actuellement c/c doc rsuitejs composant AvatarUploader
+ * https://rsuitejs.com/components/uploader/#avatar
+ */
 const AvatarUploader = () => {
     const toaster = useToaster();
     const [uploading, setUploading] = React.useState(false);

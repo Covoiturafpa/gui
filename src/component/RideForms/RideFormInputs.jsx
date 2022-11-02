@@ -15,6 +15,9 @@ const RideFormInputs = () => {
     const arrivalInputRef = useRef();
     const { arrival, departure, destination, isFromAfpa, rideType, isRoundTrip, departureDay, recurringDates, days } = useContext(RideFormContext);
 
+    /**
+     * TODO : Ajouter un state centre dans le RideFormContext pour mapleaflet
+     */
     useEffect(() => {
         FetchService.get("/centre").then((data) => {
             arrival.setValue(data.name);
@@ -57,6 +60,10 @@ const RideFormInputs = () => {
         }
     }
 
+    /**
+     * FIXME: Ajouter une protection qui empeche l'inversion des destinations pendant les requêtes vers forward-reverse-geocoding
+     * par exemple : un useState qui passe à false tant que la requete n'est pas résolue
+     */
     const invertDestinationsInputs = () => {
         const departureInput = departureInputRef.current;
         const arrivalInput = arrivalInputRef.current;
@@ -81,6 +88,10 @@ const RideFormInputs = () => {
         }
     ];
 
+    /**
+     * TODO : Champ de range de date personnalisable selon la doc rsuitejs
+     * Exemple au dessus avec OneDateRanges
+     */
     const MultipleDatesRanges = [
     ];
 

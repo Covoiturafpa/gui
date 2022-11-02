@@ -15,7 +15,7 @@ const SearchResults = (props) => {
                 </div>
             </div>
         );
-    } 
+    }
     else {
         if (rides.value.length === 1) {
             return (<>
