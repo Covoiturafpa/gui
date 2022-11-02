@@ -129,21 +129,21 @@ const commentInput = SchemaModel({
 })
 
 function asyncCheckIsEmailUnique(email) {
-    return (FetchService.get("/users/email_validity" + "?email=" + email));
+    return (FetchService.get("/users/email_validity?email=" + email));
 }
 
-function getCarsFromUser(userId) {
-    const fetch = FetchService.get("/users/" + userId);
-    const cars = null;
-    fetch.then(
-        (result) => {
-            cars = result.cars.map(
-                car => ({ label: car.model, value: car.model, key: car.id, seats: car.seats, avgFuelConsumption: car.avgFuelConsumption, idCarType: car.idCarType, idPerson: car.idPerson })
-            );
-        }
-    )
-    return cars;
-}
+// function getCarsFromUser(userId) {
+//     const fetch = FetchService.get("/users/" + userId);
+//     const cars = null;
+//     fetch.then(
+//         (result) => {
+//             cars = result.cars.map(
+//                 car => ({ label: car.model, value: car.model, key: car.id, seats: car.seats, avgFuelConsumption: car.avgFuelConsumption, idCarType: car.idCarType, idPerson: car.idPerson })
+//             );
+//         }
+//     )
+//     return cars;
+// }
 
 const profilFormSchema = SchemaModel.combine(newEmailFormSchema, frenchPhoneFormSchema, updatePasswordFormSchema);
 

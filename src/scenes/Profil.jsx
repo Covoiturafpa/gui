@@ -36,13 +36,13 @@ const Profil = () => {
         if (contactByMail !== user.contactByMail) {
             setUser({...user, "contactByMail": contactByMail})
         }
-    }, [contactByMail])
+    }, [contactByMail, user])
 
     useEffect(() => {
         if (contactBySms !== user.contactBySms) {
             setUser({...user, "contactBySms": contactBySms})
         }
-    }, [contactBySms])
+    }, [contactBySms, user])
 
     useEffect(() => {
         formRef.current.cleanErrorForField("departure");
@@ -87,7 +87,7 @@ const Profil = () => {
         const formErrors = profilFormSchema.check(formValues)
         let isErrorFound = false;
         for (const [key, value] of Object.entries(formErrors)) {
-            if (value.hasError) {
+            if (key && value.hasError) {
                 isErrorFound = true;
             }
         }

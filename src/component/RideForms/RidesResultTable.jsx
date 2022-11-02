@@ -62,11 +62,11 @@ const RidesResultTable = (props) => {
     const toaster = useToaster();
 
     useEffect(() => {
-        if (rides.value.length > 0) {
+        if (props.return !== null && rides.value.length > 0) {
             const data = props.return === false ? rides.value[0] : rides.value[1];
             setTableData(data);
         }
-    }, [rides])
+    }, [rides, props.return])
 
     /**
      * TODO : Revoir l'affichage des résultats qui n'est pas complet 

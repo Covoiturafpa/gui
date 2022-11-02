@@ -11,6 +11,17 @@ const SearchRidesForm = () => {
     const [formValues, setFormValues] = useState({});
     const formRef = useRef();
 
+    const defaultFormValues = {
+        "rideType" : rideType.value,
+        "isRoundTrip" : isRoundTrip.value,
+        "isFromAfpa" : isFromAfpa.value,
+        "departure": departure.value,
+        "arrival": arrival.value,
+        "date" : departureDay.value,
+        "dates" : recurringDates.value,
+        "days" : days.value
+    }
+
     useEffect(() => {
         formRef.current.cleanErrors();
     }, [rideType.value])
@@ -40,26 +51,17 @@ const SearchRidesForm = () => {
     }, [recurringDates.value])
 
     useEffect(() => {
-        setFormValues({...formValues, "days" : days.value });
-        formRef.current.cleanErrorForField("days");
-    }, [days.value])
+        if (days.value !== formValues.days) {
+            setFormValues({...formValues, "days" : days.value });
+            formRef.current.cleanErrorForField("days");
+        }
+    }, [days.value, formValues])
 
     useEffect(() => {
         if (Object.keys(formValues).length === 0) {
             setFormValues(defaultFormValues);
         }
     }, [formValues])
-
-    const defaultFormValues = {
-        "rideType" : rideType.value,
-        "isRoundTrip" : isRoundTrip.value,
-        "isFromAfpa" : isFromAfpa.value,
-        "departure": departure.value,
-        "arrival": arrival.value,
-        "date" : departureDay.value,
-        "dates" : recurringDates.value,
-        "days" : days.value
-    }
 
     function createRideSearchParameters(invertDestination) {
         let jsonRequest = {
@@ -95,7 +97,7 @@ const SearchRidesForm = () => {
         }
         let isErrorFound = false;
         for (const [key, value] of Object.entries(formErrors)) {
-            if (value.hasError) {
+            if (key && value.hasError) {
                 isErrorFound = true;
             }
         }
