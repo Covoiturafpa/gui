@@ -2,6 +2,11 @@ import { React } from 'react';
 import { List, Button, Checkbox, Uploader, FlexboxGrid, Col } from 'rsuite';
 import { AvatarUploader } from './AvatarUploader';
 
+
+/**
+ * TODO: Pas encore implementé
+ * Objectif: Permettre l'upload d'un avatar et l'affichage de celui ci si déjà présent/ou à defaut un placeholder 
+ */
 const AvatarProfil = (user) => {
     return (
         <div className='flex justify-center items-center'>

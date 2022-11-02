@@ -1,4 +1,4 @@
-import { React, useContext, useEffect } from 'react';
+import { React, useContext } from 'react';
 
 import RidesResultTable from './RidesResultTable';
 import { RideFormContext } from './RideFormContextProvider';
@@ -15,7 +15,7 @@ const SearchResults = (props) => {
                 </div>
             </div>
         );
-    } 
+    }
     else {
         if (rides.value.length === 1) {
             return (<>

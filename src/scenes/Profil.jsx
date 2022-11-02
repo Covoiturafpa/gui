@@ -16,6 +16,8 @@ const Profil = () => {
     const [password, setPassword] = useState("");
     const [passwordConfirm, setPasswordConfirm] = useState("");
     const [notificationsPref, setNotificationsPref] = useState([]);
+    const [contactBySms, setContactBySms] = useState(false);
+    const [contactByMail, setContactByMail] = useState(false);
     const [pwConfirmError, setPwConfirmError] = useState("");
     const formRef = useRef();
 
@@ -24,12 +26,40 @@ const Profil = () => {
             setUser(user);
             setEmail(user.email);
             setPhoneNumber(user.phoneNumber);
+            setContactBySms(user.contactBySms);
+            setContactByMail(user.contactByMail);
         })
     }, []);
+
+
+    useEffect(() => {
+        if (contactByMail !== user.contactByMail) {
+            setUser({...user, "contactByMail": contactByMail})
+        }
+    }, [contactByMail])
+
+    useEffect(() => {
+        if (contactBySms !== user.contactBySms) {
+            setUser({...user, "contactBySms": contactBySms})
+        }
+    }, [contactBySms])
 
     useEffect(() => {
         formRef.current.cleanErrorForField("departure");
     }, [passwordConfirm])
+
+    useEffect(() => {
+        if (notificationsPref.includes("contactBySms")) {
+            setContactBySms(true);
+        } else {
+            setContactBySms(false);
+        }
+        if (notificationsPref.includes("contactByMail")) {
+            setContactByMail(true);
+        } else {
+            setContactByMail(false);
+        }
+    }, [notificationsPref])
 
     const defaultFormValues = {
         "email": email,
@@ -38,7 +68,7 @@ const Profil = () => {
         "passwordConfirm": passwordConfirm
     }
 
-    const isEmailNotTaken = (event) => {
+    const isEmailNotTaken = () => {
         newEmailFormSchema.checkAsync(email);
     };
 
@@ -47,6 +77,12 @@ const Profil = () => {
         setPwConfirmError(errors.passwordConfirm.errorMessage);
     };
 
+    /**
+     * FIXME: Validation incomplète, au niveau des mots de passe principalement
+     * Voir "./services/SchemaType" et la doc rsuitejs
+     * https://rsuitejs.com/components/form-validation/
+     * https://github.com/rsuite/schema-typed#schema-typed
+     */
     const checkFormErrors = () => {
         const formErrors = profilFormSchema.check(formValues)
         let isErrorFound = false;
@@ -58,19 +94,13 @@ const Profil = () => {
         return isErrorFound;
     }
 
+    /**
+     * FIXME: Update desactiver car validation bugguée
+     */
     const updateProfil = () => {
         if (!checkFormErrors()) {
-            let updatedUser = user;
-            updatedUser.email = email;
-            updatedUser.phoneNumber = phoneNumber;
-            if (password.length >= 8) {
-                updatedUser.password = password;
-            } else {
-                updatedUser.password = null;
-            }
-            updateProfil.contactByMail = notificationsPref.prototype.includes("contactByMail") ? true : false;
-            updateProfil.contactBySms = notificationsPref.prototype.includes("contactBySms") ? true : false;
-            FetchService.patch(`/users/${user.id}`, JSON.stringify(updatedUser));
+            setUser({...user, "email": email, "phoneNumber": phoneNumber, "password": password})
+            //FetchService.patch(`/users/${user.id}`, JSON.stringify(user));
         }
     }
 
