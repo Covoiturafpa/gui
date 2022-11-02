@@ -13,12 +13,10 @@ import { Provider } from '../services/UserLogin';
 
 import { mockFetchOkLogin, mockFetchNotOkLogin } from '../__mocks__/mockFetchLogin';
 
-
-
-const userLogin = {
-    username: "MohammadGreenfelder@mail.fr",
-    password: "MohammadGreenfelder@mail.fr"
-};
+// const userLogin = {
+//     username: "MohammadGreenfelder@mail.fr",
+//     password: "MohammadGreenfelder@mail.fr"
+// };
 
 afterEach(() => {
     global.fetch.mockClear()
@@ -36,20 +34,12 @@ test('Login pas ok - ne doit pas rediriger vers la page d\'accueil', async () =>
 
     global.fetch = jest.fn().mockImplementation(mockFetchNotOkLogin);
 
-    let testHistory, testLocation;
     render(
         <MemoryRouter initialEntries={["/login"]} >
             <Provider>
                 <Routes>
                     <Route path="/login" element={<LoginForm />} />
                     <Route path="/accueil" element={<Accueil />} />
-                    <Route path="*"
-                        render={({ history, location }) => {
-                            testHistory = history;
-                            testLocation = location;
-                            return null;
-                        }}
-                    />
                 </Routes>
             </Provider>
         </MemoryRouter>
@@ -67,20 +57,12 @@ test('Login ok - doit rediriger vers la page d\'accueil', async () => {
 
     global.fetch = jest.fn().mockImplementation(mockFetchOkLogin);
 
-    let testHistory, testLocation;
     render(
         <MemoryRouter initialEntries={["/login"]} >
             <Provider>
                 <Routes>
                     <Route path="/login" element={<LoginForm />} />
                     <Route path="/accueil" element={<Accueil />} />
-                    <Route path="*"
-                        render={({ history, location }) => {
-                            testHistory = history;
-                            testLocation = location;
-                            return null;
-                        }}
-                    />
                 </Routes>
             </Provider>
         </MemoryRouter>

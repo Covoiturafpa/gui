@@ -22,7 +22,7 @@ import { AfpaDaysTimetable } from '../AfpaDaysTimetable';
  */
 const FooterAfpaInformations = ({ centre }) => {
     const [daysTimetable, setDaysTimetable] = useState([]);
-
+    // TODO test
     useEffect(() => {
         let tmpDaysTimeTable = centre.daysTimetable;
         console.log(centre.daysTimetable);
