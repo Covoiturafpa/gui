@@ -1,4 +1,4 @@
-import { React, useState, useEffect } from 'react';
+import React, { useState, useEffect } from 'react';
 import { List, FlexboxGrid, Divider, Avatar, Drawer, Button, ButtonToolbar, useToaster, Loader } from 'rsuite';
 import { AiOutlineMessage, AiOutlineCheckCircle } from "react-icons/ai";
 import { FiAlertCircle, FiXCircle, FiArrowRight} from "react-icons/fi";

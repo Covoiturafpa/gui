@@ -129,7 +129,7 @@ const RideFormInputs = () => {
                 <Form.Control name="arrival" ref={arrivalInputRef} value={arrival.value}
                     onChange={arrival.setValue} onBlur={updateCoordinates} readOnly={!isFromAfpa.value} />
             </Form.Group>
-            {rideType.value === "O" &&
+            { rideType.value === "O" &&
                 <Form.Group className='pt-3'>
                     <Form.ControlLabel>Date de départ</Form.ControlLabel>
                     <Form.Control name="date" accepter={DatePicker} className='w-full' format="dd-MM-yyyy"
@@ -139,7 +139,7 @@ const RideFormInputs = () => {
                     </Form.Control>
                 </Form.Group>
             }
-            {rideType.value === "R" &&
+            { rideType.value === "R" &&
                 <>
                     <Form.Group className='pl-1 pt-3' >
                         <Form.ControlLabel>Jours</Form.ControlLabel>

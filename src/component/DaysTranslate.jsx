@@ -1,4 +1,4 @@
-import { React } from 'react';
+import React from 'react';
 
 const DaysTranslate = [
     { "id": 1, "name": "MONDAY", "translate": "Lundi" },

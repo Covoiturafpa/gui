@@ -1,3 +1,6 @@
+import React, { useEffect, useState } from 'react';
+import { useNavigate } from 'react-router-dom';
+
 import Bell from '@rsuite/icons/legacy/Bell';
 import Car from '@rsuite/icons/legacy/Car';
 import Exit from '@rsuite/icons/legacy/Exit';
@@ -6,12 +9,11 @@ import MapSigns from '@rsuite/icons/legacy/MapSigns';
 import Group from '@rsuite/icons/legacy/Group';
 import UserCircleO from '@rsuite/icons/legacy/UserCircleO';
 import GearCircle from '@rsuite/icons/legacy/GearCircle';
-import { React, useEffect, useState } from 'react';
+
 import AuthService from '../services/AuthService';
 import { useSetLogin, useTrackedLogin } from '../services/UserLogin';
-import { useNavigate } from 'react-router-dom';
-import { Col, Content, Grid, Panel, Row } from 'rsuite';
 
+import { Col, Content, Grid, Panel, Row } from 'rsuite';
 
 const Accueil = () => {
     let navigate = useNavigate();
@@ -27,7 +29,6 @@ const Accueil = () => {
                 setCustomLg(6)
             }
         }
-
     }, [stateLogin])
 
     function handleDisconnect() {
@@ -37,7 +38,7 @@ const Accueil = () => {
     }
 
     return (
-        <Content className='h-full max-h-full flex items-center align-middle'>
+        <Content data-testid="test-welcome-page" className='h-full max-h-full flex items-center align-middle'>
             <Grid fluid className='max-h-full'>
                 <Row className="flex flex-wrap">
                     <Col xs={24} sm={12} md={12} lg={customLg} className='flex justify-center mt-8'>
@@ -99,4 +100,4 @@ const Accueil = () => {
     )
 }
 
-export { Accueil };
+export default Accueil;

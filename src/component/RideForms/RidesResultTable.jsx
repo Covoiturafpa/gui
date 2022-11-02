@@ -1,4 +1,4 @@
-import { React, useState, useContext, useEffect } from 'react';
+import React, { useState, useContext, useEffect } from 'react';
 import { Table, IconButton, Button, useToaster } from 'rsuite';
 
 import Moment from 'moment';

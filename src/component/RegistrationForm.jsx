@@ -1,8 +1,9 @@
 import React, { useEffect, useState, useRef } from 'react';
-import { Form, ButtonToolbar, Button, Grid, Col, Row, Checkbox, CheckboxGroup, DateRangePicker, RadioGroup, Radio, SelectPicker } from 'rsuite';
+import { Form, ButtonToolbar, Button, Grid, Col, Row, Checkbox, CheckboxGroup, DateRangePicker, RadioGroup, Radio, SelectPicker, toaster } from 'rsuite';
 import HCaptcha from '@hcaptcha/react-hcaptcha';
 import FetchService from '../services/FetchService';
 import { newUserFormSchema } from '../services/SchemaType';
+import { ToastMessage } from './ToastMessage';
 
 const Formation = (props) => {
 
@@ -49,6 +50,7 @@ const RegistrationForm = () => {
     const [personType, setPersonType] = useState("T");
     const [captchaToken, setCaptchaToken] = useState({});
     const [submitNotActivated, setSubmitNotActivated] = useState(true);
+    const [gcuAgreement, setGcuAgreement] = useState(false);
 
     const captchaRef = useRef();
 
@@ -70,10 +72,25 @@ const RegistrationForm = () => {
         console.log(creationRequestBody);
         setSubmitNotActivated(true);
         try {
-            FetchService.post("/users", JSON.stringify(creationRequestBody)).then((data) => {console.log(data)});
+            FetchService.post("/users", JSON.stringify(creationRequestBody)).then((data) => {
+                console.log(data);
+                if (data.hasOwnProperty("error")) {
+                    const toast = toaster.push(<ToastMessage type={"error"} header={"Erreur lors de l'inscription"} content={"L'inscription a échouée. Veuillez recommencer."} />, {value: "topCenter"});
+                    setTimeout(() => {
+                        toaster.remove(toast);
+                    }, 3000);
+                }
+                else {
+
+                }
+            });
         }
         catch(error) { 
             console.log(error);
+            const toast = toaster.push(<ToastMessage type={"error"} header={"Erreur"} content={"L'inscription a échouée. Veuillez recommencer."} />, {value: "topCenter"});
+            setTimeout(() => {
+                toaster.remove(toast);
+            }, 3000);
         }
     }
 
@@ -147,7 +164,7 @@ const RegistrationForm = () => {
                         <Col xs={24} className="mb-2">
                             <Form.Group controlId="email">
                                 <Form.ControlLabel>E-mail</Form.ControlLabel>
-                                <Form.Control name="email" type="email" onChange={setEmail}/>
+                                <Form.Control name="email" type="email" onChange={setEmail} checkAsync/>
                             </Form.Group>
                         </Col>
                     </Row>
@@ -178,7 +195,7 @@ const RegistrationForm = () => {
                         </Col>
                         <Col xs={24} className="mb-2">
                             <Form.Group controlId="GCUAgreement">
-                                <Checkbox value="gcuAgreement">Je reconnais avoir pris connaissance et j'accepte les Conditions Générales d'Utilisation de Covoitur'AFPA.</Checkbox>
+                                <Checkbox value={gcuAgreement} onChange={(value, checked) => {setGcuAgreement(checked)}}>Je reconnais avoir pris connaissance et j'accepte les Conditions Générales d'Utilisation de Covoitur'AFPA.</Checkbox>
                             </Form.Group>
                         </Col>
                         <Col xs={24}>
@@ -188,7 +205,7 @@ const RegistrationForm = () => {
                         </Col>
                     </Row>
                 </Col>
-                <Col xs={4} xsOffset={20}>
+                <Col xs={6} xsOffset={9}>
                     <Form.Group>
                         <ButtonToolbar>
                             <Button appearance="primary" onClick={handleRegistration} disabled={submitNotActivated} id="submitButton">S'inscrire</Button>

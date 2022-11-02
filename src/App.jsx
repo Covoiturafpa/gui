@@ -9,8 +9,6 @@ import AuthService from "./services/AuthService";
 
 const App = () => {
     const setLogin = useSetLogin();
-    const stateLogin = useTrackedLogin();
-    const navigate = useNavigate();
 
     useEffect(() => {
         window.onbeforeunload = function() {

@@ -1,4 +1,4 @@
-import { React } from 'react';
+import React from 'react';
 import { List, Button, Checkbox, Uploader, FlexboxGrid, Col } from 'rsuite';
 import { AvatarUploader } from './AvatarUploader';
 

@@ -1,4 +1,4 @@
-import { React, useEffect, useState } from 'react';
+import React, { useEffect, useState } from 'react';
 
 import AuthService from "../services/AuthService";
 import Car from '@rsuite/icons/legacy/Car';
