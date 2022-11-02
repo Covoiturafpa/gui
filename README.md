@@ -1,70 +1,30 @@
-# Getting Started with Create React App
+# Projet Covoitur'Afpa
 
-This project was bootstrapped with [Create React App](https://github.com/facebook/create-react-app).
+## Interface React (UI)
 
-## Available Scripts
+Interface utilisateur HTML/JS/React pour l'application Covoitur'Afpa.
 
-In the project directory, you can run:
+Covoitur'Afpa est une application dédiée au covoiturage allant et venant du centre Afpa de Rochefort (Charente-Maritime), utilisable par les stagiaires et les employés du centre.
+
+L'application Covoitur'Afpa est un projet conçu par les stagiaires de la session 2022-2023 de la formation Concepteur Développeur d'Applications de l'Afpa de Rochefort, encadrée par le formateur Ludovic Esperce.
+
+## Détails 
+
+La bibliothèque de composants principale est [React Suite](https://rsuitejs.com/).
+L'interface intègre des composants venant de [Leaflet](https://leafletjs.com/) et [React Leaflet](https://react-leaflet.js.org/) pour les cartes, et [React hCaptcha](https://www.npmjs.com/package/@hcaptcha/react-hcaptcha) pour le captcha.
+Elle est stylisée principalement grâce à [Tailwind](https://tailwindcss.com/).
+
+## Scripts Disponibles
 
 ### `npm start`
 
-Runs the app in the development mode.\
-Open [http://localhost:3000](http://localhost:3000) to view it in your browser.
+Lance l'application en mode développement.\
+Ouvrez [http://localhost:3000](http://localhost:3000) pour la voir dans votre navigateur.
 
-The page will reload when you make changes.\
-You may also see any lint errors in the console.
+La page se recharge lorsque vous effectuez des changements.\
+Vous pouvez aussi voir les erreurs dans la console.
 
 ### `npm test`
 
-Launches the test runner in the interactive watch mode.\
-See the section about [running tests](https://facebook.github.io/create-react-app/docs/running-tests) for more information.
-
-### `npm run build`
-
-Builds the app for production to the `build` folder.\
-It correctly bundles React in production mode and optimizes the build for the best performance.
-
-The build is minified and the filenames include the hashes.\
-Your app is ready to be deployed!
-
-See the section about [deployment](https://facebook.github.io/create-react-app/docs/deployment) for more information.
-
-### `npm run eject`
-
-**Note: this is a one-way operation. Once you `eject`, you can't go back!**
-
-If you aren't satisfied with the build tool and configuration choices, you can `eject` at any time. This command will remove the single build dependency from your project.
-
-Instead, it will copy all the configuration files and the transitive dependencies (webpack, Babel, ESLint, etc) right into your project so you have full control over them. All of the commands except `eject` will still work, but they will point to the copied scripts so you can tweak them. At this point you're on your own.
-
-You don't have to ever use `eject`. The curated feature set is suitable for small and middle deployments, and you shouldn't feel obligated to use this feature. However we understand that this tool wouldn't be useful if you couldn't customize it when you are ready for it.
-
-## Learn More
-
-You can learn more in the [Create React App documentation](https://facebook.github.io/create-react-app/docs/getting-started).
-
-To learn React, check out the [React documentation](https://reactjs.org/).
-
-### Code Splitting
-
-This section has moved here: [https://facebook.github.io/create-react-app/docs/code-splitting](https://facebook.github.io/create-react-app/docs/code-splitting)
-
-### Analyzing the Bundle Size
-
-This section has moved here: [https://facebook.github.io/create-react-app/docs/analyzing-the-bundle-size](https://facebook.github.io/create-react-app/docs/analyzing-the-bundle-size)
-
-### Making a Progressive Web App
-
-This section has moved here: [https://facebook.github.io/create-react-app/docs/making-a-progressive-web-app](https://facebook.github.io/create-react-app/docs/making-a-progressive-web-app)
-
-### Advanced Configuration
-
-This section has moved here: [https://facebook.github.io/create-react-app/docs/advanced-configuration](https://facebook.github.io/create-react-app/docs/advanced-configuration)
-
-### Deployment
-
-This section has moved here: [https://facebook.github.io/create-react-app/docs/deployment](https://facebook.github.io/create-react-app/docs/deployment)
-
-### `npm run build` fails to minify
-
-This section has moved here: [https://facebook.github.io/create-react-app/docs/troubleshooting#npm-run-build-fails-to-minify](https://facebook.github.io/create-react-app/docs/troubleshooting#npm-run-build-fails-to-minify)
+Lance les tests en mode d'observation interactive.\
+Regardez [lancer des tests](https://facebook.github.io/create-react-app/docs/running-tests) pour plus d'informations.
