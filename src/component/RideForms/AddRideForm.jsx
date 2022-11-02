@@ -11,9 +11,6 @@ import { ToastMessage } from '../ToastMessage';
 import { useNavigate } from 'react-router-dom';
 import { addRideForm, addOneTimeTrip, addOneTimeRoundTrip, addRecurringTrip, addRecurringRoundTrip } from '../../services/SchemaType';
 
-
-
-
 const AddRideForm = (props) => {
     const { arrival, departure, destination, isFromAfpa, rideType, isRoundTrip, departureDay, recurringDates, days } = useContext(RideFormContext);
     const [userId] = useState(authService.getCurrentUserId());
@@ -168,7 +165,6 @@ const AddRideForm = (props) => {
             }
         )
     }, []);
-
 
     const checkFormErrors = () => {
         let formErrors = null;
@@ -335,7 +331,7 @@ const AddRideForm = (props) => {
 }
 
 /**
- * Permets de passer un textarea en props "accepter" de formcontrol
+ * Permet de passer un textarea en props "accepter" de formcontrol
  */
 const Textarea = React.forwardRef((props, ref) => <Input {...props} as="textarea" ref={ref} />);
 

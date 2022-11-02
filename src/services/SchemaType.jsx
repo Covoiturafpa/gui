@@ -2,12 +2,10 @@ import { MixedType, SchemaModel, StringType, BooleanType, DateType, ArrayType, N
 import FetchService from './FetchService';
 import { isDate, isAfter, isFuture, startOfToday } from 'date-fns'
 
-
 const loginFormSchema = SchemaModel({
     email: StringType().isEmail('Email invalide').isRequired('Email requis'),
     password: StringType().isRequired('Mot de passe requis'),
 });
-
 
 const frenchPhoneFormSchema = SchemaModel({
     phoneNumber: StringType().pattern(/^(\+33|0|0033)[1-9]([. ]?[0-9]{2}){4}$/, 'Numéro de téléphone invalide')
@@ -18,7 +16,7 @@ const newEmailFormSchema = SchemaModel({
         .isEmail('Email invalide')
         .addRule((value, data) => {
             return asyncCheckIsEmailUnique(value);
-        }, 'Cette adresse email est déjà enregistrée')
+        }, 'Cette adresse email est déjà enregistrée', true)
         .isRequired('Email requis')
 });
 
@@ -30,12 +28,11 @@ const newPasswordFormSchema = SchemaModel({
         .pattern(/\W+/, "Doit contenir : caractère spécial")
         .rangeLength(8, 30, "Minimum 8 caractères, maximum 30"),
     passwordConfirm: StringType().addRule((value, data) => {
-        console.log(value, data);
-        if (value !== data.password) {
+        if (data.password.length !== 0 && value !== data.password) {
             return false;
         }
         return true;
-    }, 'Les mots de passe ne correspondent pas')
+    }, 'Les mots de passe ne correspondent pas', true).isRequiredOrEmpty()
 });
 
 const updatePasswordFormSchema = SchemaModel({
@@ -45,17 +42,13 @@ const updatePasswordFormSchema = SchemaModel({
         .containsNumber("Doit contenir : nombre")
         .pattern(/\W+/, "Doit contenir : caractère spécial")
         .rangeLength(8, 30, "Minimum 8 caractères, maximum 30"),
+    passwordConfirm: StringType().addRule((value, data) => {
+        if (data?.password && data.password.length !== 0 && value !== data.password) {
+            return false;
+        }
+        return true;
+    }, 'Les mots de passe ne correspondent pas', true)
 });
-
-// const passwordConfirmFormSchema = SchemaModel({
-//     passwordConfirm: StringType().addRule((value, data) => {
-//         console.log(value, data);
-//         if (value !== data.password) {
-//             return false;
-//         }
-//         return true;
-//     }, 'Les mots de passe ne correspondent pas')
-// });
 
 const formationConfirmSchema = SchemaModel({
     formation: MixedType().isRequired("Sélectionnez une formation")
@@ -74,7 +67,7 @@ const rideForm = SchemaModel({
 
 const oneTime = SchemaModel({
     date: DateType().min(new Date(), "Vous ne pouvez pas sélectionner une date passée")
-    .isRequired("Vous devez choisir une date")
+        .isRequired("Vous devez choisir une date")
 })
 
 const recurring = SchemaModel({
@@ -82,7 +75,7 @@ const recurring = SchemaModel({
         if (dates !== undefined && dates !== null && dates.length === 2) {
             const beginning = dates[0];
             const ending = dates[1];
-            if (isDate(beginning) && isDate(ending) && 
+            if (isDate(beginning) && isDate(ending) &&
                 isAfter(beginning, startOfToday()) && isFuture(ending)) {
                 return true;
             }
@@ -108,7 +101,7 @@ const carInputModel = SchemaModel({
         label: StringType().isRequired(),
         value: StringType().isRequired(),
         avgFuelConsumption: NumberType().isRequired(),
-        idCarType : MixedType().addRule((value) => {
+        idCarType: MixedType().addRule((value) => {
             if (value === undefined) {
                 return true;
             }
@@ -136,7 +129,7 @@ const commentInput = SchemaModel({
 })
 
 function asyncCheckIsEmailUnique(email) {
-    return (FetchService.get("/users/email_validity" + encodeURIComponent("?email=" + email)));
+    return (FetchService.get("/users/email_validity" + "?email=" + email));
 }
 
 function getCarsFromUser(userId) {
@@ -174,6 +167,5 @@ const addRecurringTrip = SchemaModel.combine(recurringForm, carInputModel, seats
 
 const addRecurringRoundTrip = SchemaModel.combine(recurringForm, carInputModel, seatsInput, priceInput, commentInput, roundTripTimes);
 
-
-export { loginFormSchema, profilFormSchema, newEmailFormSchema, searchRideForm, oneTimeForm, recurringForm, addRideForm, addOneTimeTrip, addOneTimeRoundTrip, addRecurringTrip, addRecurringRoundTrip, newUserFormSchema, carInputModel };
+export { loginFormSchema, profilFormSchema, newEmailFormSchema, newPasswordFormSchema, searchRideForm, oneTimeForm, recurringForm, addRideForm, addOneTimeTrip, addOneTimeRoundTrip, addRecurringTrip, addRecurringRoundTrip, newUserFormSchema, carInputModel };
 

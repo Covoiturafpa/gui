@@ -1,5 +1,4 @@
-import { useEffect } from 'react';
-import { React, useState } from 'react';
+import React, { useEffect, useState} from 'react';
 
 const SlidePartner = (props) => {
     const [partnersImg, setPartnersImg] = useState([]);

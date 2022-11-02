@@ -1,5 +1,5 @@
-import { React, useState, useEffect } from 'react';
-import { useNavigate } from 'react-router-dom';
+import React, { useState, useEffect } from 'react';
+import { useFetcher, useNavigate } from 'react-router-dom';
 import { FiArrowRight   } from "react-icons/fi";
 import { List, DatePicker, Button, ButtonToolbar,Input, Checkbox, useToaster } from 'rsuite';
 import Moment from 'moment';
@@ -51,6 +51,9 @@ const DetailOfRide = (props) => {
     }
 
     useEffect(() => {
+
+    },[])
+    useEffect(() => {
         console.log(props.ride);
         if (isChecked) {
             setLabelCheckbox("trajet disponible");
@@ -99,7 +102,7 @@ const DetailOfRide = (props) => {
                 { props.ride.daysWeek ? 
                     <ListRow label="Jours">
                         <div>
-                            <CheckBoxDays disabled={props.isOwner ? false : true} days={props.ride.daysWeek}/>
+                            <CheckBoxDays disabled={true} days={props.ride.daysWeek}/>
                         </div>
                     </ListRow>
                 : "" }
@@ -120,13 +123,13 @@ const DetailOfRide = (props) => {
                 </ListRow>
                 {props.isOwner ? 
                     <ListRow label="Passagers">
-                        {(props.ride.requestedPassengers > 1) ? 
+                        {(props.ride.requestedPassengers.length > 1) ? 
                             <div>
-                                <ListPassengers passengers={props.ride.requestedPassengers}/>
+                                <ListPassengers setEditable={props.setEditable} ride={props.ride} passengers={props.ride.requestedPassengers}/>
                             </div>
                         : 
                             <div>
-                                <label>Vous avez aucun passagers</label>
+                                <label>Vous n'avez aucun passagers</label>
                             </div>}
                     </ListRow>
                                 : "" }

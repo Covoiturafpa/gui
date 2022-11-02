@@ -1,4 +1,5 @@
-import { React, useState, useEffect } from 'react';
+import React, { useState, useEffect } from 'react';
+
 import { Table, IconButton, Tooltip, Whisper } from 'rsuite';
 import CollaspedOutlineIcon from '@rsuite/icons/CollaspedOutline';
 import ExpandOutlineIcon from '@rsuite/icons/ExpandOutline';
