@@ -1,6 +1,6 @@
-import React, { useEffect, useState, useRef } from 'react';
-import { Form, ButtonToolbar, Button, Grid, Col, Row, Checkbox, CheckboxGroup, DateRangePicker, RadioGroup, Radio, SelectPicker, toaster } from 'rsuite';
 import HCaptcha from '@hcaptcha/react-hcaptcha';
+import React, { useEffect, useRef, useState } from 'react';
+import { Button, ButtonToolbar, Checkbox, Col, DateRangePicker, Form, Grid, Radio, RadioGroup, Row, SelectPicker, toaster } from 'rsuite';
 import FetchService from '../services/FetchService';
 import { newUserFormSchema } from '../services/SchemaType';
 import { ToastMessage } from './ToastMessage';

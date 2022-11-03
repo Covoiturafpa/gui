@@ -1,10 +1,7 @@
-import React from 'react';
-import { Layout } from './scenes/Layout';
+import React, { useEffect } from 'react';
 import { ContentLayout } from './scenes/ContentLayout';
-import { useSetLogin, useTrackedLogin } from './services/UserLogin';
-import { useNavigate } from 'react-router-dom';
-import { useEffect } from 'react';
-import AuthService from "./services/AuthService";
+import { Layout } from './scenes/Layout';
+import { useSetLogin } from './services/UserLogin';
 
 
 const App = () => {
@@ -17,7 +14,6 @@ const App = () => {
             }
             if(sessionStorage.getItem('user')) {
                 setLogin(JSON.parse(sessionStorage.getItem('user')));
-    
             }
             return true;
         };
@@ -25,11 +21,11 @@ const App = () => {
         return () => {
             window.onbeforeunload = null;
         };
-
+        // eslint-disable-next-line react-hooks/exhaustive-deps
     }, []);
     return (<>
         <Layout content={<ContentLayout />} />
     </>);
 };
 
-export {App};
+export { App };

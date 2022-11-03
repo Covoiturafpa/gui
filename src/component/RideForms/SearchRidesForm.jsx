@@ -61,6 +61,7 @@ const SearchRidesForm = () => {
         if (Object.keys(formValues).length === 0) {
             setFormValues(defaultFormValues);
         }
+        // eslint-disable-next-line react-hooks/exhaustive-deps
     }, [formValues])
 
     function createRideSearchParameters(invertDestination) {

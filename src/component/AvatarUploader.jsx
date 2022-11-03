@@ -1,9 +1,7 @@
 import React from 'react';
-import ReactDOM from 'react-dom';
 
-import { Uploader, Message, Loader, useToaster } from 'rsuite';
-import AvatarIcon from '@rsuite/icons/legacy/Avatar';
 import { FiCamera } from "react-icons/fi";
+import { Loader, Message, Uploader, useToaster } from 'rsuite';
 
 
 function previewFile(file, callback) {
@@ -50,7 +48,7 @@ const AvatarUploader = () => {
             <button style={{ width: 150, height: 150 }} >
                 {uploading && <Loader backdrop center />}
                 {fileInfo ? (
-                    <img src={fileInfo} width="100%" height="100%" />
+                    <img src={fileInfo} width="100%" height="100%" alt='avatar'/>
                 ) : (
                     <FiCamera className='text-7xl mx-auto' />
                 )}

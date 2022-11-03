@@ -10,7 +10,7 @@ import { MapContainer, TileLayer, Marker, Popup, useMap } from 'react-leaflet';
 import "leaflet-routing-machine";
 import FetchService from "../../services/FetchService";
 import { AfpaIconSvg } from "../AfpaIconSvg";
-import {RideFormContext } from '../RideForms/RideFormContextProvider';
+import { RideFormContext } from '../RideForms/RideFormContextProvider';
 
 const MapLeaflet = () => {
 
@@ -25,10 +25,10 @@ const MapLeaflet = () => {
 
     /**
      * TODO: Remplacer la requête du centre par un nouveau state dans RifeFormContext au niveau de RideFormInputs
-     * */ 
+     * */
     useEffect(() => {
         FetchService.get("/centre").then((data) => {
-            if (data.latitude !== undefined && data.longitude != undefined) {
+            if (data.latitude !== undefined && data.longitude !== undefined) {
                 setWaypoints(
                     {
                         ...waypoints,
@@ -39,17 +39,21 @@ const MapLeaflet = () => {
                     })
             }
         })
+        // eslint-disable-next-line react-hooks/exhaustive-deps 
     }, [])
 
     useEffect(() => {
-        setWaypoints(
-            {
-                ...waypoints,
-                "destination": {
-                    "lat": destination.value.lat,
-                    "lon": destination.value.lon
-                }
-            })
+        if (waypoints) {
+            setWaypoints(
+                {
+                    ...waypoints,
+                    "destination": {
+                        "lat": destination.value.lat,
+                        "lon": destination.value.lon
+                    }
+                })
+        }
+        // eslint-disable-next-line react-hooks/exhaustive-deps 
     }, [destination.value])
 
     const afpaSvgIcon = L.divIcon({
@@ -121,6 +125,7 @@ const Routing = ({ waypoints }) => {
         }).addTo(map);
 
         return () => map.removeControl(routingControl);
+        // eslint-disable-next-line react-hooks/exhaustive-deps 
     }, [waypoints]);
 
     return null;
