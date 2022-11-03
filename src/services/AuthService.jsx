@@ -4,6 +4,7 @@ class AuthService {
 
   /**
    * @returns succès :  {username:"", token:"", password:""}, échec : { errorMessage: "Message d'erreur" }
+   * TODO: Mettre à jour last_login
    */
   async login(username, password) {
     // Si les informations utilisateur ne sont pas en LocalStorage ("option "Se souvenir de moi")
