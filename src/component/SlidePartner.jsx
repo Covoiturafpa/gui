@@ -1,5 +1,9 @@
 import React, { useEffect, useState} from 'react';
 
+/**
+ * TODO : Le composant n'est pas encore utilisé par l'application
+ * Pour que le slide soit correct, le scroll keyframes doit avoir l'approche '100%': { transform: 'translateX(calc(-200px * partners.length))' }, écrit dans tailwind.config.js 
+ */ 
 const SlidePartner = (props) => {
     const [partnersImg, setPartnersImg] = useState([]);
 
