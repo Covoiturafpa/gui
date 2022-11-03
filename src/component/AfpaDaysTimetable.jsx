@@ -2,6 +2,9 @@ import React, {useEffect, useState} from 'react';
 import { DaysTranslate } from './DaysTranslate';
 
 /**
+ * TODO : N'est pas encore utilisé dsans l'application
+ */
+/**
  * @param {*} props {day: "Lundi" , startMorning: "Heure matin début", endMorning: "Heure matin fin", startAfternoon: "Heure après-midi début", endAfternoon: "Heure après-midi fin"}
  * @returns 
  */
