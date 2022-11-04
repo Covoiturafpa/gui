@@ -13,8 +13,9 @@ const MesTrajets = () => {
     const [ridesOwned, setRidesOwned] = useState([]);
     const [ridesRequested, setRidesRequested] = useState([]);
     const [error, setError] = useState(null);
-    const [userId, setUserId] = useState(authService.getCurrentUserId());
+    const [userId] = useState(authService.getCurrentUserId());
     const [autoReload, setAutoReload] = useState(false);
+
     useEffect(() => {
         setAutoReload(false);
         const fetch = FetchService.get("/users/"+ userId + "/rides");
@@ -22,30 +23,36 @@ const MesTrajets = () => {
             (result) => {
                 setRidesOwned([]);
                 setRidesRequested([]);
-                result.map(item => {
-                    const passengers = item.requestedPassengers;
-                    passengers.map(userToRide => {
-                        if(userToRide.person.id == userId) {
-                            if(userToRide.isDriver) {
-                                setRidesOwned(rideOwned => [ item,...rideOwned]);
-                            }else if(!userToRide.isDriver) {
-                                if(item.isActive) {
-                                    setRidesRequested(rideRequested => [ item,...rideRequested]);
+                if (result.length === 0) {
+                    setRidesOwned(0);
+                    setRidesRequested(0);
+                    setIsLoaded(true);
+                }else {
+                    result.forEach(item => {
+                        const passengers = item.requestedPassengers;
+                        passengers.forEach(userToRide => {
+                            if(userToRide.person.id === parseInt(userId)) {
+                                if(userToRide.isDriver) {
+                                    setRidesOwned(rideOwned => [ item,...rideOwned]);
+                                }else if(!userToRide.isDriver) {
+                                    if(item.isActive) {
+                                        setRidesRequested(rideRequested => [ item,...rideRequested]);
+                                    }
                                 }
                             }
-                        }
-                        if(result[result.length - 1] === item) {
-                            setIsLoaded(true);
-                        }
-
+                            if(result[result.length - 1] === item) {
+                                setIsLoaded(true);
+                            }
+                        });
                     });
-                });
+                }
             },
             (error) => {
                 setIsLoaded(true);
                 setError(error);
             }
         )
+        // eslint-disable-next-line react-hooks/exhaustive-deps
     }, [autoReload]);
     
     if (error) {
