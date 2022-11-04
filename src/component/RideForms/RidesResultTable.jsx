@@ -62,6 +62,7 @@ const RidesResultTable = (props) => {
     const toaster = useToaster();
 
     useEffect(() => {
+        console.log("length : ", rides.value.length)
         if (props.return !== null && rides.value.length > 0) {
             const data = props.return === false ? rides.value[0] : rides.value[1];
             setTableData(data);

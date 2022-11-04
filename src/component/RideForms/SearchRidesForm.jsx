@@ -110,16 +110,21 @@ const SearchRidesForm = () => {
             let searchParameters = createRideSearchParameters(false);
             FetchService.get("/rides?searchParams=" + searchParameters).then((searchResults) => {
                 let results = [];
-                results.push(searchResults);
+            
+                // rides aller
+                if (!searchResults.hasOwnProperty("errorMessage")) {
+                    results.push(searchResults);
+                }
+                // rides retour
                 if (isRoundTrip.value) {
                     searchParameters = createRideSearchParameters(true);
                     FetchService.get("/rides?searchParams=" + searchParameters).then((searchResults) => {
-                        results.push(searchResults);
-                        rides.setValue(results);
+                        if (!searchResults.hasOwnProperty("errorMessage")) { 
+                            results.push(searchResults);
+                        }
                     });
-                } else {
-                    rides.setValue(results);
                 }
+                rides.setValue(results.length > 0 ? results : [[]]);
             });
         }
     }
