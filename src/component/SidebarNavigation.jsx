@@ -40,7 +40,7 @@ const SidebarNavigation = () => {
             navigate("/" + activeKey);
         }
 
-    }, [activeKey, navigate, setLogin]);
+    }, [activeKey, setLogin]);
 
     return (
         <div className='h-full'>
