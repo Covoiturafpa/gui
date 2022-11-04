@@ -54,25 +54,3 @@ class AuthService {
 }
 
 export default new AuthService();
-
-/**
- * (response) => {
-              this.props.history.push("/rechercher");
-              const jsonData = JSON.stringify(response.data);
-              setState(jsonData)
-              window.location.reload();
-              },
-              error => {
-              const resMessage =
-                  (error.response &&
-                      error.response.data &&
-                      error.response.data.message) ||
-                  error.message ||
-                  error.toString();
-      
-                  this.setState({
-                      loading: false,
-                      message: resMessage
-                  });
-              }
- */
