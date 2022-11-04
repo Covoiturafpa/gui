@@ -11,9 +11,9 @@ const LayoutHeader = () => {
     }
 
     return (<Header className='h-min flex justify-center'>
-        <button className=" text-gray-700 m-1" onClick={navigateToHome}>
+        <a className="no-underline hover:no-underline m-1" onClick={navigateToHome}>
             <img className="w-96 object-contain" src={logo} alt="Logo covoiturafpa" />
-        </button>
+        </a>
     </Header>);
 }
 
