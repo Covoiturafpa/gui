@@ -21,6 +21,7 @@
     "react-tracked": "^1.7.10",
     "rsuite": "^5.18.0",
     "schema-typed": "^2.0.3",
+    "serve": "^14.0.1",
     "web-vitals": "^2.1.4"
   },
   "scripts": {
