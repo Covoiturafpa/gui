@@ -94,7 +94,7 @@ const TableProposedRides = (props) => {
                 <div>
                     <div className="bg-gray-background rounded-t-md py-1">
                         <h5 className="text-center">Mes trajets proposés</h5>
-                        <p className='text-center'>Vous proposez aucun trajet</p>
+                        <p className='text-center'>Vous ne proposez aucun trajet</p>
                     </div>
                 </div>
             );

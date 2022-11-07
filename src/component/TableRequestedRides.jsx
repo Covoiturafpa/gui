@@ -91,7 +91,7 @@ const TableRequestedRides = (props) => {
         return (<div>
             <div className="bg-gray-background rounded-t-md py-1">
                 <h5 className="text-center">Mes trajets sollicités</h5>
-                <p className='text-center'>Vous sollicitez aucun trajet</p>
+                <p className='text-center'>Vous ne sollicitez aucun trajet</p>
             </div>
         </div>);
     } else {
