@@ -1,4 +1,4 @@
-import React, { useState, useEffect} from 'react';
+import React, { useState, useEffect } from 'react';
 import { Route, Routes, Navigate } from 'react-router-dom';
 
 import { Content } from 'rsuite';
@@ -20,17 +20,17 @@ import { SuccessfulRegistration } from '../component/SuccessfulRegistration';
 const ContentLayout = () => {
     const [pathAccess, setPathAccess] = useState(false);
     const stateLogin = useTrackedLogin();
-    
+
     useEffect(() => {
-        if(sessionStorage.getItem('user') || localStorage.getItem('user')) {
+        if (sessionStorage.getItem('user') || localStorage.getItem('user')) {
             setPathAccess(true);
-        }else {
+        } else {
             setPathAccess(false);
         }
     }, [stateLogin]);
 
-        return (<>
-            <Content className='overflow-auto'>
+    return (<>
+        <Content className='overflow-auto'>
                 <Routes>
                     <Route path="*" element={<Navigate to="/connexion"/>} /> 
                     <Route path="connexion" element={<FormLayout title={""} form={<LoginForm/>} />} /> 
@@ -48,8 +48,8 @@ const ContentLayout = () => {
                     </> : "" }
                 </Routes>
             </Content>
-        </>);
-    
+    </>);
+
 }
 
 export { ContentLayout };

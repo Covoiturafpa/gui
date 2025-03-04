@@ -3,7 +3,6 @@ import { ContentLayout } from './scenes/ContentLayout';
 import { Layout } from './scenes/Layout';
 import { useSetLogin } from './services/UserLogin';
 
-
 const App = () => {
     const setLogin = useSetLogin();
 
@@ -23,6 +22,7 @@ const App = () => {
         };
         // eslint-disable-next-line react-hooks/exhaustive-deps
     }, []);
+
     return (<>
         <Layout content={<ContentLayout />} />
     </>);

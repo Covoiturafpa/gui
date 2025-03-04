@@ -13,7 +13,7 @@ const root = ReactDOM.createRoot(divRoot);
 root.render(
   <BrowserRouter>
     <Provider>
-      <App/>
+      <App />
     </Provider>
   </BrowserRouter>
 );
