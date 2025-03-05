@@ -30,7 +30,7 @@ const UserManagement = () => {
         return (<div className='container mx-auto px-4'>
             <h1 className="text-center">Gestion utilisateurs</h1>
             <div className='my-3'>
-                <UsersTable users={usersData} />
+                <UsersTable users={usersData} setUsers={setUsersData} />
             </div>
         </div>)
     }

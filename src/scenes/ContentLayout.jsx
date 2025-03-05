@@ -31,23 +31,23 @@ const ContentLayout = () => {
 
     return (<>
         <Content className='overflow-auto'>
-                <Routes>
-                    <Route path="*" element={<Navigate to="/connexion"/>} /> 
-                    <Route path="connexion" element={<FormLayout title={""} form={<LoginForm/>} />} /> 
-                    <Route path="inscription" element={<FormLayout title={"Inscription"} form={<RegistrationForm/>} />} />
-                    <Route path="inscription_reussie" element={<SuccessfulRegistration/>} />
-                    {pathAccess ? <>                    
-                        <Route path="rechercher" element={<RideFormContextProvider><Booking /></RideFormContextProvider>} />
-                        <Route path="mes_trajets" element={<MesTrajets className='h-100' />} />
-                        <Route path="proposer" element={<SuggestRide />} />
-                        <Route path="gestion_utilisateurs" element={<UserManagement />} />
-                        <Route path="gestion_centre" element={<h1 className="text-center">Gestion du centre</h1>} />
-                        <Route path="profil" element={<FormLayout title={"Profil"} form={<Profil/>} />} />
-                        <Route path="notifications" element={<Notification />} />
-                        <Route path="accueil" element={<Accueil />} />
-                    </> : "" }
-                </Routes>
-            </Content>
+            <Routes>
+                <Route path="*" element={<Navigate to="/connexion" />} />
+                <Route path="connexion" element={<FormLayout title={""} form={<LoginForm />} />} />
+                <Route path="inscription" element={<FormLayout title={"Inscription"} form={<RegistrationForm />} />} />
+                <Route path="inscription_reussie" element={<SuccessfulRegistration />} />
+                {pathAccess ? <>
+                    <Route path="rechercher" element={<RideFormContextProvider><Booking /></RideFormContextProvider>} />
+                    <Route path="mes_trajets" element={<MesTrajets className='h-100' />} />
+                    <Route path="proposer" element={<SuggestRide />} />
+                    <Route path="gestion_utilisateurs" element={<UserManagement />} />
+                    <Route path="gestion_centre" element={<h1 className="text-center">Gestion du centre</h1>} />
+                    <Route path="profil" element={<FormLayout title={"Profil"} form={<Profil />} />} />
+                    <Route path="notifications" element={<Notification />} />
+                    <Route path="accueil" element={<Accueil />} />
+                </> : ""}
+            </Routes>
+        </Content>
     </>);
 
 }

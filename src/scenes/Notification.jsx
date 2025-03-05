@@ -25,7 +25,7 @@ function compareNotifications(notifA, notifB) {
 
 function isLastUnreadNotif(notification, index, notifications) {
     if (index < (notifications.length - 1)) {
-        if (notification.isUnread && !notifications[index+1].isUnread) {
+        if (notification.isUnread && !notifications[index + 1].isUnread) {
             return true;
         }
     }
@@ -37,13 +37,13 @@ function isLastUnreadNotif(notification, index, notifications) {
 
 const NotificationsDiv = (props) => {
     return (<>
-                {(props.array.length > 0) && <div>
-                    <h2 className='text-2xl text-center'>{props.name}</h2>
-                    <ul className='p-2'>
-                        {props.array.map((notification) => (<li key={notification.id} className="m-2"><Message {...{onChange:props.onChange, notification:notification}}/></li>))}
-                    </ul>
-                </div>}
-            </>)
+        {(props.array.length > 0) && <div>
+            <h2 className='text-2xl text-center'>{props.name}</h2>
+            <ul className='p-2'>
+                {props.array.map((notification) => (<li key={notification.id} className="m-2"><Message {...{ onChange: props.onChange, notification: notification }} /></li>))}
+            </ul>
+        </div>}
+    </>)
 }
 
 const Notification = () => {
@@ -84,13 +84,13 @@ const Notification = () => {
     }
 
     if (!isLoaded) {
-        return(<div>Chargement...</div>);
+        return (<div>Chargement...</div>);
     }
     else {
         return (<>
-                    <NotificationsDiv {...{name:"Nouvelles Notifications", array:unreadNotifications, onChange:remove}}/>
-                    <NotificationsDiv {...{name:"Anciennes Notifications", array:readNotifications, onChange:remove}}/>
-                </>);
+            <NotificationsDiv {...{ name: "Nouvelles Notifications", array: unreadNotifications, onChange: remove }} />
+            <NotificationsDiv {...{ name: "Anciennes Notifications", array: readNotifications, onChange: remove }} />
+        </>);
     }
 }
 

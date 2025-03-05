@@ -2,6 +2,7 @@ import HCaptcha from '@hcaptcha/react-hcaptcha';
 import React, { useEffect, useRef, useState } from 'react';
 import { Button, ButtonToolbar, Checkbox, Col, DateRangePicker, Form, Grid, Radio, RadioGroup, Row, SelectPicker, toaster } from 'rsuite';
 import FetchService from '../services/FetchService';
+import { useNavigate } from 'react-router-dom';
 import { newUserFormSchema } from '../services/SchemaType';
 import { ToastMessage } from './ToastMessage';
 
@@ -13,30 +14,31 @@ const Formation = (props) => {
     useEffect(() => {
         if (!isLoaded) {
             FetchService.get("/centre/formations").then(data => {
-                setFormations(data.map(formation => ({label: formation.name, value: formation.id})));
-            setIsLoaded(true);});
+                setFormations(data.map(formation => ({ label: formation.name, value: formation.id })));
+                setIsLoaded(true);
+            });
         }
-    },[isLoaded])
+    }, [isLoaded])
 
     if (props.personType === "E") {
         return (<></>);
     }
 
     else if (!isLoaded) {
-        return(<div>Chargement...</div>);
+        return (<div>Chargement...</div>);
     }
     else {
         return (
             <>
                 <Form.ControlLabel>Formation</Form.ControlLabel>
-                <SelectPicker className='w-full' data={formations} onChange={props.onChange}/>
+                <SelectPicker className='w-full' data={formations} onChange={props.onChange} />
             </>
         );
     }
 }
 
 const RegistrationForm = () => {
-
+    const navigate = useNavigate();
     const [email, setEmail] = useState("");
     const [password, setPassword] = useState("");
     const [passwordConfirm, setPasswordConfirm] = useState();
@@ -48,46 +50,47 @@ const RegistrationForm = () => {
     const [period, setPeriod] = useState([]);
     const [idFormation, setIdFormation] = useState(0);
     const [personType, setPersonType] = useState("T");
-    const [captchaToken, setCaptchaToken] = useState({});
+    const [captchaToken, setCaptchaToken] = useState("");
     const [submitNotActivated, setSubmitNotActivated] = useState(true);
     const [gcuAgreement, setGcuAgreement] = useState(false);
 
     const captchaRef = useRef();
 
     const handleCaptchaVerification = (token) => {
-        setCaptchaToken({token: token});
+        setCaptchaToken(token);
         setSubmitNotActivated(false);
-      }
-    
+    };
+
+
     const handleCaptchaError = (error) => {
         console.log("HCaptcha [onError]:", error);
     };
-    
-    const handleCaptchaChallengeExpired = () => {
+
+    const handleCaptchaChallengeExpired = async () => {
         console.log("HCaptcha [onChalExpired]: The user display of a challenge times out with no answer.");
     };
 
-    const handleRegistration = () => {
-        let creationRequestBody = {newPerson: getNewUser(), captchaToken: captchaToken};
-        console.log(creationRequestBody);
+    const handleRegistration = async () => {
+        let creationRequestBody = { newPerson: getNewUser(), captchaToken };
+        console.log(JSON.stringify(creationRequestBody));
         setSubmitNotActivated(true);
         try {
-            FetchService.post("/users", JSON.stringify(creationRequestBody)).then((data) => {
-                console.log(data);
-                if (data.hasOwnProperty("error")) {
-                    const toast = toaster.push(<ToastMessage type={"error"} header={"Erreur lors de l'inscription"} content={"L'inscription a échouée. Veuillez recommencer."} />, {value: "topCenter"});
-                    setTimeout(() => {
-                        toaster.remove(toast);
-                    }, 3000);
-                }
-                else {
+            console.log("hello")
+            const data = await FetchService.post("/users", JSON.stringify(creationRequestBody))
+            console.log(data);
+            if (data.hasOwnProperty("error")) {
+                const toast = toaster.push(<ToastMessage type={"error"} header={"Erreur lors de l'inscription"} content={"L'inscription a échouée. Veuillez recommencer."} />, { value: "topCenter" });
+                setTimeout(() => {
+                    toaster.remove(toast);
+                }, 3000);
+            }
+            else {
+                navigate("inscription_reussie");
+            }
 
-                }
-            });
-        }
-        catch(error) { 
+        } catch (error) {
             console.log(error);
-            const toast = toaster.push(<ToastMessage type={"error"} header={"Erreur"} content={"L'inscription a échouée. Veuillez recommencer."} />, {value: "topCenter"});
+            const toast = toaster.push(<ToastMessage type={"error"} header={"Erreur"} content={"L'inscription a échouée. Veuillez recommencer."} />, { value: "topCenter" });
             setTimeout(() => {
                 toaster.remove(toast);
             }, 3000);
@@ -106,16 +109,16 @@ const RegistrationForm = () => {
                 contactByMail: contactByMail,
                 startActivity: period[0],
                 endActivity: period[1],
-                formation: {id: idFormation},
+                formation: { id: idFormation },
                 personType: personType
             }
         )
     }
 
-    let fonction = (event) => {
-        const valeur = event.target.value;
-        setPasswordConfirm({password: password, passwordConfirm: valeur});
-    }
+    const handlePasswordConfirm = (value) => {
+        setPasswordConfirm(value);
+    };
+
 
     return (
         <Form fluid className='w-full' model={newUserFormSchema}>
@@ -125,19 +128,19 @@ const RegistrationForm = () => {
                         <Col xs={24} className="mb-2">
                             <Form.Group controlId="surname">
                                 <Form.ControlLabel>Nom</Form.ControlLabel>
-                                <Form.Control name="surname" onChange={setSurname}/>
+                                <Form.Control name="surname" onChange={setSurname} />
                             </Form.Group>
                         </Col>
                         <Col xs={24} className="mb-2">
                             <Form.Group controlId="firstname">
                                 <Form.ControlLabel>Prénom</Form.ControlLabel>
-                                <Form.Control name="firstname" onChange={setFirstName}/>
+                                <Form.Control name="firstname" onChange={setFirstName} />
                             </Form.Group>
                         </Col>
                         <Col xs={24} className="mb-2">
                             <Form.Group controlId="phoneNumber">
                                 <Form.ControlLabel>Tél.</Form.ControlLabel>
-                                <Form.Control name="phoneNumber" type="phone" onChange={setPhoneNumber}/>
+                                <Form.Control name="phoneNumber" type="phone" onChange={setPhoneNumber} />
                             </Form.Group>
                         </Col>
                         <Col xs={24} className="mb-2">
@@ -150,21 +153,21 @@ const RegistrationForm = () => {
                         </Col>
                         <Col xs={24} className="mb-2">
                             <Form.Group controlId="formation">
-                                <Formation personType={personType} onChange={setIdFormation}/>
+                                <Formation personType={personType} onChange={setIdFormation} />
                             </Form.Group>
                         </Col>
                         <Col xs={24} className="mb-2">
                             <Form.Group controlId="periodActivity">
                                 <Form.ControlLabel>Dates de début & de fin</Form.ControlLabel>
                                 <Form.Control name="dates" accepter={DateRangePicker} className='w-full' format="yyyy-MM-dd" character={" -> "} placeholder={"aaaa-mm-jj -> aaaa-mm-jj"} showOneCalendar placement='topStart' onChange={setPeriod}>
-                                <DateRangePicker />
+                                    <DateRangePicker />
                                 </Form.Control>
                             </Form.Group>
                         </Col>
                         <Col xs={24} className="mb-2">
                             <Form.Group controlId="email">
                                 <Form.ControlLabel>E-mail</Form.ControlLabel>
-                                <Form.Control name="email" type="email" onChange={setEmail} checkAsync/>
+                                <Form.Control name="email" type="email" onChange={setEmail} checkAsync />
                             </Form.Group>
                         </Col>
                     </Row>
@@ -174,33 +177,33 @@ const RegistrationForm = () => {
                         <Col xs={24} className="mb-2">
                             <Form.Group controlId="password">
                                 <Form.ControlLabel>Mot de passe</Form.ControlLabel>
-                                <Form.Control name="password" type="password" value={password} autoComplete="off" onChange={setPassword}/>
+                                <Form.Control name="password" type="password" value={password} autoComplete="off" onChange={setPassword} />
                             </Form.Group>
                         </Col>
                         <Col xs={24} className="mb-2">
                             <Form.Group controlId="passwordConfirm">
                                 <Form.ControlLabel>Confirmer le mot de passe</Form.ControlLabel>
-                                <Form.Control name="passwordConfirm" type="password" value={passwordConfirm} autoComplete="off" onChange={fonction}/>
+                                <Form.Control name="passwordConfirm" type="password" value={passwordConfirm} autoComplete="off" onChange={handlePasswordConfirm} />
                             </Form.Group>
                         </Col>
                         <Col xs={24}>
                             <Form.Group>
-                                    <p>Préférences de contact :</p>
-                                    <Checkbox name="contactByMail" value={contactBySms} onChange={(value, checked) => {setContactByMail(checked)}}>Autoriser l'envoi d'emails</Checkbox>
-                                    <Checkbox name="contactBySms" value={contactByMail} onChange={(value, checked) => {setContactBySms(checked)}}>Autoriser l'envoi de SMS</Checkbox>
+                                <p>Préférences de contact :</p>
+                                <Checkbox name="contactByMail" value={contactBySms} onChange={(value, checked) => { setContactByMail(checked) }}>Autoriser l'envoi d'emails</Checkbox>
+                                <Checkbox name="contactBySms" value={contactByMail} onChange={(value, checked) => { setContactBySms(checked) }}>Autoriser l'envoi de SMS</Checkbox>
                             </Form.Group>
                         </Col>
                         <Col xs={24}>
-                            <hr/>
+                            <hr />
                         </Col>
                         <Col xs={24} className="mb-2">
                             <Form.Group controlId="GCUAgreement">
-                                <Checkbox value={gcuAgreement} onChange={(value, checked) => {setGcuAgreement(checked)}}>Je reconnais avoir pris connaissance et j'accepte les Conditions Générales d'Utilisation de Covoitur'AFPA.</Checkbox>
+                                <Checkbox value={gcuAgreement} onChange={(value, checked) => { setGcuAgreement(checked) }}>Je reconnais avoir pris connaissance et j'accepte les Conditions Générales d'Utilisation de Covoitur'AFPA.</Checkbox>
                             </Form.Group>
                         </Col>
                         <Col xs={24}>
                             <Form.Group controlId="captcha">
-                                <HCaptcha ref={captchaRef} sitekey="aea49a3b-1ae7-4709-996d-b4bc374a903c" theme="light" onVerify={handleCaptchaVerification} onError={handleCaptchaError} onChalExpired={handleCaptchaChallengeExpired}/>
+                                <HCaptcha ref={captchaRef} sitekey="aea49a3b-1ae7-4709-996d-b4bc374a903c" theme="light" onVerify={handleCaptchaVerification} onError={handleCaptchaError} onChalExpired={handleCaptchaChallengeExpired} />
                             </Form.Group>
                         </Col>
                     </Row>
