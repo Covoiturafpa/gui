@@ -67,11 +67,11 @@ const LoginForm = () => {
         <Form fluid checkTrigger='change' model={loginFormSchema}>
             <Form.Group>
                 <Form.ControlLabel>Email</Form.ControlLabel>
-                <Form.Control name="email" onChange={usernameChangeHandler} required />
+                <Form.Control defaultValue={"admin@admin.com"} name="email" onChange={usernameChangeHandler} required />
             </Form.Group>
             <Form.Group>
                 <Form.ControlLabel>Mot de passe</Form.ControlLabel>
-                <Form.Control name="password" onChange={passwordChangeHandler} type="password" autoComplete="off" required />
+                <Form.Control defaultValue={"TestTest59-"} name="password" onChange={passwordChangeHandler} type="password" autoComplete="off" required />
             </Form.Group>
             <Form.Group>
                 <Checkbox inputRef={rememberMeRef}>Se souvenir de moi</Checkbox>

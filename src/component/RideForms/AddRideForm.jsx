@@ -75,7 +75,7 @@ const AddRideForm = (props) => {
 
     useEffect(() => {
         if (isLoaded) {
-            setFormValues({...formValues, "days" : days.value });
+            setFormValues({ ...formValues, "days": days.value });
             addRideFormRef.current.cleanErrorForField("days");
         }
     }, [days.value])
@@ -93,8 +93,8 @@ const AddRideForm = (props) => {
     }, [arrivalTimeReturn])
 
     useEffect(() => {
-        if (isLoaded) {   
-            setFormValues({...formValues, "carInput" : car});
+        if (isLoaded) {
+            setFormValues({ ...formValues, "carInput": car });
         }
     }, [carName])
 
@@ -125,20 +125,20 @@ const AddRideForm = (props) => {
     }, [isLoaded])
 
     const defaultFormValues = {
-        "rideType" : rideType.value,
-        "isRoundTrip" : isRoundTrip.value,
-        "isFromAfpa" : isFromAfpa.value,
+        "rideType": rideType.value,
+        "isRoundTrip": isRoundTrip.value,
+        "isFromAfpa": isFromAfpa.value,
         "departure": departure.value,
         "arrival": arrival.value,
-        "date" : departureDay.value,
-        "dates" : recurringDates.value,
-        "days" : days.value,
+        "date": departureDay.value,
+        "dates": recurringDates.value,
+        "days": days.value,
         "arrivalTimeInput": arrivalTime,
-        "arrivalTimeReturnInput" : arrivalTimeReturn,
-        "carInput" : car,
-        "seatsInput" : seats,
-        "priceInput" : price,
-        "commentInput" : comment
+        "arrivalTimeReturnInput": arrivalTimeReturn,
+        "carInput": car,
+        "seatsInput": seats,
+        "priceInput": price,
+        "commentInput": comment
     }
 
     useEffect(() => {
@@ -231,31 +231,37 @@ const AddRideForm = (props) => {
                     const toastSuccess = toaster.push(<ToastMessage type="success" header="Succès" content="Le trajet est enregistré" />, { value: 'bottomStart' });
                     setTimeout(() => { toaster.remove(toastSuccess) }, 3000);
                 }
+
+
+                // 2eme requete
+                if (isRoundTrip.value) {
+                    const dataRoundTrip = {
+                        ...dataNewRide,
+                        "destination": {
+                            "latitude": destination.value.lat,
+                            "longitude": destination.value.lon,
+                            "isFromAfpa": !isFromAfpa.value,
+                            "city": {
+                                "name": (isFromAfpa.value ? arrival.value : departure.value)
+                            }
+                        },
+                        "departureTime": arrivalTimeReturn.toISOString().substring(11, 19)
+                    };
+
+                    const fetchPost = FetchService.post("/rides", JSON.stringify(dataRoundTrip));
+                    fetchPost.then((result) => {
+                    });
+                }
+                navigate("/mes_trajets");
+
+
             },
                 (error) => {
                     const toastFetchError = toaster.push(<ToastMessage type="error" header="Erreur" content="Une erreur est survenue" />, { value: 'bottomStart' });
                     setTimeout(() => { toaster.remove(toastFetchError) }, 3000);
                 });
 
-            if (isRoundTrip.value) {
-                const dataRoundTrip = {
-                    ...dataNewRide,
-                    "destination": {
-                        "latitude": destination.value.lat,
-                        "longitude": destination.value.lon,
-                        "isFromAfpa": !isFromAfpa.value,
-                        "city": {
-                            "name": (isFromAfpa.value ? arrival.value : departure.value)
-                        }
-                    },
-                    "departureTime": arrivalTimeReturn.toISOString().substring(11, 19)
-                };
 
-                const fetchPost = FetchService.post("/rides", JSON.stringify(dataRoundTrip));
-                fetchPost.then((result) => {
-                });
-            }
-            navigate("/mes_trajets");
         }
     }
 
@@ -272,7 +278,7 @@ const AddRideForm = (props) => {
                         <Form.Group className="mb-[24px]" controlId='inputArrivalTime'>
                             <Form.ControlLabel>Heure de départ</Form.ControlLabel>
                             <Form.Control accepter={DatePicker} value={arrivalTime} placement="auto" name="arrivalTimeInput" format="HH:mm" onChange={setArrivalTime}>
-                                <DatePicker  />
+                                <DatePicker />
                             </Form.Control>
                         </Form.Group>
                         {isRoundTrip.value ?
@@ -288,9 +294,9 @@ const AddRideForm = (props) => {
                         <Form.Group className='w-full' controlId='inputChoiceCar'>
                             <Form.ControlLabel>Choix du véhicule :</Form.ControlLabel>
                             <Form.Control accepter={SelectPicker} name="carInput" block data={carsUser} placeholder={placeholderCars} value={carName} labelKey="label"
-                                          onSelect={(value, item) => { setCarName(value); setCar(item); setSeats(item.seats) }} 
-                                          onClean={() => { setCarName(null); setCar(null); setSeats(1) }}
-                                          onChange={() => addRideFormRef.current.cleanErrorForField("carInput")}   >
+                                onSelect={(value, item) => { setCarName(value); setCar(item); setSeats(item.seats) }}
+                                onClean={() => { setCarName(null); setCar(null); setSeats(1) }}
+                                onChange={() => addRideFormRef.current.cleanErrorForField("carInput")}   >
                                 <SelectPicker />
                             </Form.Control>
                         </Form.Group>
