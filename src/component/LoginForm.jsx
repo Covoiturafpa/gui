@@ -9,6 +9,11 @@ import { useEffect } from 'react';
 const LoginForm = () => {
     const [username, setUsername] = useState();
     const [password, setPassword] = useState();
+
+    const inputEmail = useRef(null);
+    const inputPassword = useRef(null);
+
+
     const [errorMessage, setErrorMessage] = useState("");
     const setLogin = useSetLogin();
     const navigate = useNavigate();
@@ -25,20 +30,24 @@ const LoginForm = () => {
         }
     }, []);
 
-    function usernameChangeHandler(newUsername) {
-        setUsername(newUsername);
-    };
 
-    function passwordChangeHandler(newPassword) {
-        setPassword(newPassword);
-    };
+    // function usernameChangeHandler(newUsername) {
+    //     setUsername(newUsername);
+    // };
+
+    // function passwordChangeHandler(newPassword) {
+    //     setPassword(newPassword);
+    // };
 
     function sendToRegistration() {
         navigate("/inscription");
     }
 
     const handleLogin = (e) => {
-        const stringResult = AuthService.login(username, password);
+
+        // inputEmail = inputEmail.current.children[0].value;
+
+        const stringResult = AuthService.login(inputEmail.current.children[0].value,  inputPassword.current.children[0].value);
         
         stringResult.then((res) => {
             if (res.hasOwnProperty("errorMessage")) {
@@ -67,11 +76,11 @@ const LoginForm = () => {
         <Form fluid checkTrigger='change' model={loginFormSchema}>
             <Form.Group>
                 <Form.ControlLabel>Email</Form.ControlLabel>
-                <Form.Control defaultValue={"admin@admin.com"} name="email" onChange={usernameChangeHandler} required />
+                <Form.Control defaultValue={"admin@admin.com"} name="email" ref={inputEmail} required />
             </Form.Group>
             <Form.Group>
                 <Form.ControlLabel>Mot de passe</Form.ControlLabel>
-                <Form.Control defaultValue={"TestTest59-"} name="password" onChange={passwordChangeHandler} type="password" autoComplete="off" required />
+                <Form.Control defaultValue={"TestTest59-"} name="password" ref={inputPassword} type="password" autoComplete="off" required />
             </Form.Group>
             <Form.Group>
                 <Checkbox inputRef={rememberMeRef}>Se souvenir de moi</Checkbox>

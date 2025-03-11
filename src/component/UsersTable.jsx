@@ -60,14 +60,14 @@ const UsersTable = ({ users, setUsers }) => {
         // }
 
         if (action === "activateAccount") {
-            const fetch = FetchService.patch(`/users/${id}/activation`);
+            const fetch = FetchService.patch(`/api/users/${id}/activation`);
             fetch.then(
                 (result) => {
 
                 }
             )
         } else if (action === "deleteAccount") {
-            const fetch = FetchService.delete(`/users/${id}`);
+            const fetch = FetchService.delete(`/api/users/${id}`);
             fetch.then( // la callback associée à then se déclenche en cas de succès
                 (result) => {
                     console.log("DELETE ICI");

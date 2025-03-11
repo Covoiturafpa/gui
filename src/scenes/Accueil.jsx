@@ -24,7 +24,7 @@ const Accueil = () => {
 
     useEffect(() => {
         if(stateLogin.roles) {
-            setRolesUser(stateLogin.roles);    
+            setRolesUser(stateLogin.roles);
             if(stateLogin.roles.includes('ROLE_ADMIN') || stateLogin.roles.includes('ROLE_TEACHER')) {
                 setCustomLg(6)
             }

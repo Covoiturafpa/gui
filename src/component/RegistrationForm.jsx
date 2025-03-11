@@ -13,7 +13,7 @@ const Formation = (props) => {
 
     useEffect(() => {
         if (!isLoaded) {
-            FetchService.get("/centre/formations").then(data => {
+            FetchService.get("/api/centre/formations").then(data => {
                 setFormations(data.map(formation => ({ label: formation.name, value: formation.id })));
                 setIsLoaded(true);
             });

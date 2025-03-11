@@ -29,7 +29,7 @@ const ListPassengers = (props) => {
     useEffect(() => {
         if(isAccepted !== null && selectedPassenger !== null) {
             setIsLoaded(false);
-            const fetchPut = FetchService.put(`/users/${authService.getCurrentUserId()}/rides/${props.ride.id}?idPassenger=${selectedPassenger.id}&isAccepted=${isAccepted}`, null);
+            const fetchPut = FetchService.put(`/api/users/${authService.getCurrentUserId()}/rides/${props.ride.id}?idPassenger=${selectedPassenger.id}&isAccepted=${isAccepted}`, null);
             fetchPut.then((result) => {
                 console.log(result);
                 if (result.type === "success") {

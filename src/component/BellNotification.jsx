@@ -8,7 +8,7 @@ import AuthService from '../services/AuthService';
 const BellNotification = () => {
 
     function fetchHasNewNotifications() {
-        FetchService.get("/users/" + AuthService.getCurrentUserId() + "/new_notifications").then(data => {
+        FetchService.get("/api/users/" + AuthService.getCurrentUserId() + "/new_notifications").then(data => {
             setHasNewNotifications(data);
         });
     }

@@ -18,7 +18,7 @@ const MesTrajets = () => {
 
     useEffect(() => {
         setAutoReload(false);
-        const fetch = FetchService.get("/users/"+ userId + "/rides");
+        const fetch = FetchService.get("/api/users/"+ userId + "/rides");
         fetch.then(
             (result) => {
                 setRidesOwned([]);

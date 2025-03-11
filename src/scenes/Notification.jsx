@@ -54,10 +54,10 @@ const Notification = () => {
 
     useEffect(() => {
         if (!isLoaded) {
-            FetchService.get("/users/" + AuthService.getCurrentUserId() + "/notifications").then(data => {
+            FetchService.get("/api/users/" + AuthService.getCurrentUserId() + "/notifications").then(data => {
                 data.sort(compareNotifications);
                 fillNotificationArrays(data);
-                FetchService.put("/users/" + AuthService.getCurrentUserId() + "/notifications", unreadNotifications);
+                FetchService.put("/api/users/" + AuthService.getCurrentUserId() + "/notifications", unreadNotifications);
                 setIsLoaded(true);
             });
         }

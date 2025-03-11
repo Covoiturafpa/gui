@@ -22,7 +22,7 @@ const Profil = () => {
     const formRef = useRef();
 
     useEffect(() => {
-        FetchService.get(`/users/${AuthService.getCurrentUserId()}/`).then((user) => {
+        FetchService.get(`/api/users/${AuthService.getCurrentUserId()}/`).then((user) => {
             setUser(user);
             setEmail(user.email);
             setPhoneNumber(user.phoneNumber);
@@ -100,7 +100,7 @@ const Profil = () => {
     const updateProfil = () => {
         if (!checkFormErrors()) {
             setUser({...user, "email": email, "phoneNumber": phoneNumber, "password": password})
-            //FetchService.patch(`/users/${user.id}`, JSON.stringify(user));
+            //FetchService.patch(`/api/users/${user.id}`, JSON.stringify(user));
         }
     }
 

@@ -142,7 +142,7 @@ const AddRideForm = (props) => {
     }
 
     useEffect(() => {
-        const fetch = FetchService.get("/users/" + userId);
+        const fetch = FetchService.get("/api/users/" + userId);
         fetch.then(
             (result) => {
                 setDataUser(result);

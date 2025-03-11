@@ -129,7 +129,7 @@ const commentInput = SchemaModel({
 })
 
 function asyncCheckIsEmailUnique(email) {
-    return (FetchService.get("/users/email_validity?email=" + email));
+    return (FetchService.get("/api/users/email_validity?email=" + email));
 }
 
 // function getCarsFromUser(userId) {

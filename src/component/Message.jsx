@@ -47,7 +47,7 @@ const MessageIcon = (props) => {
 const Message = (props) => {
 
     function deleteMessage() {
-        FetchService.delete("/users/" + AuthService.getCurrentUserId() + "/notifications?idNotification=" + props.notification.id, props.notification).then(() => {props.onChange(props.notification);});
+        FetchService.delete("/api/users/" + AuthService.getCurrentUserId() + "/notifications?idNotification=" + props.notification.id, props.notification).then(() => {props.onChange(props.notification);});
     }
 
     return (

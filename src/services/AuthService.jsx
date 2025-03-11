@@ -17,8 +17,11 @@ class AuthService {
     
     if (!textResult) {
       try {
-        await fetch(FetchService.urlApi + "/login", {
+        await fetch(FetchService.urlApi + "/api/authentication/login", {
           method: "POST",
+          headers: {
+            "Content-type": "application/json"
+          },
           body: JSON.stringify({ "username": username, "password": password })
         }).then((response) => {
           return response.json(); //  { userId: "username", token: "eazezaeza33213azezajkjj", role: "[...]"}
