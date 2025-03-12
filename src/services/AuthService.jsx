@@ -13,7 +13,7 @@ class AuthService {
     let textResult = localStorage.getItem('user'); // null / undefined -> falsy
     if (!textResult) {
       textResult = sessionStorage.getItem('user');
-    } 
+    }
     
     if (!textResult) {
       try {
@@ -49,7 +49,8 @@ class AuthService {
     let userId;
     if (localStorage.getItem('user')) {
       userId = JSON.parse(localStorage.getItem('user')).userId;
-    } if (sessionStorage.getItem('user')) {
+    } 
+    if (sessionStorage.getItem('user')) {
       userId = JSON.parse(sessionStorage.getItem('user')).userId;
     }
     return userId;

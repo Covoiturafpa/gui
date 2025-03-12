@@ -9,7 +9,7 @@ const UserManagement = () => {
     const [error, setError] = useState(null);
 
     useEffect(() => {
-        const fetch = FetchService.get("/users");
+        const fetch = FetchService.get("/api/users");
         fetch.then(
             (result) => {
                 setUsersData(result);
