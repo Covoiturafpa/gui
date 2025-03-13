@@ -15,3 +15,4 @@ FROM nginx:1.25.1-alpine
 EXPOSE 8080
 COPY --chown=nginx:nginx nginx-ui.conf /etc/nginx/conf.d/default.conf
 COPY --chown=nginx:nginx --from=builder /app/build /var/www/html/
+# aled
