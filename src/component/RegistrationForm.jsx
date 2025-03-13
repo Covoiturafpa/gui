@@ -71,12 +71,12 @@ const RegistrationForm = () => {
     };
 
     const handleRegistration = async () => {
-        let creationRequestBody = { newPerson: getNewUser(), captchaToken };
+        let creationRequestBody = { person: getNewUser(), captchaToken };
         console.log(JSON.stringify(creationRequestBody));
         setSubmitNotActivated(true);
         try {
             console.log("hello")
-            const data = await FetchService.post("/users", JSON.stringify(creationRequestBody))
+            const data = await FetchService.post("/api/authentication/register", JSON.stringify(creationRequestBody))
             console.log(data);
             if (data.hasOwnProperty("error")) {
                 const toast = toaster.push(<ToastMessage type={"error"} header={"Erreur lors de l'inscription"} content={"L'inscription a échouée. Veuillez recommencer."} />, { value: "topCenter" });
