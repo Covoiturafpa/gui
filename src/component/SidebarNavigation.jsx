@@ -25,7 +25,7 @@ const SidebarNavigation = () => {
 
     useEffect(() => {
         if(stateLogin.roles) {
-            setRolesUser(stateLogin.roles);    
+            setRolesUser(stateLogin.roles);
 
         }
     }, [stateLogin])

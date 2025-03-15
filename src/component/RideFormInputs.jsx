@@ -20,7 +20,7 @@ const RideFormInputs = () => {
     const [dataDays, setDataDays] = useState([]);
 
     useEffect(() => {
-        FetchService.get("/centre").then((data) => {
+        FetchService.get("/api/centre").then((data) => {
             setAfpaName(data.name);
             formContext.arrival.setValue(data.name);
         })
@@ -82,8 +82,8 @@ const RideFormInputs = () => {
             <Form.Group className='pt-2' controlId='inputDeparture'>
                 <Form.ControlLabel>Départ</Form.ControlLabel>
                 <Form.Control name="departure" ref={departureInput} value={formContext.departure.value} 
-                              onChange={formContext.departure.setValue}
-                              onBlur={updateCoordinates} readOnly={formContext.isFromAfpa.value} />
+                                onChange={formContext.departure.setValue}
+                                onBlur={updateCoordinates} readOnly={formContext.isFromAfpa.value} />
             </Form.Group>
             <button className="text-xl w-full flex justify-center">
                 <BsArrowDownUp onClick={invertDestinationsInputs} />
@@ -91,15 +91,15 @@ const RideFormInputs = () => {
             <Form.Group controlId='inputArrival'>
                 <Form.ControlLabel>Arrivée</Form.ControlLabel>
                 <Form.Control name="arrival" ref={arrivalInput} value={formContext.arrival.value} 
-                              onChange={formContext.arrival.setValue}
-                              onBlur={updateCoordinates} readOnly={!formContext.isFromAfpa.value} />
+                                onChange={formContext.arrival.setValue}
+                                onBlur={updateCoordinates} readOnly={!formContext.isFromAfpa.value} />
             </Form.Group>
                 {formContext.rideType.value === "O" &&
                     <Form.Group className='pt-3'>
                         <Form.ControlLabel>Date de départ</Form.ControlLabel>
                         <Form.Control name="date" accepter={DatePicker} className='w-full' format="yyyy-MM-dd" 
-                                      placeholder={"aaaa-mm-jj"} value={formContext.departureDay.value} 
-                                      onChange={formContext.departureDay.setValue}>
+                                        placeholder={"aaaa-mm-jj"} value={formContext.departureDay.value} 
+                                        onChange={formContext.departureDay.setValue}>
                             <DatePicker />
                         </Form.Control>
                     </Form.Group>

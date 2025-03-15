@@ -45,7 +45,7 @@ const SearchRidesForm = () => {
         recurringDates : {
             value: recurringDates,
             setValue: setRecurringDates
-        }   
+        }
     };
 
     function createRideSearchParameters() {
@@ -75,7 +75,7 @@ const SearchRidesForm = () => {
     const submitForm = () => {
         console.log(formStates)
         const searchParameters = createRideSearchParameters();
-        FetchService.get("/rides?searchParams=" + searchParameters).then((results) => {
+        FetchService.get("/api/rides?searchParams=" + searchParameters).then((results) => {
             console.log(results)
         });
     }

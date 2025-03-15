@@ -108,7 +108,7 @@ const SearchRidesForm = () => {
     const submitForm = () => {
         if (!checkFormErrors()) {
             let searchParameters = createRideSearchParameters(false);
-            FetchService.get("/rides?searchParams=" + searchParameters).then((searchResults) => {
+            FetchService.get("/api/rides?searchParams=" + searchParameters).then((searchResults) => {
                 let results = [];
             
                 // rides aller
@@ -118,7 +118,7 @@ const SearchRidesForm = () => {
                 // rides retour
                 if (isRoundTrip.value) {
                     searchParameters = createRideSearchParameters(true);
-                    FetchService.get("/rides?searchParams=" + searchParameters).then((searchResults) => {
+                    FetchService.get("/api/rides?searchParams=" + searchParameters).then((searchResults) => {
                         if (!searchResults.hasOwnProperty("errorMessage")) { 
                             results.push(searchResults);
                         }

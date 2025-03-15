@@ -61,7 +61,7 @@ const TableRequestedRides = (props) => {
             <p>Conducteur : 
             {rowData.requestedPassengers.map(passenger => {
                     if (passenger.isDriver) {
-                       return <span key={`passenger${passenger.person.id}`}>{passenger.person.surname} {passenger.person.firstName.charAt(0)}.</span>
+                        return <span key={`passenger${passenger.person.id}`}>{passenger.person.surname} {passenger.person.firstName.charAt(0)}.</span>
                     }
             })}</p>
             <p>Prix : {rowData.price} €</p>

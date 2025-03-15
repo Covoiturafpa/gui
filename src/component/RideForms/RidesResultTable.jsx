@@ -107,7 +107,7 @@ const RidesResultTable = (props) => {
     }
 
     const booking = (ride) => {
-        FetchService.put(`/rides/${ride.id}?idPassenger=${AuthService.getCurrentUserId()}`).then((res) => {
+        FetchService.put(`/api/rides/${ride.id}?idPassenger=${AuthService.getCurrentUserId()}`).then((res) => {
             let typetoast = "";
             let messagetoast = "";
             if (res === undefined || res.error !== undefined) {
@@ -120,8 +120,8 @@ const RidesResultTable = (props) => {
             }
             const toast = toaster.push(
                 <ToastMessage type={typetoast} 
-                              header={typetoast === "success" ? "Succès" : "Erreur"} 
-                              content={messagetoast}
+                            header={typetoast === "success" ? "Succès" : "Erreur"} 
+                            content={messagetoast}
                 />, { value : 'bottomStart' }
             );
             setTimeout(() => {

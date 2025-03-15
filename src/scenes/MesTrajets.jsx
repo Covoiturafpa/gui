@@ -3,10 +3,8 @@ import { RideFormContextProvider } from '../component/RideForms/RideFormContextP
 import { Loader } from 'rsuite';
 import { TableProposedRides } from '../component/TableProposedRides';
 import { TableRequestedRides } from '../component/TableRequestedRides';
-import  authService  from "../services/AuthService";
-import  FetchService  from "../services/FetchService";
-
-
+import authService from "../services/AuthService";
+import FetchService from "../services/FetchService";
 
 const MesTrajets = () => {
     const [isLoaded, setIsLoaded] = useState(false);
@@ -18,60 +16,48 @@ const MesTrajets = () => {
 
     useEffect(() => {
         setAutoReload(false);
-        const fetch = FetchService.get("/api/users/"+ userId + "/rides");
-        fetch.then(
-            (result) => {
+        FetchService.get(`/api/users/${userId}/rides`)
+            .then(result => {
+                // Réinitialisation des tableaux
                 setRidesOwned([]);
                 setRidesRequested([]);
-                if (result.length === 0) {
-                    setRidesOwned(0);
-                    setRidesRequested(0);
-                    setIsLoaded(true);
-                }else {
+                if (!result || result.length === 0) {
+                    // Aucun trajet trouvé : on garde des tableaux vides
+                    setRidesOwned([]);
+                    setRidesRequested([]);
+                } else {
                     result.forEach(item => {
-                        const passengers = item.requestedPassengers;
+                        const passengers = item.requestedPassengers || [];
                         passengers.forEach(userToRide => {
-                            if(userToRide.person.id === parseInt(userId)) {
-                                if(userToRide.isDriver) {
-                                    setRidesOwned(rideOwned => [ item,...rideOwned]);
-                                }else if(!userToRide.isDriver) {
-                                    if(item.isActive) {
-                                        setRidesRequested(rideRequested => [ item,...rideRequested]);
-                                    }
+                            if (userToRide.person && userToRide.person.id === parseInt(userId)) {
+                                if (userToRide.isDriver) {
+                                    setRidesOwned(prev => [item, ...prev]);
+                                } else if (!userToRide.isDriver && item.isActive) {
+                                    setRidesRequested(prev => [item, ...prev]);
                                 }
-                            }
-                            if(result[result.length - 1] === item) {
-                                setIsLoaded(true);
                             }
                         });
                     });
                 }
-            },
-            (error) => {
                 setIsLoaded(true);
-                setError(error);
-            }
-        )
-        // eslint-disable-next-line react-hooks/exhaustive-deps
-    }, [autoReload]);
-    
+            })
+            .catch(err => {
+                setIsLoaded(true);
+                setError(err);
+            });
+    }, [autoReload, userId]);
+
     if (error) {
         return <div>Erreur : {error.message}</div>;
     } else if (!isLoaded) {
-        return <div className=' h-full flex justify-center items-center'><Loader size="sm" content="Chargement..." /></div>;
-    }else {
-        if(ridesOwned.length === 0) {
-            setRidesOwned(0);
-        }
-        if(ridesRequested.length === 0) {
-            setRidesRequested(0);
-        }
+        return <div className='h-full flex justify-center items-center'><Loader size="sm" content="Chargement..." /></div>;
+    } else {
         return (
             <div className='container mx-auto px-4'>
                 <h1 className="text-center">Mes trajets</h1>
                 <RideFormContextProvider>
                     <div className='my-3'>
-                        /<TableProposedRides setReload={setAutoReload} id={userId} rides={ridesOwned} />
+                        <TableProposedRides setReload={setAutoReload} id={userId} rides={ridesOwned} />
                     </div>
                     <div className='my-3'>
                         <TableRequestedRides id={userId} rides={ridesRequested} />
@@ -80,7 +66,6 @@ const MesTrajets = () => {
             </div>
         );
     }
-    
 };
 
-export  {MesTrajets };
+export { MesTrajets };

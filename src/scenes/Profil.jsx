@@ -100,7 +100,7 @@ const Profil = () => {
     const updateProfil = () => {
         if (!checkFormErrors()) {
             setUser({...user, "email": email, "phoneNumber": phoneNumber, "password": password})
-            //FetchService.patch(`/api/users/${user.id}`, JSON.stringify(user));
+            // FetchService.patch(`/api/users/${user.id}`, JSON.stringify(user));JSON.stringify(user)
         }
     }
 

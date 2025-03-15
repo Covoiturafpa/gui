@@ -19,7 +19,7 @@ const RideFormInputs = () => {
      * TODO : Ajouter un state centre dans le RideFormContext pour mapleaflet
      */
     useEffect(() => {
-        FetchService.get("/centre").then((data) => {
+        FetchService.get("/api/centre").then((data) => {
             arrival.setValue(data.name);
         })
         // eslint-disable-next-line react-hooks/exhaustive-deps
@@ -109,7 +109,7 @@ const RideFormInputs = () => {
                 </Form.Group>
                 <Form.Group className='flex justify-center items-center' controlId='checkBoxRoundTrip'>
                     <Form.Control style={{ width: 220 }} accepter={RadioGroup} inline appearance="picker" name="isRoundTrip" 
-                                  value={isRoundTrip.value} onChange={isRoundTrip.setValue} className='my-2 justify-center'>
+                                    value={isRoundTrip.value} onChange={isRoundTrip.setValue} className='my-2 justify-center'>
                         <Radio value={true} >Aller&nbsp;retour</Radio>
                         <Divider className="self-center" vertical />
                         <Radio value={false}>Aller&nbsp;simple</Radio>

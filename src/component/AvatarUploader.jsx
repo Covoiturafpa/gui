@@ -5,11 +5,11 @@ import { Loader, Message, Uploader, useToaster } from 'rsuite';
 
 
 function previewFile(file, callback) {
-  const reader = new FileReader();
-  reader.onloadend = () => {
+    const reader = new FileReader();
+    reader.onloadend = () => {
     callback(reader.result);
-  };
-  reader.readAsDataURL(file);
+    };
+    reader.readAsDataURL(file);
 }
 
 /**

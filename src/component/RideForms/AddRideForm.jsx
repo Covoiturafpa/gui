@@ -222,7 +222,7 @@ const AddRideForm = (props) => {
             } else if (rideType.value === "R") {
                 dataNewRide = { ...dataNewRide, "beginning": recurringDates.value[0].toISOString().substring(0, 10), "ending": recurringDates.value[1].toISOString().substring(0, 10), "daysWeek": days.value }
             }
-            const fetchPost = FetchService.post("/rides", JSON.stringify(dataNewRide));
+            const fetchPost = FetchService.post("/api/rides", JSON.stringify(dataNewRide));
             fetchPost.then((result) => {
                 if (result.errorMessage) {
                     const toastError = toaster.push(<ToastMessage type="error" header="Erreur" content="Vous avez déjà créer un trajet similaire" />, { value: 'bottomStart' });
@@ -248,7 +248,7 @@ const AddRideForm = (props) => {
                         "departureTime": arrivalTimeReturn.toISOString().substring(11, 19)
                     };
 
-                    const fetchPost = FetchService.post("/rides", JSON.stringify(dataRoundTrip));
+                    const fetchPost = FetchService.post("/api/rides", JSON.stringify(dataRoundTrip));
                     fetchPost.then((result) => {
                     });
                 }
