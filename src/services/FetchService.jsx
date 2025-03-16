@@ -3,7 +3,7 @@ import authHeader from './AuthHeader'
 class FetchService {
 
     // #urlApi = "https://covoiturafpa-spring-api.herokuapp.com";
-    #urlApi = "https://localhost:443";
+    #urlApi = "https://51.178.19.128:443";
 
     get(endpoint, body) {
         try {
