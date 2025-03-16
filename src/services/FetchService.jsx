@@ -50,25 +50,19 @@ class FetchService {
         }
     }
 
-    async fetchAPI(method, endpoint, body = null) {
-        let header = authHeader();
-        header.set('Content-Type', 'application/json');
-        let data = null;
-        await fetch(this.#urlApi + endpoint, {
-            method: method,
-            headers: header,
-            body: body,
-            mode: "cors"
-        }).then((response) => {
-            if (response.status !== 204) {
-                return response.json();
-            }
-            return null;
-        }).then((result) => {
-            data = result;
-        })
-        return data;
-    }
+async fetchAPI(method, endpoint, body = null) {
+    let header = authHeader();
+    header.set('Content-Type', 'application/json');
+    const response = await fetch(this.#urlApi + endpoint, {
+        method: method,
+        headers: header,
+        body: body,
+        mode: "cors"
+    });
+    const text = await response.text();
+    return text ? JSON.parse(text) : null;
+}
+
 
     get urlApi() {
         return this.#urlApi;
