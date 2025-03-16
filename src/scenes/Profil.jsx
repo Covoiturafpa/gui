@@ -22,7 +22,7 @@ const Profil = () => {
     const formRef = useRef();
 
     useEffect(() => {
-        FetchService.get(`/api/users/${AuthService.getCurrentUserId()}/`).then((user) => {
+        FetchService.get(`/api/users/${AuthService.getCurrentUserId()}`).then((user) => {
             setUser(user);
             setEmail(user.email);
             setPhoneNumber(user.phoneNumber);
